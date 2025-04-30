@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 include "includes/connexion.php";
 
@@ -17,7 +18,7 @@ if(isset($_POST['submit']))
         $_SESSION['id_u'] = $reponse['id_u'];
         $_SESSION['login'] = $reponse['login'];
         $_SESSION['lvl'] = $reponse['lvl'];
-        header("Location:compte.php");
+        header("Location:home.php");
     }
     else
     {
@@ -36,7 +37,7 @@ if(isset($_POST['submit']))
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Connexion à GamingHub</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="assets/css/style.css">
         <!-- Ajouter Font Awesome -->
         <link
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
