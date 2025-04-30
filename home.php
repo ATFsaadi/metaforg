@@ -88,6 +88,9 @@ try {
                 <a href="pages/amis.php" class="text-decoration-none me-3">
                     <i class="fas fa-user-friends"></i>
                 </a>
+                <a href="pages/messages.php" class="text-decoration-none me-3">
+                    <i class="fas fa-envelope" style="color: #00FF00;"></i>
+                </a>
                 <a href="#" class="text-decoration-none me-3">
                     <i class="fas fa-bell"></i>
                 </a>

@@ -42,6 +42,13 @@ CREATE TABLE comment (
     FOREIGN KEY (id_img) REFERENCES images(id_img),
     FOREIGN KEY (id_u) REFERENCES users(id_u)
 );
+CREATE TABLE `envoyer` (
+  `id_exp` int(11) NOT NULL,
+  `id_recept` int(11) NOT NULL,
+  `message` text DEFAULT NULL,
+  `date_env` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- Insertion d'un utilisateur administrateur
 INSERT INTO users (login, email, mdp, lvl) VALUES

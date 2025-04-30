@@ -2,14 +2,10 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+require_once "./function.php";
 
 try {
-    $bdd = new PDO(
-        'mysql:host=localhost;dbname=forum1;charset=utf8',
-        'root',
-        '',
-        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-    );
+    $bdd = connexion('localhost', 'forum1', 'root', '');
 } catch (PDOException $e) {
     die('Erreur BDD : ' . $e->getMessage());
 }
