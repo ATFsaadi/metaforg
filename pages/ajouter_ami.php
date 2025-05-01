@@ -1,5 +1,7 @@
 <?php
+
 session_start();
+
 include "includes/connexion.php";
 
 // 1. Vérifications de sécurité

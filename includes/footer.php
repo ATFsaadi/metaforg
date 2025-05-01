@@ -1,12 +1,47 @@
-<!-- Footer avec icônes des réseaux sociaux -->
-<footer>
-            <div class="social-icons">
-                <a href="https://www.facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://x.com" target="_blank" class="social-icon"><i class="fab fa-x"></i></a>
-                <a href="https://www.youtube.com" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
-                <a href="https://www.twitch.tv" target="_blank" class="social-icon"><i class="fab fa-twitch"></i></a>
-                <a href="https://discord.com" target="_blank" class="social-icon"><i class="fab fa-discord"></i></a>
+    <!-- Contenu principal (déjà présent dans votre code) -->
+    </div> <!-- Fin de .container -->
+
+    <!-- Footer -->
+    <footer class="mt-5">
+        <div class="container">
+            <div class="social-icons d-flex justify-content-center mb-3">
+                <a href="https://www.facebook.com" target="_blank" class="social-icon mx-2">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://x.com" target="_blank" class="social-icon mx-2">
+                    <i class="fab fa-x"></i>
+                </a>
+                <a href="https://www.youtube.com" target="_blank" class="social-icon mx-2">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://www.twitch.tv" target="_blank" class="social-icon mx-2">
+                    <i class="fab fa-twitch"></i>
+                </a>
+                <a href="https://discord.com" target="_blank" class="social-icon mx-2">
+                    <i class="fab fa-discord"></i>
+                </a>
             </div>
-        </footer>
-    </body>
+            <p class="text-center text-muted small">© 2025 MetaForg - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Script pour gérer le clic sur la zone de création de post
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ajouter des effets hover si nécessaire
+            const postActions = document.querySelectorAll('.post-action');
+            postActions.forEach(action => {
+                action.addEventListener('mouseenter', () => {
+                    action.style.backgroundColor = 'rgba(0, 191, 255, 0.1)';
+                });
+                action.addEventListener('mouseleave', () => {
+                    action.style.backgroundColor = 'transparent';
+                });
+            });
+        });
+    </script>
+</body>
 </html>
+<?php ob_end_flush(); ?>

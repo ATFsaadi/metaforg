@@ -1,6 +1,8 @@
-<?php include "../includes/connexion.php";?>
+<?php 
+session_start();
 
-<?php
+include "../includes/connexion.php";
+include "../includes/header-PG.php";
 
 $requete = $bdd->query("SELECT * FROM users 
                         WHERE 

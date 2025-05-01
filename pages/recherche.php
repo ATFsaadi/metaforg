@@ -1,6 +1,8 @@
-<?php 
+<?php
 session_start();
+
 include "../includes/connexion.php";
+include "../includes/header-PG.php";
 
 // Vérifier que l'utilisateur est connecté
 /* if (!isset($_SESSION['user'])) {
@@ -21,44 +23,7 @@ if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recherche d'amis</title>
-    <style>
-        .user-card {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-        }
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 15px;
-            object-fit: cover;
-        }
-        .add-btn {
-            margin-left: auto;
-            padding: 5px 10px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .pending-badge,
-        .friend-badge {
-            margin-left: auto;
-            font-weight: bold;
-            color: #888;
-        }
-    </style>
-</head>
-<body>
+
 
     <h2>Rechercher des amis</h2>
     
@@ -116,6 +81,6 @@ if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
             <?php endif; ?>
         <?php endif; ?>
     </div>
-
+    <?php include '../includes/footer.php'; ?>
 </body>
 </html>

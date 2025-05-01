@@ -1,282 +1,215 @@
-/* Styles globaux */
+/* === Variables globales (à garder en haut) === */
+:root {
+  --bg-primary: #121212;
+  --bg-secondary: #1E1E1E;
+  --text-color: #B0B0B0;
+  --color-primary: #00BFFF;
+  --color-primary-hover: #008CFF;
+  --color-success: #00FF00;
+  --badge-color: #6A0DAD;
+  --avatar-border: #FF7F00;
+}
+
+/* === Réinitialisation et base === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #121212; /* Fond noir principal */
-    margin: 0;
-    display: flex;
-    justify-content: center; /* Centrage du contenu horizontal */
-    align-items: center; /* Centrage du contenu vertical */
-    height: 100vh; /* Hauteur de la fenêtre */
-    flex-direction: column; /* Organisation verticale des éléments */
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Conteneur principal */
-.wrapper {
-    display: flex; /* Utilisation de flexbox pour aligner l'image et le formulaire */
-    max-width: 800px; /* Largeur maximale du conteneur */
-    width: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Ombre sombre pour un look gaming */
-    border-radius: 10px; /* Coins arrondis */
-    overflow: hidden; /* Pour éviter les bords débordants */
+/* === Navbar === */
+.navbar {
+  background: var(--bg-secondary) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 0.5rem 1rem;
+}
+.navbar-brand {
+  color: var(--color-primary) !important;
+  font-weight: 700;
+}
+.form-control {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  border-radius: 50px;
+}
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 191, 255, 0.25);
+}
+.btn-outline-primary {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.btn-outline-primary:hover {
+  background: var(--color-primary-hover);
+  color: white;
 }
 
-/* Conteneur de l'image */
-.image-container {
-    flex: 1; /* Prend la moitié de l'espace disponible */
-    background-color: #1E1E1E; /* Gris anthracite comme arrière-plan secondaire */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* === Stories (scroll horizontal) === */
+.story-container {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 1rem 0;
+}
+.story {
+  scroll-snap-align: start;
+  display: inline-block;
+  width: 90px;
+  margin-right: 15px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+.story:hover {
+  transform: scale(1.05);
+}
+.avatar-border {
+  border: 3px solid var(--avatar-border);
 }
 
-.image-container img {
-    width: 100%; /* L'image prend toute la largeur du conteneur */
-    height: 100%; /* Conserve les proportions */
-    object-fit: cover; /* Ajuste l'image pour remplir le conteneur */
+/* === Créer une publication === */
+.create-post {
+  background: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+.create-post-input {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50px;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  color: white;
+}
+.btn-outline-secondary {
+  border-color: rgba(255,255,255,0.1);
+  color: var(--text-color);
+}
+.btn-outline-secondary:hover {
+  background: var(--color-primary);
+  color: white;
 }
 
-/* Conteneur du formulaire */
-.form-container {
-    flex: 1; /* Prend la moitié de l'espace disponible */
-    background: #121212; /* Fond noir pour le formulaire */
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+/* === Publications === */
+.post-card {
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+.post-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--avatar-border);
+}
+.post-actions .post-action:hover {
+  background: rgba(0, 191, 255, 0.1);
 }
 
-.logo img {
-    width: 175px;
-    margin-bottom: 20px;
+/* === Sidebar === */
+.sidebar {
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.list-group-item {
+  background: var(--bg-secondary);
+  border: none;
+  color: var(--text-color);
+}
+.list-group-item:hover {
+  background: rgba(0, 191, 255, 0.1);
 }
 
-/* Formulaire et champs de saisie */
-.form-group {
-    margin-bottom: 10px;
-    width: 100%;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #B0B0B0; /* Bordure grise claire pour les champs */
-    border-radius: 5px;
-    font-size: 14px;
-    box-sizing: border-box;
-    background-color: #1E1E1E; /* Arrière-plan des champs en gris anthracite */
-    color: #FFFFFF; /* Texte blanc pour une meilleure lisibilité */
-}
-
-.form-group input:focus {
-    border-color: #00BFFF; /* Bleu néon pour le focus */
-    outline: none;
-}
-
-/* Boutons */
+/* === Boutons et éléments interactifs === */
 .btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #00BFFF; /* Bleu néon pour le bouton principal */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
-
 .btn:hover {
-    background-color: #008CFF; /* Bleu électrique pour le survol */
+  background: var(--color-primary-hover);
 }
 
-/* Liens et textes secondaires */
-.forgot-password, .login-link, .signup-link {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 12px;
-    color: #B0B0B0; /* Gris clair pour le texte secondaire */
+/* === Icônes spéciaux (messagerie, notifications) === */
+.fas, .far {
+  color: var(--color-success);
+  transition: color 0.3s ease;
+}
+.fas:hover, .far:hover {
+  color: var(--color-primary-hover);
 }
 
-.forgot-password a, .signup-link a, .login-link a {
-    color: #00FF00; /* Vert néon pour le lien interactif */
-    text-decoration: none;
+/* === Badges et indicateurs === */
+.badge {
+  background: var(--badge-color);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+.online-indicator {
+  width: 10px;
+  height: 10px;
+  background: var(--color-success);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  border: 2px solid white;
 }
 
-.forgot-password a:hover, .signup-link a:hover, .login-link a:hover {
-    text-decoration: underline;
+/* === Responsive (à ajuster selon besoins) === */
+@media (max-width: 992px) {
+  .col-lg-3 {
+    display: none !important;
+  }
+  .post-avatar {
+    width: 32px;
+    height: 32px;
+  }
+}
+@keyframes neon-glow {
+  0%, 100% { text-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF; }
+  50% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
 }
 
-/* Diviseur */
-.divider {
-    display: flex;
-    align-items: center;
-    margin: 20px 0;
-}
-
-.divider span {
-    flex: 1;
-    height: 1px;
-    background-color: #B0B0B0; /* Séparateur en gris clair */
-}
-
-.divider p {
-    margin: 0 10px;
-    font-size: 12px;
-    color: #B0B0B0; /* Texte "OU" en gris clair */
-}
-
-/* Footer */
 footer {
-    background-color: #121212;
-    padding: 20px 0;
-    text-align: center;
-    width: 100%;
-    position: relative;
-    bottom: 0;
+  background-color: #121212;
+  padding: 20px 0;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  bottom: 0;
 }
 
 /* Conteneur des icônes sociales */
 .social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 /* Icônes sociales */
 .social-icon {
-    color: #FFFFFF;
-    font-size: 24px;
-    transition: color 0.3s ease;
+  color: #FFFFFF;
+  font-size: 24px;
+  transition: color 0.3s ease;
 }
 
 .social-icon:hover {
-    color: #00BFFF; /* Bleu néon pour l'icône survolée */
-}
-
-/* Notifications et alertes */
-.alert {
-    padding: 10px;
-    margin: 20px 0;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-.alert.success {
-    background-color: #00FF00; /* Vert néon pour les succès */
-    color: #121212; /* Texte sombre sur fond vert */
-}
-
-.alert.error {
-    background-color: #FF4040; /* Rouge vif pour les erreurs */
-    color: #FFFFFF; /* Texte blanc pour contraster avec le rouge */
-}
-
-.alert.warning {
-    background-color: #FFD700; /* Jaune pour les avertissements */
-    color: #121212; /* Texte sombre sur fond jaune */
-}
-
-/* Autres éléments spéciaux */
-.badge {
-    background-color: #6A0DAD; /* Violet sombre pour des accents spéciaux */
-    color: #FFFFFF;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 14px;
-}
-
-.icon-special {
-    color: #008CFF; /* Bleu électrique pour les icônes spéciales */
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.icon-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background-color: #1E1E1E; /* Fond gris anthracite */
-    border-radius: 50%; /* Forme ronde */
-    color: #B0B0B0; /* Couleur des icônes inactives */
-    text-decoration: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.icon-link:hover {
-    background-color: #00BFFF; /* Bleu néon au survol */
-    color: #FFFFFF; /* Icône blanche */
-}
-
-.icon-link i {
-    font-size: 20px; /* Taille des icônes */
-}
-
-/* Menu utilisateur */
-.user-menu {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #FF7F00; /* Orange pour l'avatar */
-}
-
-.username {
-    font-size: 14px;
-    color: #B0B0B0; /* Gris clair pour le nom d'utilisateur */
-}
-
-.menu-icon {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #FF4040; /* Rouge vif pour le menu */
-}
-
-.menu-icon:hover {
-    color: #FFD700; /* Jaune pour attirer l'attention au survol */
+  color: #00BFFF; /* Bleu néon pour l'icône survolée */
 }

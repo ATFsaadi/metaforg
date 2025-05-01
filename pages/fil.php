@@ -1,7 +1,8 @@
 <?php
-ob_start();
 session_start();
+
 include "includes/connexion.php";
+include "../includes/header-PG.php";
 
 $page = $_GET['page'] ?? 1;
 $limit = 10;
@@ -18,14 +19,6 @@ $req->bindValue(':limit', $limit, PDO::PARAM_INT);
 $req->bindValue(':offset', $offset, PDO::PARAM_INT);
 $req->execute();
 ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Fil d'actualité</title>
-</head>
-<body>
 
 <h2>Fil d'actualité</h2>
 

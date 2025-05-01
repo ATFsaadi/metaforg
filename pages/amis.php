@@ -1,6 +1,9 @@
 <?php
+
 session_start();
+
 include "../includes/connexion.php";
+include "../includes/header-PG.php";
 
 if (!isset($_SESSION['login'])) {
     header("Location: login.php");
@@ -21,13 +24,6 @@ $amis = $query->fetchAll();
 
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Liste d'amis</title>
-</head>
-<body>
 
 <h2>Vos amis</h2>
 <ul>
@@ -36,5 +32,7 @@ $amis = $query->fetchAll();
     <?php endforeach; ?>
 </ul>
 
+
 </body>
+<?php include '../includes/footer.php'; ?>
 </html>

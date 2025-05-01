@@ -1,7 +1,8 @@
 <?php
-ob_start();
 session_start();
+
 include "../includes/connexion.php";
+include '../includes/header-PG.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 1. Vérification du token CSRF
@@ -64,15 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Publier un message</title>
-</head>
-<body>
-
 <h2>Publier un message</h2>
 <form method="POST" enctype="multipart/form-data">
 <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
@@ -82,4 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </form>
 
 </body>
+<?php include  '../includes/footer.php'; ?>
 </html>
+ 
