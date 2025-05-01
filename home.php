@@ -71,7 +71,7 @@ try {
             </a>
             
             <div class="d-flex align-items-center ms-auto me-2">
-                <form class="d-flex me-2" action="pages/recherche.php" method="GET">
+                <form class="d-flex me-2" action="pages/recherche.php" method="POST">
                     <div class="input-group">
                         <input type="search" class="form-control rounded-pill" placeholder="Rechercher sur MetaForg..." aria-label="Search" name="q">
                         <button class="btn btn-outline-primary rounded-pill ms-2" type="submit">

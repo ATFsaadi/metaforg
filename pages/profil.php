@@ -1,4 +1,4 @@
-<?php include "includes/connexion.php";?>
+<?php include "../includes/connexion.php";?>
 
 <?php
 
@@ -76,4 +76,4 @@ if(isset($_POST['submit']))
     <button type="submit" name="submit" class="btn btn-primary">MAJ</button>
 </form>
 
-<?php include 'includes/footer.php'; ?>
+<?php include '../includes/footer.php'; ?>

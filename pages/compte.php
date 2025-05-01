@@ -1,7 +1,7 @@
 <?php 
 ob_start();
 session_start(); // Démarre la session
-include "includes/connexion.php"; 
+include "../includes/connexion.php"; 
 
 // Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['login'])) {

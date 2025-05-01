@@ -1,43 +1,24 @@
-<?php
+<?php 
 session_start();
-include "includes/connexion.php";
+include "../includes/connexion.php";
 
-// Vérification connexion
+// Vérifier que l'utilisateur est connecté
 /* if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit;
 } */
 
-// Nettoyage de la recherche
-$searchTerm = isset($_GET['q']) ? trim(htmlspecialchars($_GET['q'])) : '';
+// Traitement de la recherche test
+$searchTerm = '';
+$results = [];
 
-// Requête sécurisée
-$query = $bdd->prepare("
-    SELECT id_u, login, avatar 
-    FROM users 
-    WHERE 
-        login LIKE :search AND
-        id_u != :current_id AND
-        id_u NOT IN (
-            SELECT ami_id FROM amis WHERE user_id = :current_id AND status = 'blocked'
-        )
-    ORDER BY 
-        CASE 
-            WHEN login = :exact_match THEN 0 
-            WHEN login LIKE :start_match THEN 1 
-            ELSE 2 
-        END
-    LIMIT 15
-");
-
-$query->execute([
-    'search' => "%$searchTerm%",
-    'current_id' => $_SESSION['user']['id'],
-    'exact_match' => $searchTerm,
-    'start_match' => "$searchTerm%"
-]);
-
-$results = $query->fetchAll();
+if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
+    $searchTerm = trim($_GET['q']);
+    
+    $stmt = $bdd->prepare("SELECT id_u, login, avatar FROM users WHERE login LIKE ? AND id_u != ?");
+    $stmt->execute(["%$searchTerm%", $_SESSION['user']['id']]);
+    $results = $stmt->fetchAll();
+}
 ?>
 
 <!DOCTYPE html>
@@ -68,6 +49,12 @@ $results = $query->fetchAll();
             border: none;
             border-radius: 4px;
             cursor: pointer;
+        }
+        .pending-badge,
+        .friend-badge {
+            margin-left: auto;
+            font-weight: bold;
+            color: #888;
         }
     </style>
 </head>
@@ -102,9 +89,9 @@ $results = $query->fetchAll();
                         
                         <?php
                         // Vérifier si déjà ami/en attente
-                        $check = $bdd->prepare("SELECT status FROM amis WHERE 
-                            (user_id = ? AND ami_id = ?) OR 
-                            (user_id = ? AND ami_id = ?)");
+                        $check = $bdd->prepare("SELECT statut FROM amis WHERE 
+                            (utilisateur_id = ? AND ami_id = ?) OR 
+                            (utilisateur_id = ? AND ami_id = ?)");
                         $check->execute([
                             $_SESSION['user']['id'], $user['id_u'],
                             $user['id_u'], $_SESSION['user']['id']
@@ -119,9 +106,9 @@ $results = $query->fetchAll();
                             >
                                 Ajouter
                             </a>
-                        <?php elseif ($relation['status'] == 'pending'): ?>
+                        <?php elseif ($relation['statut'] == 'en_attente'): ?>
                             <span class="pending-badge">En attente</span>
-                        <?php elseif ($relation['status'] == 'accepted'): ?>
+                        <?php elseif ($relation['statut'] == 'accepte'): ?>
                             <span class="friend-badge">✔ Déjà ami</span>
                         <?php endif; ?>
                     </div>
