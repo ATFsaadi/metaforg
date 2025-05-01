@@ -3,10 +3,10 @@ session_start();
 include "includes/connexion.php";
 
 // Vérification connexion
-if (!isset($_SESSION['user'])) {
+/* if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit;
-}
+} */
 
 // Nettoyage de la recherche
 $searchTerm = isset($_GET['q']) ? trim(htmlspecialchars($_GET['q'])) : '';
