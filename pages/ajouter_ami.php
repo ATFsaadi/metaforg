@@ -2,7 +2,7 @@
 
 session_start();
 
-include "includes/connexion.php";
+include "../includes/connexion.php";
 
 // 1. Vérifications de sécurité
 if (!isset($_SESSION['user'])) {

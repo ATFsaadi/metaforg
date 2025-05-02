@@ -70,3 +70,18 @@ CREATE TABLE amis (
 -- Insertion d'un utilisateur administrateur de base
 INSERT INTO users (login, email, mdp, lvl)
 VALUES ('admin', 'admin@metaforge.com', SHA1('admin123'), 1);
+
+
+-- table publications
+CREATE TABLE publications (
+    id_p INT AUTO_INCREMENT PRIMARY KEY,            -- ID de la publication
+    user_id INT NOT NULL,                           -- Auteur de la publication (référence à users)
+    contenu TEXT NOT NULL,                          -- Contenu de la publication
+    date DATETIME DEFAULT CURRENT_TIMESTAMP,        -- Date de publication
+    FOREIGN KEY (user_id) REFERENCES users(id_u) ON DELETE CASCADE
+);
+
+INSERT INTO publications (user_id, contenu) VALUES
+(1, 'Bienvenue sur le forum !'),
+(1, 'Deuxième publication test');
+

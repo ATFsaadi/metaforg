@@ -17,7 +17,7 @@
 </head>
 <body>
     <!-- Barre de navigation -->
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="home.php">
                 <strong>MetaForg</strong>
@@ -62,62 +62,4 @@
         </div>
     </nav>
 
-    <!-- Contenu principal -->
-    <div class="container mt-5 pt-4">
-        <div class="row">
-            <!-- Sidebar gauche -->
-            <div class="col-lg-3 d-none d-lg-block">
-                <div class="sidebar">
-                    <div class="list-group mb-4">
-                        <a href="pages/profil.php?id=<?= $_SESSION['id_u'] ?>" class="list-group-item list-group-item-action">
-                            <i class="fas fa-user me-2"></i> Mon profil
-                        </a>
-                        <a href="pages/amis.php" class="list-group-item list-group-item-action">
-                            <i class="fas fa-user-friends me-2"></i> Mes amis
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <i class="fas fa-gamepad me-2"></i> Jeux
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <i class="fas fa-users me-2"></i> Groupes
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <i class="fas fa-calendar-alt me-2"></i> Événements
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Fil d'actualité -->
-            <div class="col-lg-6">
-                <!-- Section Stories -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body p-2">
-                        <div class="d-flex overflow-auto" style="gap: 15px; padding-bottom: 10px;">
-                            <!-- Créer une story -->
-                            <div class="text-center" style="min-width: 90px;">
-                                <div class="position-relative">
-                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width: 90px; height: 90px; overflow: hidden;">
-                                        <img src="assets/images/default_avatar.png" alt="Votre avatar" class="w-100 h-100" style="object-fit: cover;">
-                                        <div class="position-absolute bg-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; bottom: 5px; right: 5px; border: 3px solid #3b5998;">
-                                            <i class="fas fa-plus text-primary"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mt-1 small">Créer une story</div>
-                            </div>
-                            
-                            <!-- Stories des amis (exemples) -->
-                            <?php for($i = 1; $i <= 5; $i++): ?>
-                            <div class="text-center" style="min-width: 90px;">
-                                <div class="position-relative">
-                                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 90px; height: 90px; overflow: hidden; border: 3px solid #3b5998;">
-                                        <img src="assets/images/default_avatar.png" alt="Avatar ami" class="w-100 h-100" style="object-fit: cover;">
-                                    </div>
-                                </div>
-                                <div class="mt-1 small">Ami <?php echo $i; ?></div>
-                            </div>
-                            <?php endfor; ?>
-                        </div>
-                    </div>
-                </div>
+    
