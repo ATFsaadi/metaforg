@@ -20,6 +20,7 @@
 
         <!-- Styles personnalisés -->
         <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/style-FIL.css">
     </head>
     <body>
         <!-- Barre de navigation -->

@@ -95,4 +95,4 @@ if ($posts === false) {
     // Charger les deux flux
     loadRSS('https://www.actugaming.net/feed/', 'actugaming-list');
     loadRSS('https://www.jvfrance.com/feed/', 'jvfrance-list');
-</script>*
+</script>
