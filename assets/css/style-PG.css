@@ -62,7 +62,7 @@ body {
 .navbar {
   background: var(--bg-secondary) !important;
   border-bottom: 1px solid var(--border-light);
-  padding: 0.5rem 1rem;
+  padding: 8px 100px;
 }
 
 .navbar-brand {

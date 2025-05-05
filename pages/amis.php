@@ -32,7 +32,5 @@ $amis = $query->fetchAll();
     <?php endforeach; ?>
 </ul>
 
-
-</body>
 <?php include '../includes/footer.php'; ?>
-</html>
+

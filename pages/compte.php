@@ -25,5 +25,3 @@ if (!isset($_SESSION['login'])) {
         <h1>Bienvenue sur votre compte, <?php echo htmlspecialchars($_SESSION['login']); ?> !</h1>
     </header>
     <?php include '../includes/footer.php'; ?>
-</body>
-</html>

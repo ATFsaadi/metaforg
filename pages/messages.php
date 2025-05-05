@@ -226,5 +226,4 @@ const messagesList = document.getElementById('messagesList');
 if (messagesList) {
 messagesList.scrollTop = messagesList.scrollHeight;
 }
-});</script> </body></html><?php ob_end_flush(); ?>
-<?php include '../includes/footer.php'; ?>
+});</script> </body></html><?php ob_end_flush(); ?><?php include '../includes/footer.php'; ?>

@@ -23,9 +23,7 @@ if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
 }
 ?>
 
-
-
-    <h2>Rechercher des amis</h2>
+<h2>Rechercher des amis</h2>
     
     <form method="GET" class="search-form">
         <input 
@@ -81,6 +79,6 @@ if (isset($_GET['q']) && !empty(trim($_GET['q']))) {
             <?php endif; ?>
         <?php endif; ?>
     </div>
+
     <?php include '../includes/footer.php'; ?>
-</body>
-</html>
+

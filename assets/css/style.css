@@ -1,13 +1,25 @@
-/* === Variables globales (à garder en haut) === */
+/* === Variables globales === */
 :root {
+  /* Arrière-plans */
   --bg-primary: #121212;
   --bg-secondary: #1E1E1E;
+  
+  /* Texte */
   --text-color: #B0B0B0;
+  
+  /* Couleurs principales */
   --color-primary: #00BFFF;
   --color-primary-hover: #008CFF;
   --color-success: #00FF00;
+  
+  /* Éléments spécifiques */
   --badge-color: #6A0DAD;
-  --avatar-border: #FF7F00;
+  --avatar-border: #ff4500;
+  
+  /* Bordures & formes */
+  --border-radius: 2px;
+  --border-radius-full: 1%;
+  --input-border: rgba(0, 255, 0, 0.08);
 }
 
 /* === Réinitialisation et base === */
@@ -16,6 +28,7 @@
   margin: 0;
   padding: 0;
 }
+
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color: var(--bg-primary);
@@ -23,53 +36,71 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 /* === Navbar === */
 .navbar {
-  background: var(--bg-secondary) !important;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding: 0.5rem 1rem;
+  background: var(--bg-secondary);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 100px;
 }
+
 .navbar-brand {
-  color: var(--color-primary) !important;
+  color: var(--color-primary);
   font-weight: 700;
 }
+
 .form-control {
   background: var(--bg-primary);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid var(--input-border);
   color: white;
-  border-radius: 50px;
+  border-radius: var(--border-radius-full);
+  padding-left: 1rem;
 }
+
 .form-control:focus {
-  box-shadow: 0 0 0 0.2rem rgba(0, 191, 255, 0.25);
+  box-shadow: 0 0 0 0.5px var(--color-primary);
 }
+
 .btn-outline-primary {
   border-color: var(--color-primary);
   color: var(--color-primary);
 }
+
 .btn-outline-primary:hover {
   background: var(--color-primary-hover);
   color: white;
 }
 
-/* === Stories (scroll horizontal) === */
+/* === Stories === */
 .story-container {
+  display: flex;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  gap: 15px;
   padding: 1rem 0;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
 }
+
+.story-container::-webkit-scrollbar {
+  display: none;
+}
+
 .story {
-  scroll-snap-align: start;
-  display: inline-block;
-  width: 90px;
-  margin-right: 15px;
+  min-width: 100px;
+  max-width: 100px;
   text-align: center;
-  transition: transform 0.2s;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
+
 .story:hover {
   transform: scale(1.05);
 }
+
 .avatar-border {
   border: 3px solid var(--avatar-border);
 }
@@ -78,21 +109,24 @@ body {
 .create-post {
   background: var(--bg-secondary);
   padding: 1rem;
-  border-radius: 10px;
+  border-radius: var(--border-radius);
   margin-bottom: 2rem;
 }
+
 .create-post-input {
   background: var(--bg-primary);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius);
   padding: 0.75rem 1rem;
   width: 100%;
   color: white;
 }
+
 .btn-outline-secondary {
-  border-color: rgba(255,255,255,0.1);
+  border-color: rgba(255, 255, 255, 0.1);
   color: var(--text-color);
 }
+
 .btn-outline-secondary:hover {
   background: var(--color-primary);
   color: white;
@@ -101,56 +135,83 @@ body {
 /* === Publications === */
 .post-card {
   background: var(--bg-secondary);
-  border-radius: 10px;
+  border-radius: var(--border-radius);
   padding: 1rem;
   margin-bottom: 1.5rem;
 }
+
 .post-avatar {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  border: 2px solid var(--avatar-border);
+  border-radius: 100%;
+  border: 1px solid var(--bg-primary);
 }
+
 .post-actions .post-action:hover {
   background: rgba(0, 191, 255, 0.1);
 }
 
 /* === Sidebar === */
 .sidebar {
-  background: var(--bg-secondary);
-  border-radius: 10px;
-  padding: 1rem;
+  background: black;
+  border-radius: var(--border-radius);
+  padding: 16px;
 }
+
 .list-group-item {
-  background: var(--bg-secondary);
+  background: none;
   border: none;
   color: var(--text-color);
 }
+
 .list-group-item:hover {
-  background: rgba(0, 191, 255, 0.1);
+  background: transparent;
+  color: #00ff0055;
 }
 
 /* === Boutons et éléments interactifs === */
 .btn {
-  background: var(--color-primary);
+  background: var(--bg-primary);
   border: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  color: white;
+  border-radius: var(--border-radius);
+  padding: 10px 20px;
+  color: var(--color-success);
   cursor: pointer;
-  transition: background 0.3s ease;
-}
-.btn:hover {
-  background: var(--color-primary-hover);
+  transition: background 1s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-/* === Icônes spéciaux (messagerie, notifications) === */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, #00ff0055, #00ff0015);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease-in-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.btn:hover::before {
+  left: 120%;
+}
+
+.btn:hover {
+  background: black;
+}
+
+/* === Icônes spéciaux === */
 .fas, .far {
   color: var(--color-success);
   transition: color 0.3s ease;
 }
+
 .fas:hover, .far:hover {
-  color: var(--color-primary-hover);
+  color: #00ff0055;
 }
 
 /* === Badges et indicateurs === */
@@ -161,34 +222,21 @@ body {
   border-radius: 20px;
   font-size: 0.8rem;
 }
+
 .online-indicator {
   width: 10px;
   height: 10px;
   background: var(--color-success);
-  border-radius: 50%;
+  border-radius: var(--border-radius-full);
   position: absolute;
   bottom: 3px;
   right: 3px;
-  border: 2px solid white;
+  border: 0.5px solid white;
 }
 
-/* === Responsive (à ajuster selon besoins) === */
-@media (max-width: 992px) {
-  .col-lg-3 {
-    display: none !important;
-  }
-  .post-avatar {
-    width: 32px;
-    height: 32px;
-  }
-}
-@keyframes neon-glow {
-  0%, 100% { text-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF; }
-  50% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
-}
-
+/* === Footer et réseaux sociaux === */
 footer {
-  background-color: #121212;
+  background-color: var(--bg-secondary);
   padding: 20px 0;
   text-align: center;
   width: 100%;
@@ -196,14 +244,12 @@ footer {
   bottom: 0;
 }
 
-/* Conteneur des icônes sociales */
 .social-icons {
   display: flex;
   justify-content: center;
   gap: 20px;
 }
 
-/* Icônes sociales */
 .social-icon {
   color: #FFFFFF;
   font-size: 24px;
@@ -211,15 +257,10 @@ footer {
 }
 
 .social-icon:hover {
-  color: #00BFFF; /* Bleu néon pour l'icône survolée */
+  color: var(--color-primary);
 }
 
-
-
-
-
-
-
+/* === Animation bounce pour le bouton recherche === */
 @keyframes bounce {
   0%, 100% {
     transform: translateY(0);
@@ -229,21 +270,89 @@ footer {
   }
 }
 
-
 .search-btn {
-  background: transparent; /* Pas de fond */
-  border: none; /* Enlever la bordure */
-  cursor: pointer; /* Optionnel : curseur de pointeur sur hover */
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
-/* Changer la couleur de l'icône */
 .search-icon {
-  fill: #00BFFF; /* Exemple : l'icône sera bleue */
-  transition: fill 0.3s ease;
+  fill: var(--color-primary);
+  transition: fill 1s ease;
 }
 
-/* Au survol, changer la couleur en rouge */
 .search-icon:hover {
-  fill: #00FF00; /* L'icône devient rouge au survol */
+  fill: var(--color-success);
   animation: bounce 1s ease;
+}
+
+/* === Story créateur === */
+.story-create {
+  min-width: 100px;
+  text-align: center;
+  color: var(--text-color);
+  transition: transform 0.3s ease;
+}
+
+.story-create:hover {
+  transform: scale(1.05);
+}
+
+.story-avatar-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.story-avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.story-plus-icon {
+  width: 24px;
+  height: 24px;
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* Boutons de défilement */
+.scroll-btn {
+  background:transparent;
+  border: none;
+  border-radius: 0%;
+  padding: 10px;
+  color:var(--color-success);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+}
+
+.scroll-btn:hover {
+  background-color:transparent;
+}
+
+.scroll-btn.left {
+  left: 0;
+}
+
+.scroll-btn.right {
+  right: 0;
+  transform: rotate(180deg);
 }
