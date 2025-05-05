@@ -2,6 +2,9 @@
 require_once "../includes/connexion.php";
 $title = "Recherche d'utilisateurs";
 
+// Définir l'ID de l'utilisateur connecté s'il existe
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
 // Traitement de la recherche
 $resultats = [];
 if (isset($_GET['q']) && !empty($_GET['q'])) {
@@ -32,6 +35,16 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
         .search-form {
             margin-bottom: 30px;
         }
+        .friend-button {
+            background-color: #00FF00;
+            border-color: #00FF00;
+            color: #000;
+        }
+        .friend-button:hover {
+            background-color: #00CC00;
+            border-color: #00CC00;
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -40,6 +53,20 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
     <div class="container search-container">
         <h1 class="search-title">Recherche d'utilisateurs</h1>
         
+        <?php if (isset($_GET['error'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo htmlspecialchars($_GET['error']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php endif; ?>
+        
+        <?php if (isset($_GET['success'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?php echo htmlspecialchars($_GET['success']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php endif; ?>
+        
         <div class="search-form">
             <?php afficherFormulaireRecherche('', 'GET'); ?>
         </div>
@@ -47,8 +74,41 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
         <?php if (isset($_GET['q']) && !empty($_GET['q'])): ?>
             <div class="search-results">
                 <h2 class="search-title">Résultats pour "<?php echo htmlspecialchars($_GET['q']); ?>"</h2>
-                <?php afficherResultatsRecherche($resultats); ?>
+                <?php afficherResultatsRecherche($resultats, $user_id); ?>
             </div>
+        <?php endif; ?>
+        
+        <?php if ($user_id && isset($_SESSION['friends']) && !empty($_SESSION['friends'])): ?>
+        <div class="mt-5">
+            <h2 class="search-title">Mes amis</h2>
+            <div class="list-group">
+                <?php 
+                $friends_list = []; 
+                foreach ($_SESSION['friends'] as $friend_id) {
+                    $stmt = $bdd->prepare("SELECT id_u, login, email FROM users WHERE id_u = ?");
+                    $stmt->execute([$friend_id]);
+                    $friend = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if ($friend) {
+                        $friends_list[] = $friend;
+                    }
+                }
+                
+                if (empty($friends_list)) {
+                    echo "<div class='alert alert-info'>Vous n'avez pas encore d'amis.</div>";
+                } else {
+                    foreach ($friends_list as $friend) {
+                        echo "<div class='list-group-item d-flex justify-content-between align-items-center'>";
+                        echo "<div>";
+                        echo "<h5 class='mb-1'>" . htmlspecialchars($friend['login']) . "</h5>";
+                        echo "<small>" . htmlspecialchars($friend['email']) . "</small>";
+                        echo "</div>";
+                        echo "<a href='profile.php?id=" . $friend['id_u'] . "' class='btn btn-primary btn-sm'><i class='fas fa-user'></i> Voir profil</a>";
+                        echo "</div>";
+                    }
+                }
+                ?>
+            </div>
+        </div>
         <?php endif; ?>
     </div>
 

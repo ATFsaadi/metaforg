@@ -2,7 +2,7 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once "../function.php";
+require_once __DIR__ . "/../function.php";
 
 try {
     $bdd = connexion('localhost', 'forum1', 'root', '');

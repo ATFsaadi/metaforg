@@ -75,10 +75,11 @@ function afficherFormulaireRecherche($action = '', $method = 'GET') {
 }
 
 /**
- * Affiche les résultats de recherche d'utilisateurs
+ * Affiche les résultats de recherche d'utilisateurs avec option d'ajout en ami
  * @param array $utilisateurs - Tableau des utilisateurs trouvés
+ * @param int $user_id - ID de l'utilisateur connecté (optionnel)
  */
-function afficherResultatsRecherche($utilisateurs) {
+function afficherResultatsRecherche($utilisateurs, $user_id = null) {
     if (empty($utilisateurs)) {
         echo "<div class='alert alert-info mt-3'>Aucun utilisateur trouvé</div>";
         return;
@@ -86,13 +87,28 @@ function afficherResultatsRecherche($utilisateurs) {
     
     echo "<div class='list-group mt-3'>";
     foreach ($utilisateurs as $user) {
-        echo "<a href='pages/profile.php?id=" . $user['id_u'] . "' class='list-group-item list-group-item-action d-flex justify-content-between align-items-center'>";
+        // Ne pas afficher l'utilisateur connecté dans les résultats
+        if ($user_id && $user['id_u'] == $user_id) {
+            continue;
+        }
+        
+        echo "<div class='list-group-item d-flex justify-content-between align-items-center'>";
         echo "<div>";
         echo "<h5 class='mb-1'>" . htmlspecialchars($user['login']) . "</h5>";
         echo "<small>" . htmlspecialchars($user['email']) . "</small>";
         echo "</div>";
-        echo "<span class='badge bg-primary rounded-pill'>Voir profil</span>";
-        echo "</a>";
+        echo "<div>";
+        
+        // Bouton pour voir le profil
+        echo "<a href='" . (strpos($_SERVER['PHP_SELF'], '/pages/') !== false ? '' : 'pages/') . "profile.php?id=" . $user['id_u'] . "' class='btn btn-primary btn-sm me-2'><i class='fas fa-user'></i> Voir profil</a>";
+        
+        // Bouton pour ajouter en ami (seulement si l'utilisateur est connecté)
+        if ($user_id) {
+            echo "<a href='" . (strpos($_SERVER['PHP_SELF'], '/pages/') !== false ? '' : 'pages/') . "add_friend.php?friend_id=" . $user['id_u'] . "' class='btn btn-success btn-sm'><i class='fas fa-user-plus'></i> Ajouter en ami</a>";
+        }
+        
+        echo "</div>";
+        echo "</div>";
     }
     echo "</div>";
 }

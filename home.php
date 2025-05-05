@@ -208,9 +208,12 @@ try {
                     </div>
                     
                     <div class="post-content">
-                        <p><?= nl2br(htmlspecialchars($post['message'] ?? '')) ?></p>
-                        <?php if (!empty($post['image'])): ?>
-                        <img src="uploads/<?= htmlspecialchars($post['image']) ?>" class="post-image mb-3" alt="Publication image">
+                        <!-- Titre de la publication -->
+                        <h5><?= htmlspecialchars($post['titre']) ?></h5>
+                        
+                        <!-- Image si disponible (chemin stocké dans la colonne 'message') -->
+                        <?php if(!empty($post['message'])): ?>
+                        <img src="uploads/<?= htmlspecialchars($post['message']) ?>" class="post-image mb-3" alt="Publication image">
                         <?php endif; ?>
                     </div>
                     

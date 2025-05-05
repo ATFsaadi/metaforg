@@ -1,7 +1,8 @@
 <?php
 ob_start();
 session_start();
-include "includes/connexion.php";
+include "../includes/connexion.php";
+include "../includes/header.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 1. Vérification CSRF
@@ -21,44 +22,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 3. Génération nom sécurisé
     $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
     $filename = uniqid().'.'.$extension;
-    $target = "uploads/".$filename;
+    $target = "../uploads/".$filename;
 
     // 4. Déplacement sécurisé
     if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-        // 5. Insertion BDD sécurisée
+        // 5. Insertion BDD sécurisée dans la table images
         $insert = $bdd->prepare("
-            INSERT INTO publications 
-            (user_id, message, image) 
+            INSERT INTO images 
+            (nom, chemin, u_id) 
             VALUES (?, ?, ?)
         ");
         $insert->execute([
-            $_SESSION['user']['id'],
             htmlspecialchars($_POST['message']),
-            $filename
+            $filename,
+            $_SESSION['id_u']
         ]);
-        header("Location: fil.php?success=1");
+        header("Location: ../home.php?success=1");
+        exit();
     } else {
-        die("Erreur lors de l'upload");
+        echo "<div class='alert alert-danger' role='alert'>Erreur lors de l'upload</div>";
     }
 }
 ?>
 
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Publier un message</title>
-</head>
-<body>
+<div class="container mt-5 pt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Publier un message</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data" class="p-3">
+                        <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea name="message" id="message" class="form-control" placeholder="Écrivez quelque chose..." required rows="4"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imageFile" class="form-label">Choisir une image</label>
+                            <input type="file" name="image" id="imageFile" class="form-control" accept="image/*" required>
+                            <div class="form-text">Formats acceptés : JPEG, PNG.</div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success"><i class="fas fa-paper-plane me-2"></i>Publier</button>
+                            <a href="../home.php" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Retour</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h2>Publier un message</h2>
-<form method="POST" enctype="multipart/form-data">
-<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-    <textarea name="message" placeholder="Écrivez quelque chose..." required></textarea>
-    <input type="file" name="image" accept="image/*">
-    <button type="submit">Publier</button>
-</form>
-
-</body>
-</html>
+<?php include "../includes/footer.php"; ?>
