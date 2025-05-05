@@ -356,3 +356,155 @@ footer {
   right: 0;
   transform: rotate(180deg);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#reche-messag {
+  max-width: 800px;
+  margin-top: 50px;
+}
+
+/* Global background for card */
+.card {
+  background-color: #242526;
+  color: #E4E6EB;
+  border: none;
+}
+
+/* Contacts list */
+.contacts-list {
+  background-color: #18191A;
+  border-right: 1px solid #3A3B3C;
+}
+
+.contact-item {
+  transition: background-color 0.2s;
+}
+
+.contact-item:hover {
+  background-color: #3A3B3C;
+}
+
+.contact-item.bg-light {
+  background-color: #3A3B3C !important;
+}
+
+/* Search bar */
+.input-group .form-control {
+  background-color: #3A3B3C;
+  border: none;
+  color: #E4E6EB;
+}
+
+.input-group .form-control::placeholder {
+  color: #B0B3B8;
+}
+
+.input-group .btn-outline-primary {
+  border: none;
+  background-color: #2D88FF;
+  color: #fff;
+}
+
+.input-group .btn-outline-primary:hover {
+  background-color: #1877F2;
+}
+
+/* Messages */
+.messages-area {
+  background-color: #242526;
+}
+
+.messages-header {
+  background-color: #18191A;
+  border-bottom: 1px solid #3A3B3C;
+  color: #E4E6EB;
+}
+
+.messages-list {
+  background-color: #242526;
+}
+
+.message-item .d-inline-block {
+  max-width: 75%;
+  word-wrap: break-word;
+}
+
+/* Sent messages */
+.text-end .d-inline-block {
+  background-color: #2D88FF !important;
+  color: white;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* Received messages */
+.text-start .d-inline-block {
+  background-color: #3A3B3C !important;
+  color: #E4E6EB;
+  border-bottom-left-radius: 0 !important;
+}
+
+/* Time */
+.message-item .small {
+  color: #B0B3B8 !important;
+}
+
+/* Input form */
+form.d-flex.border-top {
+  background-color: #18191A;
+  border-top: 1px solid #3A3B3C !important;
+}
+
+form.d-flex input.form-control {
+  background-color: #3A3B3C;
+  color: white;
+  border: none;
+}
+
+form.d-flex input.form-control::placeholder {
+  color: #B0B3B8;
+}
+
+form.d-flex button.btn-primary {
+  background-color: #2D88FF;
+  border: none;
+}
+
+form.d-flex button.btn-primary:hover {
+  background-color: #1877F2;
+}
+
+/* Empty state */
+.text-muted {
+  color: #B0B3B8 !important;
+}
+
+
+
+
+
