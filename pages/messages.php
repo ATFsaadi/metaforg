@@ -1,16 +1,16 @@
 <?php
 ob_start();
 session_start();
-
 include "../includes/connexion.php";
 include "../includes/header-PG.php";
 
-// Vérification de session
+// Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
     header("Location: ../index.php");
     exit;
 }
 
+// ID de l'utilisateur connecté
 $user_id = $_SESSION['id_u'];
 
 // Récupération des conversations
@@ -22,44 +22,55 @@ $req_conversations = $bdd->prepare("
         END as contact_id
     FROM envoyer
     WHERE id_exp = :user_id OR id_recept = :user_id
+    ORDER BY contact_id
 ");
 $req_conversations->execute(['user_id' => $user_id]);
 $conversations = $req_conversations->fetchAll(PDO::FETCH_ASSOC);
-
 // Précharger les logins des contacts
+
 $users_logins = [];
+
 $contact_ids = array_column($conversations, 'contact_id');
 
+
+
 if (!empty($contact_ids)) {
+
     $in = implode(',', array_fill(0, count($contact_ids), '?'));
+
     $req_users = $bdd->prepare("SELECT id_u, login FROM users WHERE id_u IN ($in)");
+
     $req_users->execute($contact_ids);
+
     foreach ($req_users->fetchAll(PDO::FETCH_ASSOC) as $u) {
+
         $users_logins[$u['id_u']] = $u['login'];
+
     }
+
 }
 
-// Traitement du contact sélectionné
+
+// Si une conversation est sélectionnée
 $contact_id = isset($_GET['contact']) ? intval($_GET['contact']) : null;
 $contact_info = null;
-$messages = [];
 
-if ($contact_id && in_array($contact_id, $contact_ids)) {
+// Si on a un contact sélectionné, récupérer ses informations
+if ($contact_id) {
     $req_contact = $bdd->prepare("SELECT id_u, login FROM users WHERE id_u = :contact_id");
     $req_contact->execute(['contact_id' => $contact_id]);
     $contact_info = $req_contact->fetch(PDO::FETCH_ASSOC);
-
+    
+    // Si contact existe, récupérer les messages
     if ($contact_info) {
         $req_messages = $bdd->prepare("
             SELECT e.*, u1.login as exp_login, u2.login as recept_login 
             FROM envoyer e
             JOIN users u1 ON e.id_exp = u1.id_u
             JOIN users u2 ON e.id_recept = u2.id_u
-            WHERE 
-                (e.id_exp = :user_id AND e.id_recept = :contact_id)
-                OR (e.id_exp = :contact_id AND e.id_recept = :user_id)
+            WHERE (e.id_exp = :user_id AND e.id_recept = :contact_id)
+            OR (e.id_exp = :contact_id AND e.id_recept = :user_id)
             ORDER BY e.date_env ASC
-            LIMIT 100
         ");
         $req_messages->execute([
             'user_id' => $user_id,
@@ -69,10 +80,11 @@ if ($contact_id && in_array($contact_id, $contact_ids)) {
     }
 }
 
-// Envoi d’un message
-if (isset($_POST['send_message']) && $contact_id && in_array($contact_id, $contact_ids)) {
+// Traitement de l'envoi de message
+if (isset($_POST['send_message']) && $contact_id) {
     $message = trim($_POST['message']);
-    if (!empty($message) && mb_strlen($message) <= 1000) {
+    
+    if (!empty($message)) {
         $req_insert = $bdd->prepare("
             INSERT INTO envoyer (id_exp, id_recept, message, date_env)
             VALUES (:exp_id, :recept_id, :message, NOW())
@@ -82,14 +94,17 @@ if (isset($_POST['send_message']) && $contact_id && in_array($contact_id, $conta
             'recept_id' => $contact_id,
             'message' => $message
         ]);
+        
+        // Redirection pour éviter double soumission
         header("Location: messages.php?contact=" . $contact_id);
         exit;
     }
 }
 
-// Recherche d'utilisateurs
+// Pour chercher un nouvel utilisateur
 if (isset($_POST['search_user'])) {
     $search_term = '%' . $_POST['search_term'] . '%';
+    
     $req_search = $bdd->prepare("
         SELECT id_u, login
         FROM users
@@ -103,7 +118,6 @@ if (isset($_POST['search_user'])) {
     $search_results = $req_search->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
-
 <div class="container mt-5 pt-4" id="reche-messag">
     <div class="card shadow-sm">
         <div class="card-body p-0">
@@ -194,17 +208,6 @@ if (isset($_POST['search_user'])) {
         </div>
     </div>
 </div>
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const messagesList = document.getElementById('messagesList');
-    if (messagesList) {
-        messagesList.scrollTop = messagesList.scrollHeight;
-    }
-});
-</script>
 
 <?php ob_end_flush(); ?>
 <?php include '../includes/footer.php'; ?>

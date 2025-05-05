@@ -48,7 +48,7 @@ if (isset($_POST['search_user'])) {
                         <h5>Résultats de la recherche:</h5>
                         <?php foreach ($search_results as $result): ?>
                             <div class="search-result-item p-2 border rounded mb-2" style="cursor:pointer" 
-                                 onclick="window.location.href='messages.php?contact=<?= $result['id_u'] ?>'">
+                            onclick="window.location.href='profil.php?idUser=<?= htmlspecialchars($result['id_u']) ?>'">
                                 <div class="d-flex align-items-center">
                                     <img src="../assets/images/default_avatar.png" class="rounded-circle me-2" width="40" height="40">
                                     <div class="fw-bold"><?= htmlspecialchars($result['login']) ?></div>

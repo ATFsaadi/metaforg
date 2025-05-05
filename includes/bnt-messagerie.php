@@ -1,5 +1,5 @@
 <?php
-include "includes/connexion.php";?>
+include "connexion.php";?>
    <!-- Messagerie -->
     <button
                     id="chatButton"
@@ -45,26 +45,51 @@ include "includes/connexion.php";?>
                     </div>
                 </div>
                 
-<script>
-    function toggleChat() {
-        const panel = document.getElementById('chatPanel');
-        const isVisible = panel.style.display !== 'none';
-        panel.style.display = isVisible
-            ? 'none'
-            : 'block';
-        if (!isVisible) {
-            panel
-                .classList
-                .add('slideIn');
-            setTimeout(() => panel.classList.remove('slideIn'), 300);
-        }
-    }
+                <script>
+// Fonction pour afficher / masquer le panneau de chat avec animation
+function toggleChat() {
+    const panel = document.getElementById('chatPanel');
+    const isVisible = panel.style.display !== 'none';
 
-    document.addEventListener('click', function (event) {
-        const chatPanel = document.getElementById('chatPanel');
-        const chatButton = document.getElementById('chatButton');
-        if (!chatPanel.contains(event.target) && !chatButton.contains(event.target)) {
-            chatPanel.style.display = 'none';
-        }
-    });
+    if (isVisible) {
+        panel.style.display = 'none';
+    } else {
+        panel.style.display = 'block';
+        panel.classList.add('slideIn');
+
+        // Supprimer l'animation après qu'elle se soit jouée
+        setTimeout(() => panel.classList.remove('slideIn'), 300);
+        
+        // Scroll automatiquement en bas des messages
+        scrollToBottom();
+    }
+}
+
+// Fonction pour défiler jusqu'en bas de la liste de messages
+function scrollToBottom() {
+    const messagesList = document.getElementById('messagesList');
+    if (messagesList) {
+        messagesList.scrollTop = messagesList.scrollHeight;
+    }
+}
+
+// Fermer le panneau de chat si clic en dehors
+document.addEventListener('click', function (event) {
+    const chatPanel = document.getElementById('chatPanel');
+    const chatButton = document.getElementById('chatButton');
+
+    if (
+        chatPanel &&
+        !chatPanel.contains(event.target) &&
+        chatButton &&
+        !chatButton.contains(event.target)
+    ) {
+        chatPanel.style.display = 'none';
+    }
+});
+
+// Scroll en bas automatiquement au chargement initial
+document.addEventListener('DOMContentLoaded', function () {
+    scrollToBottom();
+});
 </script>

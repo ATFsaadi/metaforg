@@ -19,6 +19,7 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
         <!-- Styles personnalisés -->
+        <link rel="stylesheet" href="../assets/css/style-PG.css">
         <link rel="stylesheet" href="../assets/css/style.css">
     </head>
     <body>
