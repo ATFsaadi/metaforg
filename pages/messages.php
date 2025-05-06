@@ -118,6 +118,7 @@ if (isset($_POST['search_user'])) {
     $search_results = $req_search->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
+        <title>Messages - MetaForg</title>
 <div class="container mt-5 pt-4" id="reche-messag">
     <div class="card shadow-sm">
         <div class="card-body p-0">

@@ -1,3 +1,5 @@
+<title>Amis - MetaForg</title>
+
 <?php
 
 session_start();

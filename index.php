@@ -33,6 +33,7 @@ if(isset($_POST['submit']))
 }
     
 ?>
+<title>MetaForg</title>
 
 <div class="wrapper">
     <!-- Image à gauche -->

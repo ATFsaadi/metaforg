@@ -124,6 +124,7 @@ session_start();
             }
         }
     </style>
+            <title>Accueil - MetaForg</title>
 </head>
 <body>
     <div class="error-container">

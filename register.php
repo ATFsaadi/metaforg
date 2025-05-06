@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
-
+<title>Register - MetaForg</title>
 <div class="wrapper">
     <!-- Image à gauche -->
     <div class="image-container">
