@@ -27,12 +27,12 @@
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <a class="navbar-brand" href="home.php">
-                    <strong><img src="ImgU/logoAcc.png" width="60px" alt="">MetaForg</strong>
+                    <strong><img src="assets/images/logoAcc.png" width="60px" alt="">MetaForg</strong>
                 </a>
 
                 <!-- Formulaire de recherche avec une icône de loupe -->
                 <div class="d-flex align-items-center ms-auto me-2">
-                    <form class="d-flex me-2" action="pages/recherche.php" method="POST">
+                    <form class="d-flex me-2" action="./pages/search-unified.php" method="GET">
                         <!-- Formulaire avec le champ de recherche et le bouton à l'intérieur -->
                         <div class="input-group">
                             <!-- Champ de recherche -->
@@ -63,14 +63,14 @@
 
         <div class="d-flex align-items-center">
             <a
-                href="pages/profil.php?id=<?= $_SESSION['id_u'] ?>"
+                href="./pages/profil-unified.php?id=<?= $_SESSION['id_u'] ?>"
                 class="text-decoration-none me-3">
                 <i class="fas fa-user"></i>
             </a>
-            <a href="pages/amis.php" class="text-decoration-none me-3">
+            <a href="./pages/amis-unified.php" class="text-decoration-none me-3">
                 <i class="fas fa-user-friends"></i>
             </a>
-            <a href="pages/messages.php" class="text-decoration-none me-3">
+            <a href="./pages/messages.php" class="text-decoration-none me-3">
                 <i class="fas fa-envelope" style=""></i>
             </a>
             <a href="#" class="text-decoration-none me-3">
@@ -88,10 +88,10 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuDropdown">
                     <li>
-                        <a class="dropdown-item" href="pages/profil.php?id=<?= $_SESSION['id_u'] ?>">Mon profil</a>
+                        <a class="dropdown-item" href="./pages/profil-unified.php?id=<?= $_SESSION['id_u'] ?>">Mon profil</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="pages/compte.php">Paramètres</a>
+                        <a class="dropdown-item" href="./pages/compte.php">Paramètres</a>
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>

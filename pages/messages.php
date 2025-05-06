@@ -3,6 +3,11 @@ ob_start();
 
 include "../includes/connexion.php";
 include "../includes/header-PG.php";
+include "../includes/function.php";
+
+// Inclusion du CSS spécifique pour la messagerie
+echo '<link rel="stylesheet" href="../assets/css/messages.css">';
+echo '<link rel="stylesheet" href="../assets/css/avatars.css">'; 
 
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {

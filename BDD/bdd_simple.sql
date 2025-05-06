@@ -49,6 +49,18 @@ CREATE TABLE `envoyer` (
   `date_env` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- Table des publications (pour le fil d'actualité)
+CREATE TABLE `publications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `contenu` text NOT NULL,
+  `date` datetime NOT NULL DEFAULT current_timestamp(),
+  `image` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `publications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_u`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- Insertion d'un utilisateur administrateur
 INSERT INTO users (login, email, mdp, lvl) VALUES

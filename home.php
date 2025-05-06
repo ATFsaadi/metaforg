@@ -2,7 +2,8 @@
 ob_start();
 session_start();
 include "includes/header.php";
-include "includes/connexion.php";
+require_once 'includes/connexion.php';
+require_once 'includes/function.php';
 
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
@@ -10,19 +11,16 @@ if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
     exit;
 }
 
-// Récupération des publications (images)
-$req_posts = $bdd->prepare("
-    SELECT i.id_img as id_pub, i.nom as titre, i.chemin as message, i.date_img as date, 
-           u.login, u.id_u as user_id
-    FROM images i
-    JOIN users u ON i.u_id = u.id_u
-    ORDER BY i.date_img DESC
-    LIMIT 20
-");
-
+// Récupérer les publications (images) de la base de données avec base64_data si disponible
+$query = "SELECT i.id_img as id_pub, i.nom as titre, i.chemin, i.date_img as date, 
+          u.login, u.id_u as user_id, i.base64_data 
+          FROM images i 
+          JOIN users u ON i.u_id = u.id_u 
+          ORDER BY i.date_img DESC LIMIT 20";
+$statement = $bdd->prepare($query);
 try {
-    $req_posts->execute();
-    $publications = $req_posts->fetchAll(PDO::FETCH_ASSOC);
+    $statement->execute();
+    $publications = $statement->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $publications = [];
 }
@@ -49,12 +47,12 @@ try {
             <div class="sidebar">
                 <div class="list-group mb-4">
                     <a
-                        href="pages/profil.php?id=<?= $_SESSION['id_u'] ?>"
+                        href="./pages/profil-unified.php?id=<?= $_SESSION['id_u'] ?>"
                         class="list-group-item list-group-item-action">
                         <i class="fas fa-user me-2"></i>
                         Mon profil
                     </a>
-                    <a href="pages/amis.php" class="list-group-item list-group-item-action">
+                    <a href="./pages/amis-unified.php" class="list-group-item list-group-item-action">
                         <i class="fas fa-user-friends me-2"></i>
                         Mes amis
                     </a>
@@ -87,7 +85,7 @@ try {
                                     class="rounded-circle bg-primary d-flex align-items-center justify-content-center"
                                     style="width: 90px; height: 90px; overflow: hidden;">
                                     <img
-                                        src="assets/images/default_avatar.png"
+                                        src="avatar.php?id=<?= $_SESSION['id_u'] ?>"
                                         alt="Votre avatar"
                                         class="w-100 h-100"
                                         style="object-fit: cover;"
@@ -110,7 +108,7 @@ try {
                                     class="rounded-circle d-flex align-items-center justify-content-center"
                                     style="width: 90px; height: 90px; overflow: hidden; border: 3px solid #3b5998;">
                                     <img
-                                        src="assets/images/default_avatar.png"
+                                        src="avatar.php?id=<?= $i ?>"
                                         alt="Avatar ami <?= $i ?>"
                                         class="w-100 h-100"
                                         style="object-fit: cover;"
@@ -130,7 +128,7 @@ try {
                 <div class="d-flex align-items-center mb-3">
                     <div class="me-2">
                         <img
-                            src="assets/images/default_avatar.png"
+                            src="avatar.php?id=<?= $_SESSION['id_u'] ?>"
                             alt="Avatar"
                             class="post-avatar"
                             loading="lazy">
@@ -139,24 +137,24 @@ try {
                         type="text"
                         class="create-post-input form-control"
                         placeholder="Quoi de neuf, <?= htmlspecialchars($_SESSION['login']) ?>?"
-                        onclick="window.location.href='pages/poster.php'">
+                        onclick="window.location.href='./pages/poster.php'">
                 </div>
                 <div class="d-flex justify-content-between">
                     <button
                         class="btn btn-outline-secondary"
-                        onclick="window.location.href='pages/poster.php'">
+                        onclick="window.location.href='./pages/poster.php'">
                         <i class="fas fa-image me-1"></i>
                         Photo
                     </button>
                     <button
                         class="btn btn-outline-secondary"
-                        onclick="window.location.href='pages/poster.php'">
+                        onclick="window.location.href='./pages/poster.php'">
                         <i class="fas fa-video me-1"></i>
                         Vidéo
                     </button>
                     <button
                         class="btn btn-outline-secondary"
-                        onclick="window.location.href='pages/poster.php'">
+                        onclick="window.location.href='./pages/poster.php'">
                         <i class="fas fa-smile me-1"></i>
                         Humeur
                     </button>
@@ -168,14 +166,14 @@ try {
             <div class="post-card mb-4">
                 <div class="post-header d-flex align-items-center">
                     <img
-                        src="assets/images/default_avatar.png"
-                        alt="Avatar de <?= htmlspecialchars($post['login']) ?>"
-                        class="post-avatar me-2"
-                        loading="lazy">
+                            src="avatar.php?id=<?= $post['user_id'] ?>"
+                            alt="Avatar de <?= htmlspecialchars($post['login']) ?>"
+                            class="post-avatar me-2"
+                            loading="lazy">
                     <div>
                         <div class="post-author">
                             <a
-                                href="pages/profil.php?id=<?= $post['user_id'] ?>"
+                                href="./pages/profil-unified.php?id=<?= $post['user_id'] ?>"
                                 class="text-decoration-none text-dark">
                                 <?= htmlspecialchars($post['login']) ?>
                             </a>
@@ -187,13 +185,25 @@ try {
                 </div>
 
                 <div class="post-content">
-                    <p><?= nl2br(htmlspecialchars($post['message'] ?? '')) ?></p>
-                    <?php if (!empty($post['message'])): ?>
-                    <img
-                        src="<?= htmlspecialchars($post['message']) ?>"
-                        class="post-image mb-3"
-                        alt="Image publiée par <?= htmlspecialchars($post['login']) ?>"
-                        loading="lazy">
+                    <?php if (!empty($post['titre'])): ?>
+                        <h4 class="mb-2"><?= htmlspecialchars($post['titre']) ?></h4>
+                    <?php endif; ?>
+                    
+                    <?php if (!empty($post['base64_data'])): ?>
+                        <!-- Afficher l'image depuis les données base64 -->
+                        <img 
+                            src="<?= htmlspecialchars($post['base64_data']) ?>"
+                            class="post-image mb-3 rounded"
+                            alt="Image publiée par <?= htmlspecialchars($post['login']) ?>"
+                            loading="lazy">
+                    <?php elseif (!empty($post['chemin'])): ?>
+                        <!-- Afficher l'image depuis le chemin -->
+                        <img 
+                            src="<?= htmlspecialchars($post['chemin']) ?>"
+                            class="post-image mb-3 rounded"
+                            alt="Image publiée par <?= htmlspecialchars($post['login']) ?>"
+                            onerror="this.onerror=null; this.src='avatar/avatar_1.png';"
+                            loading="lazy">
                     <?php endif; ?>
                 </div>
 

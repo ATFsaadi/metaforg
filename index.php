@@ -1,4 +1,9 @@
 <?php
+// Afficher toutes les erreurs PHP
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 ob_start();
 session_start();
 include 'includes/header-HC.php';
@@ -37,13 +42,13 @@ if(isset($_POST['submit']))
 <div class="wrapper">
     <!-- Image à gauche -->
     <div class="image-container">
-        <img src="ImgU/insc.png" alt="Image de présentation">
+        <img src="assets/images/insc.png" alt="Image de présentation">
     </div>
 
     <!-- Formulaire à droite -->
     <div class="form-container">
         <div class="logo">
-            <img src="ImgU/logo.png" alt="GamingHub Logo">
+            <img src="assets/images/logo.png" alt="GamingHub Logo">
         </div>
         <form action="#" method="POST">
             <div class="form-group">

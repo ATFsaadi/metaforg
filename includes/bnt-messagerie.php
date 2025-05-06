@@ -1,5 +1,13 @@
 <?php
-include "includes/connexion.php";?>
+// Vérifier si on est dans le répertoire racine ou dans un sous-répertoire
+$isRoot = !strpos($_SERVER['PHP_SELF'], '/pages/');
+$prefix = $isRoot ? '' : '../';
+
+// Connexion à la base de données si elle n'est pas déjà incluse
+if (!isset($bdd)) {
+    include $prefix."includes/connexion.php";
+}
+?>
    <!-- Messagerie -->
     <button
                     id="chatButton"
@@ -23,24 +31,26 @@ include "includes/connexion.php";?>
                     </div>
                     <div class="p-2">
                         <?php for($i = 1; $i <= 5; $i++): ?>
-                        <div class="d-flex align-items-center p-2 border-bottom">
-                            <div class="position-relative">
-                                <img
-                                    src="assets/images/default_avatar.png"
-                                    alt="Avatar Ami <?= $i ?>"
-                                    class="rounded-circle"
-                                    width="40"
-                                    loading="lazy">
-                                <span
-                                    class="position-absolute bg-success rounded-circle"
-                                    style="width: 10px; height: 10px; bottom: 3px; right: 3px; border: 2px solid white;"></span>
+                        <a href="<?= $prefix ?>pages/messages.php" class="text-decoration-none text-dark">
+                            <div class="d-flex align-items-center p-2 border-bottom">
+                                <div class="position-relative">
+                                    <img
+                                        src="<?= $prefix ?>assets/images/default_avatar.png"
+                                        alt="Avatar Ami <?= $i ?>"
+                                        class="rounded-circle"
+                                        width="40"
+                                        height="40"
+                                        loading="lazy">
+                                    <span
+                                        class="position-absolute bg-success rounded-circle"
+                                        style="width: 10px; height: 10px; bottom: 3px; right: 3px; border: 2px solid white;"></span>
+                                </div>
+                                <div class="ms-2">
+                                    <div class="fw-bold" style="color: var(--color-success);">Ami <?= $i ?></div>
+                                    <div class="small text-muted">En ligne</div>
+                                </div>
                             </div>
-                            <div class="ms-2">
-                                <div class="fw-bold">Ami
-                                    <?= $i ?></div>
-                                <div class="small text-muted">En ligne</div>
-                            </div>
-                        </div>
+                        </a>
                         <?php endfor; ?>
                     </div>
                 </div>
@@ -49,6 +59,14 @@ include "includes/connexion.php";?>
     function toggleChat() {
         const panel = document.getElementById('chatPanel');
         const isVisible = panel.style.display !== 'none';
+        
+        // Vérifier si l'image d'avatar existe
+        const avatarImages = document.querySelectorAll('#chatPanel img');
+        avatarImages.forEach(img => {
+            img.onerror = function() {
+                this.src = '<?= $prefix ?>assets/images/default_avatar.png';
+            };
+        });
         panel.style.display = isVisible
             ? 'none'
             : 'block';

@@ -1,16 +1,49 @@
 <?php
+// Vérifier si la table publications existe, sinon la créer
+try {
+    // Vérifier l'existence de la table publications
+    $checkTable = $bdd->query("SHOW TABLES LIKE 'publications'");
+    if ($checkTable->rowCount() == 0) {
+        // La table n'existe pas, on la crée
+        $bdd->exec("CREATE TABLE `publications` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `user_id` int(11) NOT NULL,
+            `contenu` text NOT NULL,
+            `date` datetime NOT NULL DEFAULT current_timestamp(),
+            `image` varchar(255) DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            KEY `user_id` (`user_id`),
+            CONSTRAINT `publications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id_u`) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
+        
+        // Insérer quelques publications d'exemple
+        $bdd->exec("INSERT INTO publications (user_id, contenu) VALUES 
+            (1, 'Première publication de test sur GamingHub !'),
+            (1, 'Bienvenue sur notre nouvelle plateforme dédiée aux gamers !')");
+    }
+} catch (PDOException $e) {
+    // En cas d'erreur lors de la création de la table
+    error_log("Erreur de création de table: " . $e->getMessage());
+}
+
 // Pagination
 $page = $_GET['page'] ?? 1;
 $limit = 10;
 $offset = ($page - 1) * $limit;
 
-$req = $bdd->prepare("SELECT p.*, u.login FROM publications p JOIN users u ON p.user_id = u.id_u ORDER BY p.date DESC LIMIT :limit OFFSET :offset");
-$req->bindValue(':limit', $limit, PDO::PARAM_INT);
-$req->bindValue(':offset', $offset, PDO::PARAM_INT);
-$req->execute();
-$posts = $req->fetchAll(PDO::FETCH_ASSOC);
+try {
+    $req = $bdd->prepare("SELECT p.*, u.login FROM publications p JOIN users u ON p.user_id = u.id_u ORDER BY p.date DESC LIMIT :limit OFFSET :offset");
+    $req->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $req->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $req->execute();
+    $posts = $req->fetchAll(PDO::FETCH_ASSOC);
 
-if ($posts === false) {
+    if ($posts === false) {
+        $posts = [];
+    }
+} catch (PDOException $e) {
+    // En cas d'erreur lors de la requête
+    error_log("Erreur de requête: " . $e->getMessage());
     $posts = [];
 }
 ?>

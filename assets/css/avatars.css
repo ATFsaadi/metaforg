@@ -1,0 +1,68 @@
+/* Style pour remplacer tous les avatars par défaut par les nouveaux avatars */
+
+/* Couleurs générales */
+:root {
+  --avatar-border-color: #00FF00;
+}
+
+/* Style global pour les avatars */
+.rounded-circle {
+  border: 2px solid var(--avatar-border-color);
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.rounded-circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+}
+
+/* Masquer les images par défaut et les remplacer par des avatars stylisés */
+img[src$="default_avatar.png"] {
+  position: relative;
+  background-size: cover !important;
+  background-position: center !important;
+  border: 2px solid var(--avatar-border-color);
+}
+
+/* Utiliser des avatars aléatoires basés sur l'ID de l'élément parent */
+.contact-item:nth-child(1) img[src$="default_avatar.png"] { background: url('../../avatar/avatar_1.png') !important; }
+.contact-item:nth-child(2) img[src$="default_avatar.png"] { background: url('../../avatar/avatar_2.png') !important; }
+.contact-item:nth-child(3) img[src$="default_avatar.png"] { background: url('../../avatar/avatar_3.png') !important; }
+.contact-item:nth-child(4) img[src$="default_avatar.png"] { background: url('../../avatar/avatar_4.png') !important; }
+.contact-item:nth-child(5) img[src$="default_avatar.png"] { background: url('../../avatar/avatar_5.png') !important; }
+.contact-item:nth-child(6) img[src$="default_avatar.png"] { background: url('../../avatar/avatar_6.png') !important; }
+.contact-item:nth-child(7) img[src$="default_avatar.png"] { background: url('../../avatar/avatar_8.png') !important; }
+.contact-item:nth-child(8) img[src$="default_avatar.png"] { background: url('../../avatar/avatar_1.png') !important; }
+.contact-item:nth-child(9) img[src$="default_avatar.png"] { background: url('../../avatar/avatar_2.png') !important; }
+
+/* Style pour les avatars dans la messagerie */
+.messages-header img[src$="default_avatar.png"] {
+  background: url('../../avatar/avatar_3.png') !important;
+}
+
+/* Style pour les avatars dans les publications et commentaires */
+.post-avatar[src$="default_avatar.png"],
+.post-card img[src$="default_avatar.png"],
+.comment-avatar[src$="default_avatar.png"] {
+  background: url('../../avatar/avatar_5.png') !important;
+}
+
+/* Style pour les avatars dans le menu utilisateur */
+.user-avatar[src$="default_avatar.png"],
+.navbar img[src$="default_avatar.png"] {
+  background: url('../../avatar/avatar_1.png') !important;
+}
+
+/* Style pour les avatars dans les listes d'amis */
+.friend-item:nth-child(odd) img[src$="default_avatar.png"] {
+  background: url('../../avatar/avatar_4.png') !important;
+}
+.friend-item:nth-child(even) img[src$="default_avatar.png"] {
+  background: url('../../avatar/avatar_6.png') !important;
+}
+
+/* Masquer l'image source tout en conservant les dimensions */
+img[src$="default_avatar.png"] {
+  opacity: 0;
+}
