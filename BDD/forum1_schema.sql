@@ -85,3 +85,28 @@ INSERT INTO publications (user_id, contenu) VALUES
 (1, 'Bienvenue sur le forum !'),
 (1, 'Deuxième publication test');
 
+
+
+
+INSERT INTO users (login, email, mdp, lvl, IP) VALUES
+('jean.dupont', 'jean.dupont@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.1.1'),
+('marie.durand', 'marie.durand@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.1.2'),
+('paul.lefebvre', 'paul.lefebvre@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.1.3'),
+('julie.moreau', 'julie.moreau@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.1.4'),
+('luc.martin', 'luc.martin@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.1.5'),
+('camille.laurent', 'camille.laurent@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.1.6'),
+('nicolas.robert', 'nicolas.robert@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.1.7'),
+('emma.bertrand', 'emma.bertrand@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.1.8'),
+('thomas.renard', 'thomas.renard@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.1.9'),
+('sophie.faure', 'sophie.faure@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.1.10'),
+('ahmed.nasser', 'ahmed.nasser@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.2.1'),
+('fatima.benali', 'fatima.benali@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.2.2'),
+('youssef.hassan', 'youssef.hassan@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.2.3'),
+('leila.karim', 'leila.karim@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.2.4'),
+('mohamed.ali', 'mohamed.ali@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.2.5'),
+('salma.ammar', 'salma.ammar@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.2.6'),
+('omar.zaki', 'omar.zaki@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.2.7'),
+('nour.habib', 'nour.habib@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.2.8'),
+('khaled.samir', 'khaled.samir@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.2.9'),
+('hana.rami', 'hana.rami@example.com', '$2y$10$wHHDvTeYbLV/71bpAi1eSOmBAt2R3FPJf8pgUqZlKpZ2Gb95rNcve', 0, '192.168.2.10');
+

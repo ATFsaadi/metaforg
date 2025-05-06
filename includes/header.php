@@ -84,7 +84,7 @@
                     id="userMenuDropdown"
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    <strong class="me-1"><?= htmlspecialchars($_SESSION['login']) ?></strong>
+                    <strong class="me-1"><?= strtoupper(htmlspecialchars($_SESSION['login'])) ?></strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuDropdown">
                     <li>

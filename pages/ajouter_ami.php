@@ -5,16 +5,16 @@ session_start();
 include "../includes/connexion.php";
 
 // 1. Vérifications de sécurité
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['id_u'])) {
     header("Location: login.php");
     exit;
 }
 
-if (!isset($_GET['id'], $_GET['csrf']) || 
+/*if (!isset($_GET['id'], $_GET['csrf']) || 
     $_GET['csrf'] !== $_SESSION['csrf_token']) {
     die("Requête invalide");
-}
-
+} */
+ 
 // 2. Validation des données
 $friendId = (int)$_GET['id'];
 if ($friendId <= 0) {
@@ -22,7 +22,7 @@ if ($friendId <= 0) {
 }
 
 // 3. Empêcher l'auto-ajout
-if ($friendId === $_SESSION['user']['id']) {
+if ($friendId === $_SESSION['id_u']) {
     die("Action interdite");
 }
 
@@ -35,22 +35,24 @@ if (!$checkUser->fetch()) {
 
 // 5. Vérifier les relations existantes
 $checkRelation = $bdd->prepare("
-    SELECT id, status FROM amis 
+    SELECT id, statut FROM amis 
     WHERE 
-        (user_id = ? AND ami_id = ?) OR 
-        (user_id = ? AND ami_id = ?)
+        (utilisateur_id = :user1 AND ami_id = :user2) OR 
+        (ami_id = :user2 AND utilisateur_id = :user1)
 ");
+
+
 $checkRelation->execute([
-    $_SESSION['user']['id'], $friendId,
-    $friendId, $_SESSION['user']['id']
+    'user1' => $_SESSION['id_u'], 
+    'user2' => $friendId
 ]);
 
 $existingRelation = $checkRelation->fetch();
-
+//var_dump($_SESSION['id_u']); var_dump($friendId); die;
 // 6. Gestion des différents cas
 if ($existingRelation) {
-    switch ($existingRelation['status']) {
-        case 'pending':
+    switch ($existingRelation['statut']) {
+        case 'en_attente':
             $error = "Demande déjà envoyée";
             break;
         case 'accepted':
@@ -59,9 +61,11 @@ if ($existingRelation) {
         case 'blocked':
             $error = "Action impossible";
             break;
+        default:
+            echo $existingRelation['statut'];
     }
-    header("Location: recherche.php?error=" . urlencode($error));
-    exit;
+    //header("Location: recherche.php?error=" . urlencode($error));
+    //exit;
 }
 
 // 7. Création de la demande
@@ -71,10 +75,10 @@ try {
     // Insertion de la demande
     $insert = $bdd->prepare("
         INSERT INTO amis 
-        (user_id, ami_id, status, date_creation) 
+        (utilisateur, ami_id, status, date_ajout) 
         VALUES (?, ?, 'pending', NOW())
     ");
-    $insert->execute([$_SESSION['user']['id'], $friendId]);
+    $insert->execute([$_SESSION['id_u'], $friendId]);
     
     // Notification
     $notif = $bdd->prepare("

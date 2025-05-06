@@ -1,288 +1,252 @@
-/* Styles globaux */
-body {
+:root {
+    --background-main: #121212;
+    --background-secondary: #1E1E1E;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0B0B0;
+    --primary-color: #00BFFF;
+    --primary-hover: #008CFF;
+    --success-color: #00FF00;
+    --error-color: #FF4040;
+    --warning-color: #FFD700;
+    --accent-color: #6A0DAD;
+    --orange-highlight: #FF7F00;
+  }
+  
+  body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #121212; /* Fond noir principal */
+    background-color: var(--background-main);
     margin: 0;
-    display: flex;
-    justify-content: center; /* Centrage du contenu horizontal */
-    align-items: center; /* Centrage du contenu vertical */
-    height: 100vh; /* Hauteur de la fenêtre */
-    flex-direction: column; /* Organisation verticale des éléments */
-}
-
-/* Conteneur principal */
-.wrapper {
-    display: flex; /* Utilisation de flexbox pour aligner l'image et le formulaire */
-    max-width: 800px; /* Largeur maximale du conteneur */
-    width: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Ombre sombre pour un look gaming */
-    border-radius: 10px; /* Coins arrondis */
-    overflow: hidden; /* Pour éviter les bords débordants */
-}
-
-/* Conteneur de l'image */
-.image-container {
-    flex: 1; /* Prend la moitié de l'espace disponible */
-    background-color: #1E1E1E; /* Gris anthracite comme arrière-plan secondaire */
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.image-container img {
-    width: 100%; /* L'image prend toute la largeur du conteneur */
-    height: 100%; /* Conserve les proportions */
-    object-fit: cover; /* Ajuste l'image pour remplir le conteneur */
-}
-
-/* Conteneur du formulaire */
-.form-container {
-    flex: 1; /* Prend la moitié de l'espace disponible */
-    background: #121212; /* Fond noir pour le formulaire */
+    height: 100vh;
+    flex-direction: column;
+  }
+  
+  .wrapper {
+    display: flex;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .image-container {
+    flex: 1;
+    background-color: var(--background-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .form-container {
+    flex: 1;
+    background: var(--background-main);
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.logo img {
+  }
+  
+  .logo img {
     width: 175px;
     margin-bottom: 20px;
-}
-
-/* Formulaire et champs de saisie */
-.form-group {
+  }
+  
+  .form-group {
     margin-bottom: 10px;
     width: 100%;
-}
-
-.form-group input {
+  }
+  
+  .form-group input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #B0B0B0; /* Bordure grise claire pour les champs */
+    border: 1px solid var(--text-secondary);
     border-radius: 5px;
     font-size: 14px;
     box-sizing: border-box;
-    background-color: #1E1E1E; /* Arrière-plan des champs en gris anthracite */
-    color: #FFFFFF; /* Texte blanc pour une meilleure lisibilité */
-}
-
-.form-group input:focus {
-    border-color: #00BFFF; /* Bleu néon pour le focus */
+    background-color: var(--background-secondary);
+    color: var(--text-primary);
+  }
+  
+  .form-group input:focus {
+    border-color: var(--primary-color);
     outline: none;
-}
-
-/* Boutons */
-.btn {
+  }
+  
+  .btn {
     width: 100%;
     padding: 10px;
-    background-color: #00BFFF; /* Bleu néon pour le bouton principal */
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--text-primary);
     border: none;
     border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-    background-color: #008CFF; /* Bleu électrique pour le survol */
-}
-
-/* Liens et textes secondaires */
-.forgot-password, .login-link, .signup-link {
+  }
+  
+  .btn:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  .forgot-password, .login-link, .signup-link {
     text-align: center;
     margin-top: 15px;
     font-size: 12px;
-    color: #B0B0B0; /* Gris clair pour le texte secondaire */
-}
-
-.forgot-password a, .signup-link a, .login-link a {
-    color: #00FF00; /* Vert néon pour le lien interactif */
+    color: var(--text-secondary);
+  }
+  
+  .forgot-password a, .signup-link a, .login-link a {
+    color: var(--success-color);
     text-decoration: none;
-}
-
-.forgot-password a:hover, .signup-link a:hover, .login-link a:hover {
+  }
+  
+  .forgot-password a:hover, .signup-link a:hover, .login-link a:hover {
     text-decoration: underline;
-}
-
-/* Diviseur */
-.divider {
+  }
+  
+  .divider {
     display: flex;
     align-items: center;
     margin: 20px 0;
-}
-
-.divider span {
+  }
+  
+  .divider span {
     flex: 1;
     height: 1px;
-    background-color: #B0B0B0; /* Séparateur en gris clair */
-}
-
-.divider p {
+    background-color: var(--text-secondary);
+  }
+  
+  .divider p {
     margin: 0 10px;
     font-size: 12px;
-    color: #B0B0B0; /* Texte "OU" en gris clair */
-}
-
-/* Footer */
-footer {
-    background-color: #121212;
+    color: var(--text-secondary);
+  }
+  
+  footer {
+    background-color: var(--background-main);
     padding: 20px 0;
     text-align: center;
     width: 100%;
     position: relative;
     bottom: 0;
-}
-
-/* Conteneur des icônes sociales */
-.social-icons {
+  }
+  
+  .social-icons {
     display: flex;
     justify-content: center;
     gap: 20px;
-}
-
-/* Icônes sociales */
-.social-icon {
-    color: #FFFFFF;
+  }
+  
+  .social-icon {
+    color: var(--text-primary);
     font-size: 24px;
     transition: color 0.3s ease;
-}
-
-.social-icon:hover {
-    color: #00BFFF; /* Bleu néon pour l'icône survolée */
-}
-
-/* Notifications et alertes */
-.alert {
+  }
+  
+  .social-icon:hover {
+    color: var(--primary-color);
+  }
+  
+  .alert {
     padding: 10px;
     margin: 20px 0;
     border-radius: 5px;
     font-size: 14px;
-}
-
-.alert.success {
-    background-color: #00FF00; /* Vert néon pour les succès */
-    color: #121212; /* Texte sombre sur fond vert */
-}
-
-.alert.error {
-    background-color: #FF4040; /* Rouge vif pour les erreurs */
-    color: #FFFFFF; /* Texte blanc pour contraster avec le rouge */
-}
-
-.alert.warning {
-    background-color: #FFD700; /* Jaune pour les avertissements */
-    color: #121212; /* Texte sombre sur fond jaune */
-}
-
-/* Autres éléments spéciaux */
-.badge {
-    background-color: #6A0DAD; /* Violet sombre pour des accents spéciaux */
-    color: #FFFFFF;
+  }
+  
+  .alert.success {
+    background-color: var(--success-color);
+    color: var(--background-main);
+  }
+  
+  .alert.error {
+    background-color: var(--error-color);
+    color: var(--text-primary);
+  }
+  
+  .alert.warning {
+    background-color: var(--warning-color);
+    color: var(--background-main);
+  }
+  
+  .badge {
+    background-color: var(--accent-color);
+    color: var(--text-primary);
     padding: 5px 10px;
     border-radius: 20px;
     font-size: 14px;
-}
-
-.icon-special {
-    color: #008CFF; /* Bleu électrique pour les icônes spéciales */
-}
-
-
-
-
-
-
-
-
-
-
-.alert-custom {
-    background-color: black; /* Fond clair pour contraster avec le noir */
-    color: #00FF00;            /* Texte rouge foncé bien lisible */
-    border: 1px solid  #00FF00;
-    border-radius: 0%;
-   
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.icon-link {
+  
+  .icon-special {
+    color: var(--primary-hover);
+  }
+  
+  .alert-custom {
+    background-color: var(--background-main);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+    border-radius: 0%;
+  }
+  
+  .icon-link {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #1E1E1E; /* Fond gris anthracite */
-    border-radius: 50%; /* Forme ronde */
-    color: #B0B0B0; /* Couleur des icônes inactives */
+    background-color: var(--background-secondary);
+    border-radius: 50%;
+    color: var(--text-secondary);
     text-decoration: none;
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.icon-link:hover {
-    background-color: #00BFFF; /* Bleu néon au survol */
-    color: #FFFFFF; /* Icône blanche */
-}
-
-.icon-link i {
-    font-size: 20px; /* Taille des icônes */
-}
-
-/* Menu utilisateur */
-.user-menu {
+  }
+  
+  .icon-link:hover {
+    background-color: var(--primary-color);
+    color: var(--text-primary);
+  }
+  
+  .icon-link i {
+    font-size: 20px;
+  }
+  
+  .user-menu {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.avatar {
+  }
+  
+  .avatar {
     width: 36px;
     height: 36px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #FF7F00; /* Orange pour l'avatar */
-}
-
-.username {
+    border: 2px solid var(--orange-highlight);
+  }
+  
+  .username {
     font-size: 14px;
-    color: #B0B0B0; /* Gris clair pour le nom d'utilisateur */
-}
-
-.menu-icon {
+    color: var(--text-secondary);
+  }
+  
+  .menu-icon {
     background: none;
     border: none;
     font-size: 20px;
     cursor: pointer;
-    color: #FF4040; /* Rouge vif pour le menu */
-}
-
-.menu-icon:hover {
-    color: #FFD700; /* Jaune pour attirer l'attention au survol */
-}
+    color: var(--error-color);
+  }
+  
+  .menu-icon:hover {
+    color: var(--warning-color);
+  }

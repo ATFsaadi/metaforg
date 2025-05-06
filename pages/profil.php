@@ -4,7 +4,7 @@ include "../includes/connexion.php";
 include "../includes/header-PG.php";
 
 // Récupération des données utilisateur
-$requete = $bdd->query("SELECT * FROM users WHERE id_u = " . $_GET['idUser']);
+$requete = $bdd->query("SELECT * FROM users WHERE id_u = " . $_GET['id']);
 $reponse = $requete->fetch();
 ?>
 

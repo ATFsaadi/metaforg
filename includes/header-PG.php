@@ -41,10 +41,10 @@
                                 class="form-control rounded-pill"
                                 placeholder="Rechercher sur MetaForg..."
                                 aria-label="Search"
-                                name="q">
+                                name="search_term">
 
                             <!-- Bouton de recherche avec l'icône de la loupe à l'intérieur -->
-                            <button class="search-btn input-group-text">
+                            <button class="search-btn input-group-text" type="submit">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="26px"
@@ -84,7 +84,7 @@
                     id="userMenuDropdown"
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    <strong class="me-1"><?= htmlspecialchars($_SESSION['login']) ?></strong>
+                    <strong class="me-1"><?= strtoupper(htmlspecialchars($_SESSION['login'])) ?></strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuDropdown">
                     <li>

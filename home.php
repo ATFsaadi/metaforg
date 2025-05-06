@@ -184,7 +184,7 @@ try {
                   <?= htmlspecialchars($user['login']) ?>
                 </a>
               </div>
-              <a href="ajouter_ami.php?id=<?= $user['id_u'] ?>" class="btn btn-primary btn-sm add-friend-btn">
+              <a href="pages/ajouter_ami.php?id=<?= $user['id_u'] ?>" class="btn btn-primary btn-sm add-friend-btn">
                 <i class="fas fa-user-plus"></i>
               </a>
             </div>

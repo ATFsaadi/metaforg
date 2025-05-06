@@ -1,28 +1,33 @@
-/* === Variables globales === */
 :root {
   /* Arrière-plans */
   --bg-primary: #121212;
   --bg-secondary: #1E1E1E;
-  
+  --bg-tertiary: #242526;
+  --bg-quaternary: #18191A;
+  --bg-dropdown: #2D2F31;
   /* Texte */
   --text-color: #B0B0B0;
-  
+  --text-muted: #B0B3B8;
+  --text-strong: #E4E6EB;
   /* Couleurs principales */
   --color-primary: #00BFFF;
   --color-primary-hover: #008CFF;
   --color-success: #00FF00;
-  
+  --color-accent: #2D88FF;
+  --color-accent-hover: #1877F2;
+  --color-danger: #e74c3c;
   /* Éléments spécifiques */
   --badge-color: #6A0DAD;
   --avatar-border: #ff4500;
-  
   /* Bordures & formes */
   --border-radius: 2px;
   --border-radius-full: 1%;
   --input-border: rgba(0, 255, 0, 0.08);
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-divider: rgba(255, 255, 255, 0.1);
+  --border-message: rgba(58, 59, 60, 0.8);
 }
 
-/* === Réinitialisation et base === */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -39,10 +44,9 @@ body {
   overflow-x: hidden;
 }
 
-/* === Navbar === */
 .navbar {
   background: var(--bg-secondary);
-  border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 0.5px solid var(--border-light);
   padding: 8px 100px;
 }
 
@@ -73,7 +77,6 @@ body {
   color: white;
 }
 
-/* === Stories === */
 .story-container {
   display: flex;
   overflow-x: auto;
@@ -105,7 +108,6 @@ body {
   border: 3px solid var(--avatar-border);
 }
 
-/* === Créer une publication === */
 .create-post {
   background: var(--bg-secondary);
   padding: 1rem;
@@ -115,7 +117,7 @@ body {
 
 .create-post-input {
   background: var(--bg-primary);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-light);
   border-radius: var(--border-radius);
   padding: 0.75rem 1rem;
   width: 100%;
@@ -123,7 +125,7 @@ body {
 }
 
 .btn-outline-secondary {
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-light);
   color: var(--text-color);
 }
 
@@ -132,7 +134,6 @@ body {
   color: white;
 }
 
-/* === Publications === */
 .post-card {
   background: var(--bg-secondary);
   border-radius: var(--border-radius);
@@ -151,9 +152,8 @@ body {
   background: rgba(0, 191, 255, 0.1);
 }
 
-/* === Sidebar === */
 .sidebar {
-  background: black;
+  background: var(--bg-quaternary);
   border-radius: var(--border-radius);
   padding: 16px;
 }
@@ -166,10 +166,9 @@ body {
 
 .list-group-item:hover {
   background: transparent;
-  color: #00ff0055;
+  color: rgba(var(--color-success-rgb), 0.3);
 }
 
-/* === Boutons et éléments interactifs === */
 .btn {
   background: var(--bg-primary);
   border: none;
@@ -189,7 +188,7 @@ body {
   left: -100%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(120deg, #00ff0055, #00ff0015);
+  background: linear-gradient(120deg, rgba(var(--color-success-rgb), 0.3), rgba(var(--color-success-rgb), 0.1));
   transform: skewX(-20deg);
   transition: left 0.6s ease-in-out;
   pointer-events: none;
@@ -204,17 +203,15 @@ body {
   background: black;
 }
 
-/* === Icônes spéciaux === */
 .fas, .far {
   color: var(--color-success);
   transition: color 0.3s ease;
 }
 
 .fas:hover, .far:hover {
-  color: #00ff0055;
+  color: rgba(var(--color-success-rgb), 0.3);
 }
 
-/* === Badges et indicateurs === */
 .badge {
   background: var(--badge-color);
   color: white;
@@ -234,7 +231,6 @@ body {
   border: 0.5px solid white;
 }
 
-/* === Footer et réseaux sociaux === */
 footer {
   background-color: var(--bg-secondary);
   padding: 20px 0;
@@ -260,7 +256,6 @@ footer {
   color: var(--color-primary);
 }
 
-/* === Animation bounce pour le bouton recherche === */
 @keyframes bounce {
   0%, 100% {
     transform: translateY(0);
@@ -286,7 +281,6 @@ footer {
   animation: bounce 1s ease;
 }
 
-/* === Story créateur === */
 .story-create {
   min-width: 100px;
   text-align: center;
@@ -319,7 +313,7 @@ footer {
 .story-plus-icon {
   width: 24px;
   height: 24px;
-  background: #007bff;
+  background: var(--color-accent);
   color: white;
   border-radius: 50%;
   border: 2px solid white;
@@ -332,7 +326,6 @@ footer {
   right: 0;
 }
 
-/* Boutons de défilement */
 .scroll-btn {
   background:transparent;
   border: none;
@@ -357,49 +350,20 @@ footer {
   transform: rotate(180deg);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #reche-messag {
   max-width: 800px;
   margin-top: 50px;
 }
 
-/* Global background for card */
 .card {
-  background-color: #242526;
-  color: #E4E6EB;
+  background-color: var(--bg-tertiary);
+  color: var(--text-strong);
   border: none;
 }
 
-/* Contacts list */
 .contacts-list {
-  background-color: #18191A;
-  border-right: 1px solid #3A3B3C;
+  background-color: var(--bg-quaternary);
+  border-right: 1px solid var(--border-message);
 }
 
 .contact-item {
@@ -407,47 +371,45 @@ footer {
 }
 
 .contact-item:hover {
-  background-color: #3A3B3C;
+  background-color: var(--border-message);
 }
 
 .contact-item.bg-light {
-  background-color: #3A3B3C !important;
+  background-color: var(--border-message) !important;
 }
 
-/* Search bar */
 .input-group .form-control {
-  background-color: #3A3B3C;
+  background-color: var(--bg-dropdown);
   border: none;
-  color: #E4E6EB;
+  color: var(--text-strong);
 }
 
 .input-group .form-control::placeholder {
-  color: #B0B3B8;
+  color: var(--text-muted);
 }
 
 .input-group .btn-outline-primary {
   border: none;
-  background-color: #2D88FF;
+  background-color: var(--color-accent);
   color: #fff;
 }
 
 .input-group .btn-outline-primary:hover {
-  background-color: #1877F2;
+  background-color: var(--color-accent-hover);
 }
 
-/* Messages */
 .messages-area {
-  background-color: #242526;
+  background-color: var(--bg-tertiary);
 }
 
 .messages-header {
-  background-color: #18191A;
-  border-bottom: 1px solid #3A3B3C;
-  color: #E4E6EB;
+  background-color: var(--bg-quaternary);
+  border-bottom: 1px solid var(--border-message);
+  color: var(--text-strong);
 }
 
 .messages-list {
-  background-color: #242526;
+  background-color: var(--bg-tertiary);
 }
 
 .message-item .d-inline-block {
@@ -455,56 +417,117 @@ footer {
   word-wrap: break-word;
 }
 
-/* Sent messages */
 .text-end .d-inline-block {
-  background-color: #2D88FF !important;
+  background-color: var(--color-accent) !important;
   color: white;
   border-bottom-right-radius: 0 !important;
 }
 
-/* Received messages */
 .text-start .d-inline-block {
-  background-color: #3A3B3C !important;
-  color: #E4E6EB;
+  background-color: var(--border-message) !important;
+  color: var(--text-strong);
   border-bottom-left-radius: 0 !important;
 }
 
-/* Time */
 .message-item .small {
-  color: #B0B3B8 !important;
+  color: var(--text-muted) !important;
 }
 
-/* Input form */
 form.d-flex.border-top {
-  background-color: #18191A;
-  border-top: 1px solid #3A3B3C !important;
+  background-color: var(--bg-quaternary);
+  border-top: 1px solid var(--border-message) !important;
 }
 
 form.d-flex input.form-control {
-  background-color: #3A3B3C;
+  background-color: var(--bg-dropdown);
   color: white;
   border: none;
 }
 
 form.d-flex input.form-control::placeholder {
-  color: #B0B3B8;
+  color: var(--text-muted);
 }
 
 form.d-flex button.btn-primary {
-  background-color: #2D88FF;
+  background-color: var(--color-accent);
   border: none;
 }
 
 form.d-flex button.btn-primary:hover {
-  background-color: #1877F2;
+  background-color: var(--color-accent-hover);
 }
 
-/* Empty state */
 .text-muted {
-  color: #B0B3B8 !important;
+  color: var(--text-muted) !important;
 }
 
+.dropdown-toggle {
+  color: var(--color-primary) !important;
+  transition: color 0.3s ease;
+}
 
+.dropdown-toggle:hover {
+  color: var(--color-primary-hover) !important;
+  text-shadow: 0 0 5px rgba(var(--color-primary-rgb), 0.3);
+}
 
+.dropdown-menu {
+  background-color: var(--bg-secondary);
+  border: 1px solid rgba(var(--color-success-rgb), 0.1);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  min-width: 160px;
+  padding: 0.25rem 1rem;
+  z-index: 1050;
+}
 
+.dropdown-menu[data-bs-popper] {
+  top: calc(100% + 22px);
+}
 
+.dropdown-item {
+  color: var(--text-color);
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(var(--color-primary-rgb), 0.1);
+  color: white;
+}
+
+.dropdown-item:focus {
+  background-color: transparent;
+}
+
+.dropdown-divider {
+  height: 1px;
+  margin: 0.5rem 0;
+  background-color: var(--border-divider);
+  border: none;
+}
+
+.dropdown-menu.show {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-menu .badge {
+  background-color: var(--badge-color);
+  font-weight: 500;
+  margin-left: 5px;
+}
+
+.dropdown-item i {
+  margin-right: 8px;
+  color: var(--color-success);
+  transition: color 0.3s ease;
+}
+
+.dropdown-item:hover i {
+  color: rgba(var(--color-success-rgb), 0.7);
+}
