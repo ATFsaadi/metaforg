@@ -1,250 +1,235 @@
 <?php
-session_start();
+require_once "../includes/connexion.php";
 
-include "../includes/connexion.php";
-include "../includes/header-PG.php";
-
-// Vérifier que l'utilisateur est connecté
+// Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['id_u'])) {
-    header("Location: ../index.php");
+    header('Location: ../index.php');
     exit;
 }
 
-// Déterminer si c'est le profil de l'utilisateur connecté ou celui d'un autre utilisateur
+// Déterminer l'ID du profil à afficher
 $profile_id = isset($_GET['id']) ? intval($_GET['id']) : $_SESSION['id_u'];
-$is_own_profile = ($profile_id == $_SESSION['id_u']);
 
 // Récupérer les informations du profil
-$reqProfil = $bdd->prepare("SELECT * FROM users WHERE id_u = ?");
-$reqProfil->execute([$profile_id]);
-$userProfile = $reqProfil->fetch(PDO::FETCH_ASSOC);
+$requete = $bdd->prepare("SELECT * FROM users WHERE id_u = ?");
+$requete->execute([$profile_id]);
+$user = $requete->fetch();
 
-// Si l'utilisateur n'existe pas, rediriger
-if (!$userProfile) {
-    header('Location: ../home.php?error=Utilisateur introuvable');
+if (!$user) {
+    header('Location: ../index.php?error=Utilisateur introuvable');
     exit;
 }
 
-// Traitement de la mise à jour du profil (si c'est le profil de l'utilisateur connecté)
+// Si c'est le profil de l'utilisateur connecté et qu'il soumet le formulaire
 $error = '';
 $success = '';
 
-if ($is_own_profile && isset($_POST['submit'])) {
-    $login = trim($_POST['login']);
-    $email = trim($_POST['email']);
-
-    // Validation de l'email
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Adresse email invalide.";
+if ($profile_id == $_SESSION['id_u'] && isset($_POST['submit'])) {
+    $login = htmlspecialchars($_POST['login']);
+    $email = htmlspecialchars($_POST['email']);
+    
+    // Validation des données
+    if (empty($login) || empty($email)) {
+        $error = "Tous les champs obligatoires doivent être remplis";
     } else {
+        // Si mot de passe fourni, le mettre à jour
         if (!empty($_POST['mdp'])) {
             if ($_POST['mdp'] !== $_POST['mdpConfirm']) {
-                $error = "Les mots de passe ne correspondent pas.";
+                $error = "Les mots de passe ne correspondent pas";
             } else {
-                $mdp = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
+                // Utiliser SHA1 comme dans votre système existant
+                $mdp = sha1($_POST['mdp']);
                 $update = $bdd->prepare("UPDATE users SET login = ?, email = ?, mdp = ? WHERE id_u = ?");
                 $update->execute([$login, $email, $mdp, $_SESSION['id_u']]);
-                $success = "Profil mis à jour avec succès (mot de passe inclus)";
+                $success = "Profil mis à jour avec succès";
+                
+                // Mettre à jour les données de session
+                $_SESSION['login'] = $login;
             }
         } else {
+            // Mise à jour sans changer le mot de passe
             $update = $bdd->prepare("UPDATE users SET login = ?, email = ? WHERE id_u = ?");
             $update->execute([$login, $email, $_SESSION['id_u']]);
             $success = "Profil mis à jour avec succès";
+            
+            // Mettre à jour les données de session
+            $_SESSION['login'] = $login;
         }
     }
-
+    
+    // Rafraîchir les données
     if (empty($error)) {
-        $reqProfil->execute([$profile_id]);
-        $userProfile = $reqProfil->fetch(PDO::FETCH_ASSOC);
-        $_SESSION['login'] = $userProfile['login'];
+        $requete->execute([$profile_id]);
+        $user = $requete->fetch();
     }
 }
 
-// Récupérer les publications de l'utilisateur
-$reqPublications = $bdd->prepare("
-    SELECT i.id_img, i.nom, i.chemin, i.date_img, i.base64_data 
-    FROM images i 
-    WHERE i.u_id = ? 
-    ORDER BY i.date_img DESC 
-    LIMIT 10
-");
-$reqPublications = $bdd->prepare("
-    SELECT i.id_img, i.nom, i.chemin, i.date_img 
-    FROM images i 
-    WHERE i.u_id = ? 
-    ORDER BY i.date_img DESC 
-    LIMIT 10
-");
-$publications = $reqPublications->fetchAll(PDO::FETCH_ASSOC);
-
-// Vérifier si l'utilisateur courant est ami avec le profil consulté
+// Vérifier si c'est un ami
 $is_friend = false;
-if (!$is_own_profile) {
-    $checkFriend = $bdd->prepare("
-        SELECT * FROM amis 
-        WHERE (id_demandeur = ? AND id_receveur = ?) 
-        OR (id_demandeur = ? AND id_receveur = ?)
-    ");
-    $checkFriend->execute([$_SESSION['id_u'], $profile_id, $profile_id, $_SESSION['id_u']]);
-    $is_friend = ($checkFriend->rowCount() > 0);
+if (isset($_SESSION['friends']) && in_array($profile_id, $_SESSION['friends'])) {
+    $is_friend = true;
 }
 
-// Obtenir le niveau d'utilisateur
-$user_level = $userProfile['lvl'] ?? 1;
-$niveau_texte = match($user_level) {
-    1 => "Novice",
-    2 => "Membre",
-    3 => "Modérateur",
-    4 => "Administrateur",
-    default => "Inconnu"
-};
+$title = "Profil de " . htmlspecialchars($user['login']);
 ?>
 
-<div class="container mt-5 pt-3">
-    <div class="row">
-        <!-- Profil -->
-        <div class="col-md-4 mb-4">
-            <div class="card shadow">
-                <div class="card-header bg-dark text-light">
-                    <h4 class="mb-0"><?= htmlspecialchars($userProfile['login']) ?></h4>
-                </div>
-                <div class="card-body text-center">
-                    <img 
-                        src="../avatar.php?id=<?= $profile_id ?>" 
-                        class="rounded-circle mb-3" 
-                        width="150" height="150" 
-                        alt="Avatar de <?= htmlspecialchars($userProfile['login']) ?>"
-                    >
-                    <h5 class="mb-3" style="color: #00FF00;"><?= htmlspecialchars($niveau_texte) ?></h5>
-                    <p><i class="fas fa-envelope me-2"></i> <?= htmlspecialchars($userProfile['email']) ?></p>
-                    <p><i class="fas fa-calendar me-2"></i> Membre depuis: <?= date('d/m/Y', strtotime($userProfile['date_u'] ?? 'now')) ?></p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $title; ?> - Metaforge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/header.css">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            color: #00FF00;
+        }
+        
+        .profile-title {
+            color: #00FF00;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            color: #00FF00;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background-color: #00FF00;
+            border-color: #00FF00;
+            color: #000;
+            font-weight: bold;
+        }
+        
+        .btn-primary:hover {
+            background-color: #00CC00;
+            border-color: #00CC00;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <?php include "../includes/header.php"; ?>
 
-                    <?php if (!$is_own_profile): ?>
-                        <div class="mt-4">
-                            <?php if ($is_friend): ?>
-                                <button class="btn btn-success" disabled><i class="fas fa-check me-2"></i> Ami</button>
-                            <?php else: ?>
-                                <form method="POST" action="amis-unified.php" class="d-inline">
-                                    <input type="hidden" name="friend_id" value="<?= $profile_id ?>">
-                                    <input type="hidden" name="redirect" value="1">
-                                    <button type="submit" class="btn btn-outline-success"><i class="fas fa-user-plus me-2"></i> Ajouter en ami</button>
-                                </form>
-                            <?php endif; ?>
-                            <a href="messages.php?user=<?= $profile_id ?>" class="btn btn-outline-primary ms-2"><i class="fas fa-envelope me-2"></i> Message</a>
-                        </div>
-                    <?php endif; ?>
-                </div>
+    <div class="container profile-container">
+        <?php if (!empty($error)): ?>
+            <div class="alert alert-danger"><?php echo $error; ?></div>
+        <?php endif; ?>
+
+        <?php if (!empty($success)): ?>
+            <div class="alert alert-success"><?php echo $success; ?></div>
+        <?php endif; ?>
+        
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
             </div>
-
-            <?php if ($is_own_profile): ?>
-                <div class="card shadow mt-4">
-                    <div class="card-header bg-dark text-light">
-                        <h5 class="mb-0">Modifier votre profil</h5>
-                    </div>
-                    <div class="card-body">
-                        <?php if ($error): ?><div class="alert alert-danger"><?= $error ?></div><?php endif; ?>
-                        <?php if ($success): ?><div class="alert alert-success"><?= $success ?></div><?php endif; ?>
-
-                        <form method="POST" action="">
-                            <div class="mb-3">
-                                <label for="login" class="form-label">Nom d'utilisateur</label>
-                                <input type="text" class="form-control" id="login" name="login" value="<?= htmlspecialchars($userProfile['login']) ?>" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" value="<?= htmlspecialchars($userProfile['email']) ?>" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="mdp" class="form-label">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
-                                <input type="password" class="form-control" id="mdp" name="mdp">
-                            </div>
-                            <div class="mb-3">
-                                <label for="mdpConfirm" class="form-label">Confirmez le mot de passe</label>
-                                <input type="password" class="form-control" id="mdpConfirm" name="mdpConfirm">
-                            </div>
-                            <button type="submit" name="submit" class="btn btn-success w-100"><i class="fas fa-save me-2"></i> Enregistrer les modifications</button>
-                        </form>
-                    </div>
-                </div>
+            <h1 class="profile-title"><?php echo htmlspecialchars($user['login']); ?></h1>
+            <?php if ($user['lvl'] > 0): ?>
+                <span class="badge bg-warning text-dark">Administrateur</span>
             <?php endif; ?>
         </div>
 
-        <!-- Publications -->
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-dark text-light d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Publications</h4>
-                    <?php if ($is_own_profile): ?>
-                        <a href="poster.php" class="btn btn-success btn-sm"><i class="fas fa-plus me-2"></i> Nouvelle publication</a>
-                    <?php endif; ?>
+        <?php if ($profile_id == $_SESSION['id_u']): ?>
+            <!-- Formulaire d'édition si c'est le profil de l'utilisateur connecté -->
+            <form method="post" class="mt-4">
+                <div class="form-group">
+                    <label for="loginInput">Nom d'utilisateur :</label>
+                    <input
+                        type="text"
+                        name="login"
+                        value="<?php echo htmlspecialchars($user['login']); ?>"
+                        class="form-control"
+                        id="loginInput"
+                        placeholder="Nom d'utilisateur">
                 </div>
+                <div class="form-group">
+                    <label for="emailInput">Email :</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value="<?php echo htmlspecialchars($user['email']); ?>"
+                        class="form-control"
+                        id="emailInput"
+                        placeholder="Adresse email">
+                </div>
+                <div class="form-group">
+                    <label for="passwordInput">Nouveau mot de passe :</label>
+                    <input
+                        type="password"
+                        name="mdp"
+                        class="form-control"
+                        id="passwordInput"
+                        placeholder="Laissez vide pour conserver l'actuel">
+                </div>
+                <div class="form-group">
+                    <label for="passwordConfirmInput">Confirmer le mot de passe :</label>
+                    <input
+                        type="password"
+                        name="mdpConfirm"
+                        class="form-control"
+                        id="passwordConfirmInput"
+                        placeholder="Confirmez le nouveau mot de passe">
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" name="submit" class="btn btn-primary">Mettre à jour le profil</button>
+                </div>
+            </form>
+        <?php else: ?>
+            <!-- Affichage simple pour le profil d'un autre utilisateur -->
+            <div class="card mt-4">
                 <div class="card-body">
-                    <?php if (empty($publications)): ?>
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>
-                            <?= $is_own_profile ? "Vous n'avez pas encore de publications." : "Cet utilisateur n'a pas encore de publications." ?>
-                        </div>
-                    <?php else: ?>
-                        <div class="row">
-                            <?php foreach ($publications as $pub): ?>
-                                <div class="col-md-6 mb-4">
-                                    <div class="card h-100 border-0 shadow-sm">
-                                        <?php if (!empty($pub['base64_data'])): ?>
-                                            <img src="<?= htmlspecialchars($pub['base64_data']) ?>" class="card-img-top" alt="<?= htmlspecialchars($pub['nom']) ?>" style="height: 200px; object-fit: cover;">
-                                        <?php elseif (!empty($pub['chemin'])): ?>
-                                            <img src="../ImgU/<?= basename($pub['chemin']) ?>" class="card-img-top" alt="<?= htmlspecialchars($pub['nom']) ?>" style="height: 200px; object-fit: cover;" onerror="this.onerror=null; this.src='../avatar/avatar_1.png';">
-                                        <?php endif; ?>
-                                        <div class="card-body">
-                                            <h5 class="card-title" style="color: #00FF00;"><?= htmlspecialchars($pub['nom']) ?></h5>
-                                            <p class="card-text text-muted"><small><i class="far fa-clock me-1"></i> <?= date('d/m/Y H:i', strtotime($pub['date_img'])) ?></small></p>
-                                        </div>
-                                        <div class="card-footer bg-light border-0">
-                                            <a href="../home.php?post=<?= $pub['id_img'] ?>" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye me-1"></i> Voir</a>
-                                            <?php if ($is_own_profile): ?>
-                                                <button class="btn btn-sm btn-outline-danger float-end delete-post" data-post-id="<?= $pub['id_img'] ?>"><i class="fas fa-trash me-1"></i> Supprimer</button>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                    <h5 class="card-title" style="color: #00FF00;">Informations</h5>
+                    <p class="card-text"><strong>Email :</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                    
+                    <?php if (isset($_SESSION['id_u']) && $_SESSION['id_u'] != $profile_id): ?>
+                        <div class="d-grid gap-2 mt-3">
+                            <?php if (!$is_friend): ?>
+                                <a href="add_friend.php?friend_id=<?php echo $user['id_u']; ?>" class="btn btn-success">Ajouter en ami</a>
+                            <?php else: ?>
+                                <button class="btn btn-outline-success disabled">Déjà ami</button>
+                            <?php endif; ?>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
+        <?php endif; ?>
+        
+        <div class="text-center mt-4">
+            <a href="../home.php" class="btn btn-secondary">Retour à l'accueil</a>
         </div>
     </div>
-</div>
 
-<?php if ($is_own_profile): ?>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const deleteButtons = document.querySelectorAll('.delete-post');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-post-id');
-            if (confirm('Êtes-vous sûr de vouloir supprimer cette publication ?')) {
-                fetch('../includes/delete_post.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: 'post_id=' + postId
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.reload();
-                    } else {
-                        alert(data.message || 'Une erreur est survenue');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erreur:', error);
-                    alert('Une erreur est survenue lors de la suppression');
-                });
-            }
-        });
-    });
-});
-</script>
-<?php endif; ?>
-
-<?php include "../includes/footer.php"; ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/script.js"></script>
+</body>
+</html>

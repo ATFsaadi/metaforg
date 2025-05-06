@@ -3,7 +3,6 @@ function connexion($host, $dbname, $user, $password) {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
     return $pdo;
 }
-
 function ForgotPassword() {
     $chaine = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $mdp = "";
@@ -15,6 +14,7 @@ function ForgotPassword() {
     $mdp .= $chaine[rand(92,121)];
     return $mdp;
 }
+
 
 function input($label, $name, $type) {
     $html = "<div class='mb-3'>
@@ -34,7 +34,6 @@ function inputTextArea($label, $name) {
     
     echo $html;
 }
-
 function TypeFile($label, $name) {
     $html = "<div class='mb-3'>
     <label for='$name' class='form-label'>$label</label>

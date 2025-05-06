@@ -1,7 +1,6 @@
 <?php 
-session_start();
-include "../includes/connexion.php";
-include "../includes/header-PG.php";
+session_start(); // Démarre la session
+include "includes/connexion.php";
 
 // Vérifie si l'utilisateur est admin (niveau 2 ou plus)
 if (!isset($_SESSION['lvl']) || $_SESSION['lvl'] < 2) {

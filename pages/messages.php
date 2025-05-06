@@ -2,7 +2,6 @@
 ob_start();
 session_start();
 include "../includes/connexion.php";
-include "../includes/header-PG.php";
 
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
@@ -26,30 +25,6 @@ $req_conversations = $bdd->prepare("
 ");
 $req_conversations->execute(['user_id' => $user_id]);
 $conversations = $req_conversations->fetchAll(PDO::FETCH_ASSOC);
-// Précharger les logins des contacts
-
-$users_logins = [];
-
-$contact_ids = array_column($conversations, 'contact_id');
-
-
-
-if (!empty($contact_ids)) {
-
-    $in = implode(',', array_fill(0, count($contact_ids), '?'));
-
-    $req_users = $bdd->prepare("SELECT id_u, login FROM users WHERE id_u IN ($in)");
-
-    $req_users->execute($contact_ids);
-
-    foreach ($req_users->fetchAll(PDO::FETCH_ASSOC) as $u) {
-
-        $users_logins[$u['id_u']] = $u['login'];
-
-    }
-
-}
-
 
 // Si une conversation est sélectionnée
 $contact_id = isset($_GET['contact']) ? intval($_GET['contact']) : null;
@@ -118,97 +93,332 @@ if (isset($_POST['search_user'])) {
     $search_results = $req_search->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
-        <title>Messages - MetaForg</title>
-<div class="container mt-5 pt-4" id="reche-messag">
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
-            <div class="messages-container d-flex">
-                <!-- Liste des contacts -->
-                <div class="contacts-list p-3 border-end" style="width: 300px;">
-                    <form method="POST" class="mb-3">
-                        <div class="input-group">
-                            <input type="text" name="search_term" class="form-control" placeholder="Rechercher un utilisateur..." required>
-                            <button type="submit" name="search_user" class="btn btn-outline-primary">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                        <?php if (!empty($search_results)): ?>
-                            <div class="search-results mt-2">
-                                <?php foreach ($search_results as $result): ?>
-                                    <div class="search-result-item" style="cursor:pointer" onclick="window.location.href='messages.php?contact=<?= $result['id_u'] ?>'">
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messagerie - MetaForg</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Styles personnalisés -->
+    <link rel="stylesheet" href="../assets/css/header.css">
+    <link rel="stylesheet" href="../assets/css/home_style.css">
+    
+    <style>
+        .messages-container {
+            height: calc(100vh - 200px);
+            display: flex;
+        }
+        
+        .contacts-list {
+            width: 300px;
+            overflow-y: auto;
+            border-right: 1px solid #333;
+            padding: 0;
+        }
+        
+        .contact-item {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .contact-item:hover, .contact-item.active {
+            background-color: #2A2A2A;
+        }
+        
+        .messages-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .messages-header {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            background-color: #1E1E1E;
+        }
+        
+        .messages-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message-item {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .message-sent {
+            background-color: #00FF00;
+            color: #121212;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .message-received {
+            background-color: #2A2A2A;
+            color: #FFFFFF;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+        
+        .message-form {
+            padding: 15px;
+            background-color: #1E1E1E;
+            border-top: 1px solid #333;
+            display: flex;
+        }
+        
+        .message-input {
+            flex-grow: 1;
+            border-radius: 20px;
+            border: 1px solid #333;
+            padding: 10px 15px;
+            background-color: #2A2A2A;
+            color: #FFFFFF;
+        }
+        
+        .send-button {
+            background-color: #00FF00;
+            color: #121212;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .new-conversation {
+            padding: 15px;
+            background-color: #1E1E1E;
+            border-bottom: 1px solid #333;
+        }
+        
+        .search-results {
+            background-color: #2A2A2A;
+            border: 1px solid #333;
+            border-radius: 5px;
+            position: absolute;
+            width: 280px;
+            z-index: 1000;
+        }
+        
+        .search-result-item {
+            padding: 10px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+        }
+        
+        .search-result-item:hover {
+            background-color: #333;
+        }
+        
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: #777;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #00FF00;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barre de navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../home.php">
+                <strong>MetaForg</strong>
+            </a>
+            
+            <div class="d-flex align-items-center ms-auto me-2">
+                <form class="d-flex me-2" action="recherche.php" method="GET">
+                    <div class="input-group">
+                        <input type="search" class="form-control rounded-pill" placeholder="Rechercher sur MetaForg..." aria-label="Search" name="q">
+                        <button class="btn btn-outline-primary rounded-pill ms-2" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="d-flex align-items-center">
+                <a href="profil.php?id=<?= $_SESSION['id_u'] ?>" class="text-decoration-none me-3">
+                    <i class="fas fa-user"></i>
+                </a>
+                <a href="amis.php" class="text-decoration-none me-3">
+                    <i class="fas fa-user-friends"></i>
+                </a>
+                <a href="messages.php" class="text-decoration-none me-3">
+                    <i class="fas fa-envelope" style="color: #00FF00;"></i>
+                </a>
+                <div class="dropdown">
+                    <a class="dropdown-toggle text-decoration-none" href="#" role="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <strong class="me-1"><?= htmlspecialchars($_SESSION['login']) ?></strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuDropdown">
+                        <li><a class="dropdown-item" href="profil.php?id=<?= $_SESSION['id_u'] ?>">Mon profil</a></li>
+                        <li><a class="dropdown-item" href="compte.php">Paramètres</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="../logout.php">Déconnexion</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="container mt-5 pt-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <div class="messages-container">
+                    <!-- Liste des contacts -->
+                    <div class="contacts-list">
+                        <div class="new-conversation">
+                            <form method="POST" action="" class="position-relative">
+                                <div class="input-group">
+                                    <input type="text" name="search_term" class="form-control" placeholder="Rechercher un utilisateur..." required>
+                                    <button type="submit" name="search_user" class="btn btn-outline-primary">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                
+                                <?php if (isset($search_results) && !empty($search_results)): ?>
+                                <div class="search-results mt-2">
+                                    <?php foreach ($search_results as $result): ?>
+                                    <div class="search-result-item" onclick="window.location.href='messages.php?contact=<?= $result['id_u'] ?>'">
                                         <?= htmlspecialchars($result['login']) ?>
                                     </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                    </form>
-
-                    <?php if (!empty($conversations)): ?>
+                                    <?php endforeach; ?>
+                                </div>
+                                <?php endif; ?>
+                            </form>
+                        </div>
+                        
                         <?php foreach ($conversations as $conversation): 
-                            $cid = $conversation['contact_id'];
-                            if (!$cid || !isset($users_logins[$cid])) continue;
+                            if (empty($conversation['contact_id'])) continue;
+                            
+                            $req_user = $bdd->prepare("SELECT login FROM users WHERE id_u = :contact_id");
+                            $req_user->execute(['contact_id' => $conversation['contact_id']]);
+                            $user = $req_user->fetch(PDO::FETCH_ASSOC);
+                            
+                            if (!$user) continue;
                         ?>
-                            <div class="contact-item <?= ($contact_id == $cid) ? 'bg-light' : '' ?> p-2 rounded mb-2" style="cursor:pointer" onclick="window.location.href='messages.php?contact=<?= $cid ?>'">
-                                <div class="d-flex align-items-center">
-                                    <img src="../assets/images/default_avatar.png" class="rounded-circle me-2" width="40" height="40">
-                                    <div class="fw-bold"><?= htmlspecialchars($users_logins[$cid]) ?></div>
+                        <div class="contact-item <?= (isset($contact_id) && $contact_id == $conversation['contact_id']) ? 'active' : '' ?>" 
+                             onclick="window.location.href='messages.php?contact=<?= $conversation['contact_id'] ?>'">
+                            <div class="d-flex align-items-center">
+                                <div class="me-2">
+                                    <img src="../assets/images/default_avatar.png" alt="Avatar" class="rounded-circle" width="40" height="40">
+                                </div>
+                                <div>
+                                    <div class="fw-bold"><?= htmlspecialchars($user['login']) ?></div>
                                 </div>
                             </div>
+                        </div>
                         <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="text-center text-muted mt-3">
+                        
+                        <?php if (empty($conversations)): ?>
+                        <div class="p-3 text-center text-muted">
                             <p>Aucune conversation</p>
                             <p>Recherchez un utilisateur pour commencer</p>
                         </div>
-                    <?php endif; ?>
-                </div>
-
-                <!-- Zone de messages -->
-                <div class="messages-area flex-grow-1 d-flex flex-column">
-                    <?php if ($contact_info): ?>
-                        <div class="messages-header p-3 border-bottom d-flex align-items-center">
-                            <img src="../assets/images/default_avatar.png" class="rounded-circle me-2" width="40" height="40">
-                            <div class="fw-bold"><?= htmlspecialchars($contact_info['login']) ?></div>
-                        </div>
-
-                        <div class="messages-list flex-grow-1 overflow-auto p-3" id="messagesList" style="height: 400px;">
-                            <?php if (!empty($messages)): ?>
-                                <?php foreach ($messages as $message): ?>
-                                    <div class="message-item mb-2 <?= ($message['id_exp'] == $user_id) ? 'text-end' : 'text-start' ?>">
-                                        <div class="d-inline-block p-2 rounded <?= ($message['id_exp'] == $user_id) ? 'bg-primary text-white' : 'bg-light' ?>">
-                                            <?= nl2br(htmlspecialchars($message['message'])) ?>
-                                            <div class="small text-muted mt-1"><?= date('H:i', strtotime($message['date_env'])) ?></div>
-                                        </div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <!-- Zone de messages -->
+                    <div class="messages-area">
+                        <?php if (isset($contact_info) && $contact_info): ?>
+                            <div class="messages-header">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-2">
+                                        <img src="../assets/images/default_avatar.png" alt="Avatar" class="rounded-circle" width="40" height="40">
                                     </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <div class="text-center text-muted mt-3">
-                                    <p>Aucun message</p>
-                                    <p>Commencez à discuter avec <?= htmlspecialchars($contact_info['login']) ?></p>
+                                    <div>
+                                        <div class="fw-bold"><?= htmlspecialchars($contact_info['login']) ?></div>
+                                    </div>
                                 </div>
-                            <?php endif; ?>
-                        </div>
-
-                        <form method="POST" class="d-flex border-top p-3">
-                            <input type="text" name="message" class="form-control me-2" placeholder="Tapez votre message..." required maxlength="1000">
-                            <button type="submit" name="send_message" class="btn btn-primary">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </form>
-                    <?php else: ?>
-                        <div class="d-flex justify-content-center align-items-center flex-grow-1 text-center p-5">
-                            <div>
-                                <i class="fas fa-comments fa-3x mb-3 text-muted"></i>
-                                <h3 class="mb-2">Bienvenue dans votre messagerie</h3>
+                            </div>
+                            
+                            <div class="messages-list" id="messagesList">
+                                <?php if (isset($messages) && !empty($messages)): 
+                                    foreach ($messages as $message): ?>
+                                        <div class="message-item <?= ($message['id_exp'] == $user_id) ? 'message-sent' : 'message-received' ?>">
+                                            <?= nl2br(htmlspecialchars($message['message'])) ?>
+                                            <div class="message-time">
+                                                <?= date('H:i', strtotime($message['date_env'])) ?>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <div class="text-center text-muted mt-3">
+                                        <p>Aucun message</p>
+                                        <p>Commencez à discuter avec <?= htmlspecialchars($contact_info['login']) ?></p>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <form class="message-form" method="POST" action="">
+                                <input type="text" name="message" class="message-input" placeholder="Tapez votre message..." required>
+                                <button type="submit" name="send_message" class="send-button">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        <?php else: ?>
+                            <div class="empty-state">
+                                <i class="fas fa-comments"></i>
+                                <h3>Bienvenue dans votre messagerie</h3>
                                 <p>Sélectionnez une conversation ou démarrez-en une nouvelle</p>
                             </div>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Faire défiler automatiquement vers le bas de la conversation
+        document.addEventListener('DOMContentLoaded', function() {
+            const messagesList = document.getElementById('messagesList');
+            if (messagesList) {
+                messagesList.scrollTop = messagesList.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
 <?php ob_end_flush(); ?>
-<?php include '../includes/footer.php'; ?>

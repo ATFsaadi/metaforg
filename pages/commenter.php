@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 include "includes/connexion.php";
 
 if (!isset($_SESSION['login']) || !isset($_POST['publication_id'])) {
