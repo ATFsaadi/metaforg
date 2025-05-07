@@ -32,19 +32,16 @@
 
                 <!-- Formulaire de recherche avec une icône de loupe -->
                 <div class="d-flex align-items-center ms-auto me-2">
-                    <form class="d-flex me-2" action="../pages/recherche.php" method="POST">
-                        <!-- Formulaire avec le champ de recherche et le bouton à l'intérieur -->
+                    <form class="d-flex me-2" action="../pages/recherche.php" method="GET">
                         <div class="input-group">
-                            <!-- Champ de recherche -->
                             <input
                                 type="search"
                                 class="form-control rounded-pill"
                                 placeholder="Rechercher sur MetaForg..."
                                 aria-label="Search"
-                                name="q">
-
-                            <!-- Bouton de recherche avec l'icône de la loupe à l'intérieur -->
-                            <button class="search-btn input-group-text">
+                                name="q"
+                                value="<?= isset($_GET['q']) ? htmlspecialchars($_GET['q']) : '' ?>"/>
+                            <button class="search-btn input-group-text" type="submit">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="26px"
@@ -84,7 +81,7 @@
                     id="userMenuDropdown"
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    <strong class="me-1"><?= htmlspecialchars($_SESSION['login']) ?></strong>
+                    <strong class="me-1"><?= strtoupper(htmlspecialchars($_SESSION['login'])) ?></strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuDropdown">
                     <li>

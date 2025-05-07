@@ -13,9 +13,11 @@ if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
 $user_id = $_SESSION['id_u'];
 $search_results = [];
 
-// Recherche d'utilisateurs
-if (isset($_POST['search_user'])) {
-    $search_term = '%' . $_POST['search_term'] . '%';
+// Recherche d'utilisateurs (en utilisant GET)
+if (isset($_GET['q']) && !empty($_GET['q'])) {
+    $search_term = '%' . $_GET['q'] . '%';
+
+    // Recherche dans la base de données
     $req_search = $bdd->prepare("
         SELECT id_u, login
         FROM users
@@ -34,15 +36,16 @@ if (isset($_POST['search_user'])) {
         <div class="card-body p-0">
             <div class="search-container p-3">
                 <!-- Formulaire de recherche -->
-                <form method="POST" class="mb-3">
+                <form method="GET" class="mb-3">
                     <div class="input-group">
-                        <input type="text" name="search_term" class="form-control" placeholder="Rechercher un utilisateur..." required>
-                        <button type="submit" name="search_user" class="btn btn-outline-primary">
+                        <input type="text" name="q" class="form-control" placeholder="Rechercher un utilisateur..." value="<?= isset($_GET['q']) ? htmlspecialchars($_GET['q']) : '' ?>" required>
+                        <button type="submit" class="btn btn-outline-primary">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
                 </form>
 
+                <!-- Affichage des résultats de la recherche -->
                 <?php if (!empty($search_results)): ?>
                     <div class="search-results mt-3">
                         <h5>Résultats de la recherche:</h5>
@@ -56,7 +59,7 @@ if (isset($_POST['search_user'])) {
                             </div>
                         <?php endforeach; ?>
                     </div>
-                <?php elseif (isset($_POST['search_user'])): ?>
+                <?php elseif (isset($_GET['q'])): ?>
                     <div class="text-center text-muted mt-3">
                         <p>Aucun utilisateur trouvé.</p>
                     </div>
@@ -66,8 +69,24 @@ if (isset($_POST['search_user'])) {
     </div>
 </div>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Menu déroulant de l'utilisateur -->
+<div class="dropdown">
+    <a class="dropdown-toggle text-decoration-none" href="#" role="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <strong class="me-1"><?= strtoupper(htmlspecialchars($_SESSION['login'])) ?></strong>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuDropdown">
+        <li>
+            <a class="dropdown-item" href="pages/profil.php?id=<?= $_SESSION['id_u'] ?>">Mon profil</a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="pages/compte.php">Paramètres</a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+            <a class="dropdown-item" href="logout.php">Déconnexion</a>
+        </li>
+    </ul>
+</div>
 
 <?php
 ob_end_flush();

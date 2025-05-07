@@ -109,3 +109,13 @@ INSERT INTO users (login, email, mdp, lvl, IP, age, langue, pays) VALUES
 ('user19', 'user19@example.com', 'mdp19', 2, '192.168.0.19', 29, 'en', 'USA'),
 ('user20', 'user20@example.com', 'mdp20', 3, '192.168.0.20', 22, 'it', 'Italy');
 
+CREATE TABLE notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,                             -- L'utilisateur qui reçoit la notification
+    type ENUM('message', 'invitation') NOT NULL,      -- Type de notification
+    contenu TEXT NOT NULL,                            -- Le contenu de la notification
+    date DATETIME DEFAULT CURRENT_TIMESTAMP,          -- La date de la notification
+    lu BOOLEAN DEFAULT FALSE,                         -- Si la notification a été lue ou pas
+    FOREIGN KEY (user_id) REFERENCES users(id_u)     -- Référence à l'utilisateur
+);
+

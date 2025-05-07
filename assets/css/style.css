@@ -277,12 +277,12 @@ footer {
 }
 
 .search-icon {
-  fill: var(--color-primary);
+  fill:var(--color-success);
   transition: fill 1s ease;
 }
 
 .search-icon:hover {
-  fill: var(--color-success);
+  fill: #00ff007e;
   animation: bounce 1s ease;
 }
 
