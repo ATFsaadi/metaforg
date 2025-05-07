@@ -1,43 +1,98 @@
 <?php
-ob_start();
-session_start();
-include "includes/connexion.php";
-
+// Pagination
 $page = $_GET['page'] ?? 1;
 $limit = 10;
 $offset = ($page - 1) * $limit;
 
-$req = $bdd->prepare("
-    SELECT p.*, u.login 
-    FROM publications p
-    JOIN users u ON p.user_id = u.id_u
-    ORDER BY p.date DESC
-    LIMIT :limit OFFSET :offset
-");
+$req = $bdd->prepare("SELECT p.*, u.login FROM publications p JOIN users u ON p.user_id = u.id_u ORDER BY p.date DESC LIMIT :limit OFFSET :offset");
 $req->bindValue(':limit', $limit, PDO::PARAM_INT);
 $req->bindValue(':offset', $offset, PDO::PARAM_INT);
 $req->execute();
+$posts = $req->fetchAll(PDO::FETCH_ASSOC);
+
+if ($posts === false) {
+    $posts = [];
+}
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Fil d'actualité</title>
-</head>
-<body>
+<div class="container">
+    
+<div id="fil-actualite">
+    <?php if (!empty($posts)): ?>
+        <?php foreach ($posts as $post): ?>
+            <div class="publication-card mb-4 p-3 border rounded shadow-sm">
+                <div class="post-header mb-2">
+                    <strong><?= htmlspecialchars($post['login']) ?></strong>
+                </div>
+                <div class="post-content mb-2">
+                    <?= nl2br(htmlspecialchars($post['message'] ?? 'Aucun message disponible')) ?>
+                </div>
+                <?php if (!empty($post['image'])): ?>
+                    <div class="post-image">
+                        <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Image de publication" class="img-fluid rounded">
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p class="no-posts text-muted">Aucune publication trouvée.</p>
+    <?php endif; ?>
+</div>
 
-<h2>Fil d'actualité</h2>
 
-<?php foreach ($posts as $post): ?>
-    <div>
-        <p><strong><?php echo htmlspecialchars($post['login']); ?></strong></p>
-        <p><?php echo htmlspecialchars($post['message']); ?></p>
-        <?php if ($post['image']): ?>
-            <img src="uploads/<?php echo htmlspecialchars($post['image']); ?>" width="200">
-        <?php endif; ?>
+    <!-- Pagination -->
+    <div class="pagination">
+        <?php
+        $total = $bdd->query("SELECT COUNT(*) FROM publications")->fetchColumn();
+        $pages = ceil($total / $limit);
+        
+        for ($i = 1; $i <= $pages; $i++): 
+            $active = ($i == $page) ? 'active' : '';
+        ?>
+            <a href="?page=<?= $i ?>" class="page-link <?= $active ?>"><?= $i ?></a>
+        <?php endfor; ?>
     </div>
-<?php endforeach; ?>
 
-</body>
-</html>
+    <!-- Actualités Gaming -->
+    <div id="rss-news">
+        <h3 class="news-section-title">🎮 Dernières actualités des sites gaming</h3>
+        
+        <div class="news-source">
+            <h4>ActuGaming</h4>
+            <div id="actugaming-list" class="news-list"></div>
+        </div>
+        
+        <div class="news-source">
+            <h4>JVFrance</h4>
+            <div id="jvfrance-list" class="news-list"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fonction générique pour charger les actualités
+    function loadRSS(feedUrl, containerId) {
+        fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`)
+            .then(response => response.json())
+            .then(data => {
+                let html = '<ul>';
+                (data.items || []).slice(0, 5).forEach(item => {
+                    html += `<li class="news-item">
+                        <a href="${item.link}" target="_blank" class="news-link">
+                            ${item.title}
+                        </a>
+                    </li>`;
+                });
+                html += '</ul>';
+                document.getElementById(containerId).innerHTML = html;
+            })
+            .catch(() => {
+                document.getElementById(containerId).innerHTML = 
+                    "<p class='error-message'>Impossible de récupérer les actualités.</p>";
+            });
+    }
+
+    // Charger les deux flux
+    loadRSS('https://www.actugaming.net/feed/', 'actugaming-list');
+    loadRSS('https://www.jvfrance.com/feed/', 'jvfrance-list');
+</script>
