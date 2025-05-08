@@ -10,7 +10,6 @@ if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
     exit;
 }
 
-// ID de l'utilisateur connecté
 $user_id = $_SESSION['id_u'];
 
 // Récupération des conversations
@@ -26,42 +25,39 @@ $req_conversations = $bdd->prepare("
 ");
 $req_conversations->execute(['user_id' => $user_id]);
 $conversations = $req_conversations->fetchAll(PDO::FETCH_ASSOC);
+
 // Précharger les logins des contacts
-
 $users_logins = [];
-
 $contact_ids = array_column($conversations, 'contact_id');
 
-
-
 if (!empty($contact_ids)) {
-
     $in = implode(',', array_fill(0, count($contact_ids), '?'));
-
     $req_users = $bdd->prepare("SELECT id_u, login FROM users WHERE id_u IN ($in)");
-
     $req_users->execute($contact_ids);
-
     foreach ($req_users->fetchAll(PDO::FETCH_ASSOC) as $u) {
-
         $users_logins[$u['id_u']] = $u['login'];
-
     }
-
 }
 
-
-// Si une conversation est sélectionnée
+// ID du contact sélectionné
 $contact_id = isset($_GET['contact']) ? intval($_GET['contact']) : null;
 $contact_info = null;
 
-// Si on a un contact sélectionné, récupérer ses informations
+// Si un contact est sélectionné
 if ($contact_id) {
+    // ✅ Mise à jour des messages comme lus
+    $bdd->prepare("UPDATE envoyer SET lu = 1 WHERE id_exp = :contact_id AND id_recept = :user_id AND lu = 0")
+        ->execute([
+            'contact_id' => $contact_id,
+            'user_id' => $user_id
+        ]);
+
+    // Récupération des infos du contact
     $req_contact = $bdd->prepare("SELECT id_u, login FROM users WHERE id_u = :contact_id");
     $req_contact->execute(['contact_id' => $contact_id]);
     $contact_info = $req_contact->fetch(PDO::FETCH_ASSOC);
-    
-    // Si contact existe, récupérer les messages
+
+    // Récupération des messages
     if ($contact_info) {
         $req_messages = $bdd->prepare("
             SELECT e.*, u1.login as exp_login, u2.login as recept_login 
@@ -69,7 +65,7 @@ if ($contact_id) {
             JOIN users u1 ON e.id_exp = u1.id_u
             JOIN users u2 ON e.id_recept = u2.id_u
             WHERE (e.id_exp = :user_id AND e.id_recept = :contact_id)
-            OR (e.id_exp = :contact_id AND e.id_recept = :user_id)
+               OR (e.id_exp = :contact_id AND e.id_recept = :user_id)
             ORDER BY e.date_env ASC
         ");
         $req_messages->execute([
@@ -80,10 +76,9 @@ if ($contact_id) {
     }
 }
 
-// Traitement de l'envoi de message
+// Envoi de message
 if (isset($_POST['send_message']) && $contact_id) {
     $message = trim($_POST['message']);
-    
     if (!empty($message)) {
         $req_insert = $bdd->prepare("
             INSERT INTO envoyer (id_exp, id_recept, message, date_env)
@@ -94,17 +89,14 @@ if (isset($_POST['send_message']) && $contact_id) {
             'recept_id' => $contact_id,
             'message' => $message
         ]);
-        
-        // Redirection pour éviter double soumission
         header("Location: messages.php?contact=" . $contact_id);
         exit;
     }
 }
 
-// Pour chercher un nouvel utilisateur
+// Recherche d'utilisateurs
 if (isset($_POST['search_user'])) {
     $search_term = '%' . $_POST['search_term'] . '%';
-    
     $req_search = $bdd->prepare("
         SELECT id_u, login
         FROM users
@@ -118,6 +110,7 @@ if (isset($_POST['search_user'])) {
     $search_results = $req_search->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
+
 <div class="container mt-5 pt-4" id="reche-messag">
     <div class="card shadow-sm">
         <div class="card-body p-0">
@@ -149,13 +142,11 @@ if (isset($_POST['search_user'])) {
                         ?>
                             <div class="contact-item <?= ($contact_id == $cid) ? 'bg-light' : '' ?> p-2 rounded mb-2" style="cursor:pointer" onclick="window.location.href='messages.php?contact=<?= $cid ?>'">
                                 <div class="d-flex align-items-center">
-                                    
-                                <img src="../assets/images/Profil/profil_<?= $cid ?>"  
-     class="profile-avatar msg"
-     alt="Avatar de <?= htmlspecialchars($cid) ?>" 
-     width="180" height="180"
-     style="object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; border: 3px solid orange;">
-
+                                    <img src="../assets/images/Profil/profil_<?= $cid ?>"  
+                                         class="profile-avatar msg"
+                                         alt="Avatar de <?= htmlspecialchars($cid) ?>" 
+                                         width="180" height="180"
+                                         style="object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; border: 3px solid orange;">
                                     <div class="fw-bold"><?= htmlspecialchars($users_logins[$cid]) ?></div>
                                 </div>
                             </div>

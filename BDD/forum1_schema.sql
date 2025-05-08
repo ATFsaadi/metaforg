@@ -119,3 +119,6 @@ CREATE TABLE notifications (
     FOREIGN KEY (user_id) REFERENCES users(id_u)     -- Référence à l'utilisateur
 );
 
+ALTER TABLE envoyer ADD COLUMN lu TINYINT(1) DEFAULT 0;
+UPDATE envoyer SET lu = 1 WHERE id_recept = :user_id AND id_exp = :contact_id;
+

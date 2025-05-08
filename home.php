@@ -2,7 +2,6 @@
 ob_start();
 session_start();
 include "includes/header.php";
-include "includes/connexion.php";
 
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {

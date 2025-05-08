@@ -1,3 +1,28 @@
+<?php
+include "connexion.php";
+
+
+
+// Vérifie si l'utilisateur est connecté
+if (!isset($_SESSION['id_u'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Compter messages non lus
+$req_nb_msgs = $bdd->prepare("SELECT COUNT(*) FROM envoyer WHERE id_recept = :uid AND lu = 0");
+$req_nb_msgs->execute(['uid' => $_SESSION['id_u']]);
+$nb_msgs = $req_nb_msgs->fetchColumn();
+
+// Compter demandes d’amis en attente
+$req_nb_demandes = $bdd->prepare("SELECT COUNT(*) FROM amis WHERE ami_id = :uid AND statut = 'en_attente'");
+$req_nb_demandes->execute(['uid' => $_SESSION['id_u']]);
+$nb_demandes = $req_nb_demandes->fetchColumn();
+
+// Total
+$nb_notifications = $nb_msgs + $nb_demandes;
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -70,9 +95,16 @@
             <a href="pages/messages.php" class="text-decoration-none me-3">
                 <i class="fas fa-envelope" style=""></i>
             </a>
-            <a href="#" class="text-decoration-none me-3">
-                <i class="fas fa-bell"></i>
-            </a>
+            
+            <a href="pages/notifications.php" class="text-decoration-none me-3 position-relative">
+    <i class="fas fa-bell fa-lg"></i>
+    <?php if ($nb_notifications > 0): ?>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            <?= $nb_notifications ?>
+        </span>
+    <?php endif; ?>
+</a>
+
             <div class="dropdown">
                 <a
                     class="dropdown-toggle text-decoration-none"
