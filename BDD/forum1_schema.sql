@@ -122,3 +122,8 @@ CREATE TABLE notifications (
 ALTER TABLE envoyer ADD COLUMN lu TINYINT(1) DEFAULT 0;
 UPDATE envoyer SET lu = 1 WHERE id_recept = :user_id AND id_exp = :contact_id;
 
+
+
+ALTER TABLE publications
+ADD COLUMN image VARCHAR(255) DEFAULT NULL;
+

@@ -94,7 +94,7 @@ $nb_notifications = $nb_msgs + $nb_demandes;
             <a href="../pages/messages.php" class="text-decoration-none me-3">
                 <i class="fas fa-envelope" style=""></i>
             </a>
-            <a href="pages/notifications.php" class="text-decoration-none me-3 position-relative">
+            <a href="../pages/notifications.php" class="text-decoration-none me-3 position-relative">
     <i class="fas fa-bell fa-lg"></i>
     <?php if ($nb_notifications > 0): ?>
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

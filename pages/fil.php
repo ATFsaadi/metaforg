@@ -4,6 +4,7 @@ $page = $_GET['page'] ?? 1;
 $limit = 10;
 $offset = ($page - 1) * $limit;
 
+// Requête pour récupérer les publications
 $req = $bdd->prepare("SELECT p.*, u.login FROM publications p JOIN users u ON p.user_id = u.id_u ORDER BY p.date DESC LIMIT :limit OFFSET :offset");
 $req->bindValue(':limit', $limit, PDO::PARAM_INT);
 $req->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -16,36 +17,39 @@ if ($posts === false) {
 ?>
 
 <div class="container">
-    
-<div id="fil-actualite">
-    <?php if (!empty($posts)): ?>
-        <?php foreach ($posts as $post): ?>
-            <div class="publication-card mb-4 p-3 border rounded shadow-sm">
-                <div class="post-header mb-2">
-                    <strong><?= htmlspecialchars($post['login']) ?></strong>
-                </div>
-                <div class="post-content mb-2">
-                    <?= nl2br(htmlspecialchars($post['message'] ?? 'Aucun message disponible')) ?>
-                </div>
-                <?php if (!empty($post['image'])): ?>
-                    <div class="post-image">
-                        <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Image de publication" class="img-fluid rounded">
-                    </div>
-                <?php endif; ?>
-            </div>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p class="no-posts text-muted">Aucune publication trouvée.</p>
-    <?php endif; ?>
-</div>
 
+    <div id="fil-actualite">
+        <?php if (!empty($posts)): ?>
+            <?php foreach ($posts as $post): ?>
+                <div class="publication-card mb-4 p-3 border rounded shadow-sm">
+                    <div class="post-header mb-2">
+                        <strong><?= htmlspecialchars($post['login']) ?></strong>
+                    </div>
+                    <div class="post-content mb-2">
+                        <?= nl2br(htmlspecialchars($post['contenu'] ?? 'Aucun message disponible')) ?>
+                    </div>
+
+                    <!-- Affichage de l'image si elle existe -->
+                    <?php if (!empty($post['image'])): ?>
+                        <div class="post-image">
+                            <img src="uploads/<?= htmlspecialchars($post['image']) ?>" alt="Image de publication" class="img-fluid rounded">
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p class="no-posts text-muted">Aucune publication trouvée.</p>
+        <?php endif; ?>
+    </div>
 
     <!-- Pagination -->
     <div class="pagination">
         <?php
+        // Calcul du nombre total de pages
         $total = $bdd->query("SELECT COUNT(*) FROM publications")->fetchColumn();
         $pages = ceil($total / $limit);
         
+        // Affichage des liens de pagination
         for ($i = 1; $i <= $pages; $i++): 
             $active = ($i == $page) ? 'active' : '';
         ?>
@@ -53,7 +57,7 @@ if ($posts === false) {
         <?php endfor; ?>
     </div>
 
-    <!-- Actualités Gaming -->
+    <!-- Actualités Gaming (optionnel) -->
     <div id="rss-news">
         <h3 class="news-section-title">🎮 Dernières actualités des sites gaming</h3>
         
@@ -92,7 +96,7 @@ if ($posts === false) {
             });
     }
 
-    // Charger les deux flux
+    // Charger les deux flux RSS
     loadRSS('https://www.actugaming.net/feed/', 'actugaming-list');
     loadRSS('https://www.jvfrance.com/feed/', 'jvfrance-list');
 </script>
