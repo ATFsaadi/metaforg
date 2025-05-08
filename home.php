@@ -160,9 +160,9 @@ try {
       </div>
       <?php endforeach; ?>
 
-      <?php if (empty($publications)): ?>
+      <!--?php if (empty($publications)): ?>
         <div class="alert alert-info">Aucune publication à afficher. Soyez le premier à poster !</div>
-      <?php endif; ?>
+      ?php endif; ?>-->
 
       <div class="fil-section mt-4">
         <h2 class="text-light">Fil d'actualités</h2>
@@ -173,30 +173,33 @@ try {
     <!-- Sidebar droite -->
     <div class="col-lg-3 d-none d-lg-block">
       <div class="sidebar">
-        <!-- Suggestions d'amis -->
-        <div class="card mb-4">
-          <div class="card-header"><strong>Suggestions d'amis</strong></div>
-          <div class="card-body p-2">
-            <?php foreach ($suggestions as $user): ?>
-            <div class="friend-suggestion d-flex align-items-center mb-2">
+       <!-- Suggestions d'amis -->
+<div class="card mb-4">
+    <div class="card-header"><strong>Suggestions d'amis</strong></div>
+    <div class="card-body p-2">
+        <?php foreach ($suggestions as $user): ?>
+        <div class="friend-suggestion d-flex align-items-center mb-2">
             <img src="assets/images/Profil/profil_<?= $user['id_u'] ?>" alt="Avatar de <?= htmlspecialchars($user['login']) ?>" class="friend-avatar" loading="lazy">
-              <div class="ms-2 flex-grow-1 sugg">
+            <div class="ms-2 flex-grow-1 sugg">
                 <a href="pages/profil.php?id=<?= $user['id_u'] ?>" class="text-decoration-none">
-                  <?= htmlspecialchars($user['login']) ?>
+                    <?= htmlspecialchars($user['login']) ?>
                 </a>
-              </div>
-              <a href="ajouter_ami.php?id=<?= $user['id_u'] ?>" class="btn btn-primary btn-sm add-friend-btn">
-                <i class="fas fa-user-plus"></i>
-              </a>
             </div>
-            <?php endforeach; ?>
-
-            <?php if (empty($suggestions)): ?>
-              <div class="p-2 text-muted">Aucune suggestion pour le moment</div>
-            <?php endif; ?>
-          </div>
+            <!-- Formulaire pour ajouter un ami -->
+            <form action="pages/ajouter_ami.php" method="POST" style="display:inline;">
+                <input type="hidden" name="ami_id" value="<?= $user['id_u'] ?>">
+                <button type="submit" class="btn btn-primary btn-sm add-friend-btn">
+                    <i class="fas fa-user-plus"></i>
+                </button>
+            </form>
         </div>
+        <?php endforeach; ?>
 
+        <?php if (empty($suggestions)): ?>
+            <div class="p-2 text-muted">Aucune suggestion pour le moment</div>
+        <?php endif; ?>
+    </div>
+</div>
         <!-- Tendances -->
         <div class="card mb-4">
           <div class="card-header"><strong>Tendances Gaming</strong></div>

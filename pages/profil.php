@@ -87,7 +87,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         ?>
         <div class="friend-actions">
             <?php if ($checkRequest->rowCount() === 0): ?>
-                <form method="POST" action="friend_request.php">
+                <form method="POST" action="../pages/ajouter_ami.php">
                     <input type="hidden" name="ami_id" value="<?= $profile_id ?>">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-user-plus"></i> Ajouter en ami
