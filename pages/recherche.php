@@ -70,6 +70,8 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
 </div>
 
 <!-- Menu déroulant de l'utilisateur -->
+<!-- Commenté car déjà inclus dans header-PG.php -->
+<?php /*
 <div class="dropdown">
     <a class="dropdown-toggle text-decoration-none" href="#" role="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
         <strong class="me-1"><?= strtoupper(htmlspecialchars($_SESSION['login'])) ?></strong>
@@ -87,6 +89,7 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
         </li>
     </ul>
 </div>
+*/ ?>
 
 <?php
 ob_end_flush();

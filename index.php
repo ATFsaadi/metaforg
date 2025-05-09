@@ -25,7 +25,7 @@ if(isset($_POST['submit']))
     }
     else
     {
-        echo "<div class='alert alert-danger' role='alert'>
+        echo "<div class='alert alert-custom mt-0' role='alert'>
                     Identifiants incorrects
                 </div>";
         

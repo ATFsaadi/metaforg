@@ -127,3 +127,14 @@ UPDATE envoyer SET lu = 1 WHERE id_recept = :user_id AND id_exp = :contact_id;
 ALTER TABLE publications
 ADD COLUMN image VARCHAR(255) DEFAULT NULL;
 
+ALTER TABLE users
+ADD COLUMN photo_profil VARCHAR(255) DEFAULT NULL;
+
+
+CREATE TABLE photos_profil (
+    id_photo INT AUTO_INCREMENT PRIMARY KEY,   -- Identifiant unique pour chaque photo
+    user_id INT NOT NULL,                       -- Référence à l'ID de l'utilisateur dans la table 'users'
+    photo_nom VARCHAR(255) NOT NULL,            -- Nom du fichier photo (ex: avatar1.jpg)
+    date_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Date de téléchargement de la photo
+    FOREIGN KEY (user_id) REFERENCES users(id_u) ON DELETE CASCADE -- Supprime la photo si l'utilisateur est supprimé
+);
