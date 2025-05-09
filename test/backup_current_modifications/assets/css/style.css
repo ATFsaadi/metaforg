@@ -1,0 +1,425 @@
+/* === Variables globales (à garder en haut) === */
+:root {
+  --bg-primary: #121212;
+  --bg-secondary: #1E1E1E;
+  --text-color: #B0B0B0;
+  --color-primary: #00BFFF;
+  --color-primary-hover: #008CFF;
+  --color-success: #00FF00;
+  --badge-color: #6A0DAD;
+  --avatar-border: #FF7F00;
+  --border-light: rgba(255, 255, 255, 0.1);
+}
+
+/* === Réinitialisation et base === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Navbar === */
+.navbar {
+  background: var(--bg-secondary) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 0.5rem 1rem;
+}
+.navbar-brand {
+  color: var(--color-primary) !important;
+  font-weight: 700;
+}
+.form-control {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  border-radius: 50px;
+}
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 191, 255, 0.25);
+}
+.btn-outline-primary {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.btn-outline-primary:hover {
+  background: var(--color-primary-hover);
+  color: white;
+}
+
+/* === Stories (scroll horizontal) === */
+.story-container {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 1rem 0;
+}
+.story {
+  scroll-snap-align: start;
+  display: inline-block;
+  width: 90px;
+  margin-right: 15px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+.story:hover {
+  transform: scale(1.05);
+}
+.avatar-border {
+  border: 3px solid var(--avatar-border);
+}
+
+/* === Créer une publication === */
+.create-post {
+  background: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+}
+.create-post-input {
+  background: var(--bg-primary);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50px;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  color: white;
+}
+.btn-outline-secondary {
+  border-color: rgba(255,255,255,0.1);
+  color: var(--text-color);
+}
+.btn-outline-secondary:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* === Publications === */
+.post-card {
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+.post-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--avatar-border);
+}
+.post-actions .post-action:hover {
+  background: rgba(0, 191, 255, 0.1);
+}
+
+/* === Sidebar === */
+.sidebar {
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.list-group-item {
+  background: var(--bg-secondary);
+  border: none;
+  color: var(--text-color);
+}
+.list-group-item:hover {
+  background: rgba(0, 191, 255, 0.1);
+}
+
+/* === Boutons et éléments interactifs === */
+.btn {
+  background: var(--color-primary);
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.btn:hover {
+  background: var(--color-primary-hover);
+}
+
+/* === Icônes spéciaux (messagerie, notifications) === */
+.fas, .far {
+  color: var(--color-success);
+  transition: color 0.3s ease;
+}
+.fas:hover, .far:hover {
+  color: var(--color-primary-hover);
+}
+
+/* === Badges et indicateurs === */
+.badge {
+  background: var(--badge-color);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+.online-indicator {
+  width: 10px;
+  height: 10px;
+  background: var(--color-success);
+  border-radius: 50%;
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  border: 2px solid white;
+}
+
+/* === Responsive (à ajuster selon besoins) === */
+@media (max-width: 992px) {
+  .col-lg-3 {
+    display: none !important;
+  }
+  .post-avatar {
+    width: 32px;
+    height: 32px;
+  }
+}
+@keyframes neon-glow {
+  0%, 100% { text-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF; }
+  50% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
+}
+
+/* === Messagerie === */
+.messages-container {
+  display: flex;
+  height: 75vh;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  background-color: var(--bg-secondary);
+}
+
+/* Liste des contacts */
+.contacts-list {
+  width: 300px;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.new-conversation {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.search-results {
+  position: absolute;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  width: calc(100% - 30px);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.search-result-item {
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--color-success);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-result-item:hover {
+  background-color: rgba(0, 255, 0, 0.1);
+}
+
+.contact-item {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.contact-item:hover {
+  background-color: rgba(0, 191, 255, 0.1);
+}
+
+.contact-item.active {
+  background-color: rgba(0, 255, 0, 0.1);
+  border-left: 3px solid var(--color-success);
+}
+
+/* Zone de messages */
+.messages-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+}
+
+.messages-header {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-light);
+  background-color: var(--bg-secondary);
+}
+
+.messages-list {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message-item {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  color: white;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.message-sent {
+  background-color: var(--color-primary);
+  align-self: flex-end;
+  border-bottom-right-radius: 3px;
+}
+
+.message-received {
+  background-color: var(--bg-secondary);
+  align-self: flex-start;
+  border-bottom-left-radius: 3px;
+  color: var(--color-success);
+}
+
+.message-time {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  text-align: right;
+  margin-top: 5px;
+}
+
+.message-form {
+  display: flex;
+  padding: 15px;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+}
+
+.message-input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid var(--border-light);
+  background-color: var(--bg-primary);
+  color: white;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+
+.send-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--color-success);
+  color: var(--bg-primary);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.send-button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: var(--color-success);
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  color: var(--color-success);
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+footer {
+  background-color: #121212;
+  padding: 20px 0;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  bottom: 0;
+}
+
+/* Conteneur des icônes sociales */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Icônes sociales */
+.social-icon {
+  color: #FFFFFF;
+  font-size: 24px;
+  transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #00BFFF; /* Bleu néon pour l'icône survolée */
+}
+
+
+
+
+
+
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+
+.search-btn {
+  background: transparent; /* Pas de fond */
+  border: none; /* Enlever la bordure */
+  cursor: pointer; /* Optionnel : curseur de pointeur sur hover */
+}
+
+/* Changer la couleur de l'icône */
+.search-icon {
+  fill: #00BFFF; /* Exemple : l'icône sera bleue */
+  transition: fill 0.3s ease;
+}
+
+/* Au survol, changer la couleur en rouge */
+.search-icon:hover {
+  fill: #00FF00; /* L'icône devient rouge au survol */
+  animation: bounce 1s ease;
+}
