@@ -74,7 +74,7 @@ $demandes_amis = $req_demandes->fetchAll(PDO::FETCH_ASSOC);
                             <span><strong><?= htmlspecialchars($dem['login']) ?></strong> vous a envoyé une demande</span>
                             <div>
                                 <a href="accepter_ami.php?id=<?= $dem['id_u'] ?>" class="btn btn-sm btn-success">Accepter</a>
-                                <a href="refuser_ami.php?id=<?= $dem['id_u'] ?>" class="btn btn-sm btn-danger">Refuser</a>
+                                <a href="refuser.php?id=<?= $dem['id_u'] ?>" class="btn btn-sm btn-danger">Refuser</a>
                             </div>
                         </li>
                     <?php endforeach; ?>

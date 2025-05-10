@@ -2,6 +2,55 @@
 ob_start();
 session_start();
 include "includes/header.php";
+// Traitement de l'ajout d'ami
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_friend') {
+    if (isset($_SESSION['id_u'], $_POST['ami_id'])) {
+        $utilisateur_id = (int)$_SESSION['id_u'];
+        $ami_id = (int)$_POST['ami_id'];
+
+        try {
+            // Empêcher de s'ajouter soi-même
+            if ($utilisateur_id === $ami_id) {
+                $_SESSION['friend_message'] = [
+                    'type' => 'danger',
+                    'text' => 'Vous ne pouvez pas vous ajouter vous-même'
+                ];
+            } else {
+                // Vérifier si la demande existe déjà
+                $check = $bdd->prepare("SELECT * FROM amis 
+                                      WHERE (utilisateur_id = ? AND ami_id = ?) 
+                                      OR (utilisateur_id = ? AND ami_id = ?)");
+                $check->execute([$utilisateur_id, $ami_id, $ami_id, $utilisateur_id]);
+
+                if ($check->rowCount() > 0) {
+                    $_SESSION['friend_message'] = [
+                        'type' => 'warning',
+                        'text' => 'Une demande existe déjà'
+                    ];
+                } else {
+                    // Envoyer la demande
+                    $stmt = $bdd->prepare("INSERT INTO amis (utilisateur_id, ami_id, statut) 
+                                          VALUES (?, ?, 'en_attente')");
+                    $stmt->execute([$utilisateur_id, $ami_id]);
+                    
+                    $_SESSION['friend_message'] = [
+                        'type' => 'success',
+                        'text' => 'Demande envoyée avec succès'
+                    ];
+                }
+            }
+        } catch (PDOException $e) {
+            $_SESSION['friend_message'] = [
+                'type' => 'danger',
+                'text' => 'Erreur: ' . $e->getMessage()
+            ];
+        }
+        
+        // Recharger la page pour afficher le message
+        header("Location: ".$_SERVER['PHP_SELF']);
+        exit;
+    }
+}
 
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
@@ -173,20 +222,32 @@ try {
     <!-- Sidebar droite -->
     <div class="col-lg-3 d-none d-lg-block">
       <div class="sidebar">
-       <!-- Suggestions d'amis -->
+      <!-- Suggestions d'amis -->
 <div class="card mb-4">
     <div class="card-header"><strong>Suggestions d'amis</strong></div>
     <div class="card-body p-2">
-        <?php foreach ($suggestions as $user): ?>
+        <?php 
+        // Afficher le message de confirmation si présent
+        if (isset($_SESSION['friend_message'])) {
+            echo '<div class="alert alert-'.$_SESSION['friend_message']['type'].' mb-3">'
+                .$_SESSION['friend_message']['text'].
+                '</div>';
+            unset($_SESSION['friend_message']);
+        }
+        
+        foreach ($suggestions as $user): ?>
         <div class="friend-suggestion d-flex align-items-center mb-2">
-            <img src="assets/images/Profil/profil_<?= $user['id_u'] ?>" alt="Avatar de <?= htmlspecialchars($user['login']) ?>" class="friend-avatar" loading="lazy">
+            <img src="assets/images/Profil/profil_<?= $user['id_u'] ?>" 
+                 alt="Avatar de <?= htmlspecialchars($user['login']) ?>" 
+                 class="friend-avatar" loading="lazy">
             <div class="ms-2 flex-grow-1 sugg">
                 <a href="pages/profil.php?id=<?= $user['id_u'] ?>" class="text-decoration-none">
                     <?= htmlspecialchars($user['login']) ?>
                 </a>
             </div>
             <!-- Formulaire pour ajouter un ami -->
-            <form action="pages/ajouter_ami.php" method="POST" style="display:inline;">
+            <form method="POST" style="display:inline;">
+                <input type="hidden" name="action" value="add_friend">
                 <input type="hidden" name="ami_id" value="<?= $user['id_u'] ?>">
                 <button type="submit" class="btn btn-primary btn-sm add-friend-btn">
                     <i class="fas fa-user-plus"></i>
