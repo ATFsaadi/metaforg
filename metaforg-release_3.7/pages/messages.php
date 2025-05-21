@@ -142,7 +142,13 @@ if (isset($_POST['search_user'])) {
                         ?>
                             <div class="contact-item <?= ($contact_id == $cid) ? 'bg-light' : '' ?> p-2 rounded mb-2" style="cursor:pointer" onclick="window.location.href='messages.php?contact=<?= $cid ?>'">
                                 <div class="d-flex align-items-center">
-                                    <img src="../assets/images/Profil/profil_<?= $cid ?>"  
+                                    <?php
+                                        $contactAvatarPath = "../assets/images/Profil/profil_{$cid}.png";
+                                        if (!file_exists($contactAvatarPath)) {
+                                            $contactAvatarPath = "../assets/images/default_avatar.png";
+                                        }
+                                    ?>
+                                    <img src="<?= $contactAvatarPath ?>"  
                                          class="profile-avatar msg"
                                          alt="Avatar de <?= htmlspecialchars($cid) ?>" 
                                          width="180" height="180"

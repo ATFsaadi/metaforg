@@ -25,8 +25,13 @@ include "connexion.php";?>
                         <?php for($i = 1; $i <= 5; $i++): ?>
                         <div class="d-flex align-items-center p-2 border-bottom">
                             <div class="position-relative">
+                                <?php
+                                    // Idéalement, nous devrions avoir un ID d'utilisateur réel ici
+                                    // mais pour cet exemple, nous utilisons l'image par défaut
+                                    $messageriePath = "assets/images/default_avatar.png";
+                                ?>
                                 <img
-                                    src="assets/images/default_avatar.png"
+                                    src="<?= $messageriePath ?>"
                                     alt="Avatar Ami <?= $i ?>"
                                     class="rounded-circle"
                                     width="40"

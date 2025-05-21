@@ -63,7 +63,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
             <!-- En-tête du profil -->
             <div class="profile-header">
-                <img src="../assets/images/Profil/profil_<?= $_GET['id'] ?>" 
+                <?php
+                    $profileAvatarPath = "../assets/images/Profil/profil_{$_GET['id']}.png";
+                    if (!file_exists($profileAvatarPath)) {
+                        $profileAvatarPath = "../assets/images/default_avatar.png";
+                    }
+                ?>
+                <img src="<?= $profileAvatarPath ?>" 
                      class="profile-avatar"
                      alt="Avatar de <?= htmlspecialchars($user['login']) ?>">
                 <h1><?= htmlspecialchars($user['login']) ?></h1>

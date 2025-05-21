@@ -53,7 +53,13 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
                             <div class="search-result-item p-2 border rounded mb-2" style="cursor:pointer" 
                             onclick="window.location.href='profil.php?id=<?= htmlspecialchars($result['id_u']) ?>'">
                                 <div class="d-flex align-items-center">
-                                    <img src="../assets/images/default_avatar.png" class="rounded-circle me-2" width="40" height="40">
+                                    <?php
+                                        $searchAvatarPath = "../assets/images/Profil/profil_{$result['id_u']}.png";
+                                        if (!file_exists($searchAvatarPath)) {
+                                            $searchAvatarPath = "../assets/images/default_avatar.png";
+                                        }
+                                    ?>
+                                    <img src="<?= $searchAvatarPath ?>" class="rounded-circle me-2" width="40" height="40">
                                     <div class="fw-bold"><?= htmlspecialchars($result['login']) ?></div>
                                 </div>
                             </div>

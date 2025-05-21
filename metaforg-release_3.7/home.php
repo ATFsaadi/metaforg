@@ -191,7 +191,13 @@ try {
     <div class="card-body p-2">
         <?php foreach ($suggestions as $user): ?>
         <div class="friend-suggestion d-flex align-items-center mb-2">
-            <img src="assets/images/Profil/profil_<?= $user['id_u'] ?>" alt="Avatar de <?= htmlspecialchars($user['login']) ?>" class="friend-avatar" loading="lazy">
+            <?php
+                $suggestionAvatarPath = "assets/images/Profil/profil_{$user['id_u']}.png";
+                if (!file_exists($suggestionAvatarPath)) {
+                    $suggestionAvatarPath = "assets/images/default_avatar.png";
+                }
+            ?>
+            <img src="<?= $suggestionAvatarPath ?>" alt="Avatar de <?= htmlspecialchars($user['login']) ?>" class="friend-avatar" loading="lazy">
             <div class="ms-2 flex-grow-1 sugg">
                 <a href="pages/profil.php?id=<?= $user['id_u'] ?>" class="text-decoration-none">
                     <?= htmlspecialchars($user['login']) ?>
