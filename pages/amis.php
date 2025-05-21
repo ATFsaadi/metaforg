@@ -59,7 +59,7 @@ $amis_pending = $query_pending->fetchAll();
             <?php else: ?>
                 <?php foreach ($amis_pending as $pending): ?>
                     <li>
-                        <a href="profile.php?id=<?= urlencode($pending['id_u']) ?>">
+                        <a href="profil.php?id=<?= urlencode($pending['id_u']) ?>">
                             <?= htmlspecialchars($pending['login']) ?>
                         </a>
                     </li>

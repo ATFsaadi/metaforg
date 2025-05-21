@@ -222,7 +222,7 @@ try {
     <!-- Sidebar droite -->
     <div class="col-lg-3 d-none d-lg-block">
       <div class="sidebar">
-      <!-- Suggestions d'amis -->
+     <!-- Suggestions d'amis -->
 <div class="card mb-4">
     <div class="card-header"><strong>Suggestions d'amis</strong></div>
     <div class="card-body p-2">
@@ -235,7 +235,17 @@ try {
             unset($_SESSION['friend_message']);
         }
         
-        foreach ($suggestions as $user): ?>
+        foreach ($suggestions as $user): 
+            // Vérifier si une demande existe déjà (nouveau code)
+            $demande_existe = false;
+            if (isset($_SESSION['id_u'])) {
+                $check_demande = $bdd->prepare("SELECT * FROM amis 
+                    WHERE (utilisateur_id = ? AND ami_id = ?) 
+                    OR (utilisateur_id = ? AND ami_id = ?)");
+                $check_demande->execute([$_SESSION['id_u'], $user['id_u'], $user['id_u'], $_SESSION['id_u']]);
+                $demande_existe = $check_demande->rowCount() > 0;
+            }
+        ?>
         <div class="friend-suggestion d-flex align-items-center mb-2">
             <img src="assets/images/Profil/profil_<?= $user['id_u'] ?>" 
                  alt="Avatar de <?= htmlspecialchars($user['login']) ?>" 
@@ -245,14 +255,20 @@ try {
                     <?= htmlspecialchars($user['login']) ?>
                 </a>
             </div>
-            <!-- Formulaire pour ajouter un ami -->
-            <form method="POST" style="display:inline;">
-                <input type="hidden" name="action" value="add_friend">
-                <input type="hidden" name="ami_id" value="<?= $user['id_u'] ?>">
-                <button type="submit" class="btn btn-primary btn-sm add-friend-btn">
-                    <i class="fas fa-user-plus"></i>
+            <!-- Formulaire pour ajouter un ami - Version améliorée -->
+            <?php if (!$demande_existe): ?>
+                <form method="POST" style="display:inline;">
+                    <input type="hidden" name="action" value="add_friend">
+                    <input type="hidden" name="ami_id" value="<?= $user['id_u'] ?>">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-user-plus"></i>
+                    </button>
+                </form>
+            <?php else: ?>
+                <button class="btn btn-secondary btn-sm" disabled>
+                    <i class="fas fa-clock"></i>
                 </button>
-            </form>
+            <?php endif; ?>
         </div>
         <?php endforeach; ?>
 

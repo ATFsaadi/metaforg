@@ -8,7 +8,7 @@ if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Traitement de l'ajout d'ami (nouveau code ajouté)
+// Traitement de l'ajout d'ami
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_ami'], $_POST['ami_id'])) {
     $utilisateur_id = $_SESSION['id_u'];
     $ami_id = (int)$_POST['ami_id'];
@@ -47,11 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_ami'], $_POST
     exit;
 }
 
-// Traitement du formulaire de profil existant
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['id_u'])) {
-    // [Votre code existant de traitement du formulaire...]
-}
-
 // Récupération des messages
 $success = $_SESSION['success'] ?? null;
 $error = $_SESSION['error'] ?? null;
@@ -75,6 +70,19 @@ if (!$user) {
     die("Utilisateur introuvable");
 }
 
+// Détection de la photo de profil
+$basePath = "../assets/images/Profil/";
+$filename = "profil_" . $user['id_u'];
+$extensions = ['jpg', 'jpeg', 'png', 'webp'];
+$profileImage = $basePath . "default.jpg"; // Image par défaut
+
+foreach ($extensions as $ext) {
+    if (file_exists($basePath . $filename . "." . $ext)) {
+        $profileImage = $basePath . $filename . "." . $ext;
+        break;
+    }
+}
+
 include "../includes/header-PG.php";
 ?>
 
@@ -93,11 +101,12 @@ include "../includes/header-PG.php";
     <?php endif; ?>
 
     <div class="profile-header">
-        <img src="../assets/images/Profil/profil_<?= $profile_id ?>.jpg" 
-             class="profile-avatar" 
-             alt="Avatar <?= htmlspecialchars($user['login']) ?>">
-        <h1><?= htmlspecialchars($user['login']) ?></h1>
-        
+        <img src="<?= $profileImage ?>" 
+             alt="Avatar de <?= htmlspecialchars($user['login']) ?>" 
+              style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; border: 3px solid #ccc;"
+             class="friend-avatar"
+             loading="lazy">
+
         <?php if ($current_user_id && $current_user_id != $profile_id): ?>
             <div class="friend-actions mt-3">
                 <?php
@@ -149,10 +158,7 @@ include "../includes/header-PG.php";
             <span class="label">Email:</span>
             <span class="value"><?= htmlspecialchars($user['email']) ?></span>
         </div>
-        <div class="info-item">
-            <span class="label">Âge:</span>
-            <span class="value"><?= $user['age'] ?: 'Non renseigné' ?></span>
-        </div>
+      
         <div class="info-item">
             <span class="label">Langue:</span>
             <span class="value">
@@ -180,11 +186,6 @@ include "../includes/header-PG.php";
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Âge</label>
-                    <input type="number" name="age" value="<?= $user['age'] ?>" class="form-control" min="0" max="120">
                 </div>
                 
                 <div class="form-group">

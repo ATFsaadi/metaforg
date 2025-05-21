@@ -102,6 +102,47 @@ $nb_notifications = $nb_msgs + $nb_demandes;
         </span>
     <?php endif; ?>
 </a>
+<?php 
+
+            // Debug pour identifier pourquoi l'élément n'apparait pas
+
+            $admin_visible = false;
+
+            if (isset($_SESSION['lvl'])) {
+
+                $admin_level = intval($_SESSION['lvl']);
+
+                if ($admin_level > 3) {
+
+                    $admin_visible = true;
+
+                }
+
+            }
+
+            ?>
+
+            
+
+            <?php if ($admin_visible): ?>
+
+            <a href="../pages/admin.php" class="text-decoration-none me-3" title="Administration">
+
+                <i class="fas fa-cog fa-lg text-danger"></i>
+
+            </a>
+
+            <?php else: ?>
+
+            <!-- L'icône d'administration n'est pas affichée car le niveau n'est pas > 3 -->
+
+            <a href="../admin-link.php" class="text-decoration-none me-3" title="Administration (accès direct)">
+
+                <i class="fas fa-cog fa-lg"></i>
+
+            </a>
+
+            <?php endif; ?>
             <div class="dropdown">
                 <a
                     class="dropdown-toggle text-decoration-none"

@@ -1,49 +1,54 @@
-/* Styles globaux */
+/* === STYLES GLOBAUX === */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #121212; /* Fond noir principal */
+    background-color: #121212;
     margin: 0;
-    display: flex;
-    justify-content: center; /* Centrage du contenu horizontal */
-    align-items: center; /* Centrage du contenu vertical */
-    height: 100vh; /* Hauteur de la fenêtre */
-    flex-direction: column; /* Organisation verticale des éléments */
-}
-
-/* Conteneur principal */
-.wrapper {
-    display: flex; /* Utilisation de flexbox pour aligner l'image et le formulaire */
-    max-width: 800px; /* Largeur maximale du conteneur */
-    width: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Ombre sombre pour un look gaming */
-    border-radius: 10px; /* Coins arrondis */
-    overflow: hidden; /* Pour éviter les bords débordants */
-}
-
-/* Conteneur de l'image */
-.image-container {
-    flex: 1; /* Prend la moitié de l'espace disponible */
-    background-color: #1E1E1E; /* Gris anthracite comme arrière-plan secondaire */
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+
+/* === WRAPPER PRINCIPAL === */
+.wrapper {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    background-color: #1a19198a;
+    box-shadow: 0 4px 20px rgb(0, 0, 0);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* === IMAGE CONTAINER === */
+.image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1E1E1E;
+    border-radius: 10px 0 0 10px;
 }
 
 .image-container img {
-    width: 100%; /* L'image prend toute la largeur du conteneur */
-    height: 100%; /* Conserve les proportions */
-    object-fit: cover; /* Ajuste l'image pour remplir le conteneur */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px 0 0 10px;
 }
 
-/* Conteneur du formulaire */
+/* === FORMULAIRE CONTAINER === */
 .form-container {
-    flex: 1; /* Prend la moitié de l'espace disponible */
-    background: #121212; /* Fond noir pour le formulaire */
+    flex: 1;
+    background: #121212;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    border-radius: 0 10px 10px 0;
 }
 
 .logo img {
@@ -51,63 +56,80 @@ body {
     margin-bottom: 20px;
 }
 
-/* Formulaire et champs de saisie */
+/* === FORMULAIRE === */
 .form-group {
     margin-bottom: 10px;
     width: 100%;
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group input[type="date"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #B0B0B0; /* Bordure grise claire pour les champs */
-    border-radius: 5px;
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+    border: 1px solid #B0B0B0;
+    border-radius: 10px;
     font-size: 14px;
     box-sizing: border-box;
-    background-color: #1E1E1E; /* Arrière-plan des champs en gris anthracite */
-    color: #FFFFFF; /* Texte blanc pour une meilleure lisibilité */
 }
 
-.form-group input:focus {
-    border-color: #00BFFF; /* Bleu néon pour le focus */
+.form-group input:focus,
+.form-group select:focus,
+.form-group input[type="date"]:focus {
+    border-color: #00BFFF;
     outline: none;
 }
 
-/* Boutons */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: #B0B0B0;
+}
+
+/* === BOUTON === */
 .btn {
     width: 100%;
     padding: 10px;
-    background-color: #00BFFF; /* Bleu néon pour le bouton principal */
+    background-color: #00BFFF;
     color: white;
     border: none;
-    border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
+    border-radius: 10px;
     transition: background-color 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #008CFF; /* Bleu électrique pour le survol */
+    background-color: #008CFF;
 }
 
-/* Liens et textes secondaires */
-.forgot-password, .login-link, .signup-link {
+/* === LIENS TEXTE === */
+.forgot-password,
+.login-link,
+.signup-link {
     text-align: center;
     margin-top: 15px;
     font-size: 12px;
-    color: #B0B0B0; /* Gris clair pour le texte secondaire */
+    color: #B0B0B0;
 }
 
-.forgot-password a, .signup-link a, .login-link a {
-    color: #00FF00; /* Vert néon pour le lien interactif */
+.forgot-password a,
+.signup-link a,
+.login-link a {
+    color: #00FF00;
     text-decoration: none;
 }
 
-.forgot-password a:hover, .signup-link a:hover, .login-link a:hover {
+.forgot-password a:hover,
+.signup-link a:hover,
+.login-link a:hover {
     text-decoration: underline;
 }
 
-/* Diviseur */
+/* === DIVIDER === */
 .divider {
     display: flex;
     align-items: center;
@@ -117,33 +139,60 @@ body {
 .divider span {
     flex: 1;
     height: 1px;
-    background-color: #B0B0B0; /* Séparateur en gris clair */
+    background-color: #B0B0B0;
 }
 
 .divider p {
     margin: 0 10px;
     font-size: 12px;
-    color: #B0B0B0; /* Texte "OU" en gris clair */
+    color: #B0B0B0;
 }
 
-/* Footer */
+/* === ALERTES === */
+.alert {
+    padding: 10px;
+    margin: 20px 0;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+.alert.success {
+    background-color: #00FF00;
+    color: #121212;
+}
+
+.alert.error {
+    background-color: #FF4040;
+    color: #FFFFFF;
+}
+
+.alert.warning {
+    background-color: #FFD700;
+    color: #121212;
+}
+
+.alert-custom {
+    background-color: black;
+    color: #00FF00;
+    border: 1px solid #00FF00;
+    border-radius: 10px;
+}
+
+/* === FOOTER === */
 footer {
     background-color: #121212;
     padding: 20px 0;
     text-align: center;
     width: 100%;
-    position: relative;
-    bottom: 0;
 }
 
-/* Conteneur des icônes sociales */
+/* === ICÔNES SOCIALES === */
 .social-icons {
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
-/* Icônes sociales */
 .social-icon {
     color: #FFFFFF;
     font-size: 24px;
@@ -151,111 +200,33 @@ footer {
 }
 
 .social-icon:hover {
-    color: #00BFFF; /* Bleu néon pour l'icône survolée */
+    color: #00BFFF;
 }
 
-/* Notifications et alertes */
-.alert {
-    padding: 10px;
-    margin: 20px 0;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-.alert.success {
-    background-color: #00FF00; /* Vert néon pour les succès */
-    color: #121212; /* Texte sombre sur fond vert */
-}
-
-.alert.error {
-    background-color: #FF4040; /* Rouge vif pour les erreurs */
-    color: #FFFFFF; /* Texte blanc pour contraster avec le rouge */
-}
-
-.alert.warning {
-    background-color: #FFD700; /* Jaune pour les avertissements */
-    color: #121212; /* Texte sombre sur fond jaune */
-}
-
-/* Autres éléments spéciaux */
-.badge {
-    background-color: #6A0DAD; /* Violet sombre pour des accents spéciaux */
-    color: #FFFFFF;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 14px;
-}
-
-.icon-special {
-    color: #008CFF; /* Bleu électrique pour les icônes spéciales */
-}
-
-
-
-
-
-
-
-
-
-
-.alert-custom {
-    background-color: black; /* Fond clair pour contraster avec le noir */
-    color: #00FF00;            /* Texte rouge foncé bien lisible */
-    border: 1px solid  #00FF00;
-    border-radius: 0%;
-   
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* === ICÔNES LIENS === */
 .icon-link {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #1E1E1E; /* Fond gris anthracite */
-    border-radius: 50%; /* Forme ronde */
-    color: #B0B0B0; /* Couleur des icônes inactives */
+    background-color: #1E1E1E;
+    color: #B0B0B0;
     text-decoration: none;
+    border-radius: 10px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .icon-link:hover {
-    background-color: #00BFFF; /* Bleu néon au survol */
-    color: #FFFFFF; /* Icône blanche */
+    background-color: #00BFFF;
+    color: #FFFFFF;
 }
 
 .icon-link i {
-    font-size: 20px; /* Taille des icônes */
+    font-size: 20px;
 }
 
-/* Menu utilisateur */
+/* === MENU UTILISATEUR === */
 .user-menu {
     display: flex;
     align-items: center;
@@ -265,14 +236,14 @@ footer {
 .avatar {
     width: 36px;
     height: 36px;
-    border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #FF7F00; /* Orange pour l'avatar */
+    border: 2px solid #FF7F00;
+    border-radius: 10px;
 }
 
 .username {
     font-size: 14px;
-    color: #B0B0B0; /* Gris clair pour le nom d'utilisateur */
+    color: #B0B0B0;
 }
 
 .menu-icon {
@@ -280,9 +251,23 @@ footer {
     border: none;
     font-size: 20px;
     cursor: pointer;
-    color: #FF4040; /* Rouge vif pour le menu */
+    color: #FF4040;
+    border-radius: 10px;
 }
 
 .menu-icon:hover {
-    color: #FFD700; /* Jaune pour attirer l'attention au survol */
+    color: #FFD700;
+}
+
+/* === DIVERS === */
+.badge {
+    background-color: #6A0DAD;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+.icon-special {
+    color: #008CFF;
 }
