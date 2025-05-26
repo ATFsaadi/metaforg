@@ -68,5 +68,5 @@ $amis_pending = $query_pending->fetchAll();
         </ul>
     </div>
 </div>
-
+<?php include "../includes/mini-messagerie.php"; ?>
 <?php include '../includes/footer.php'; ?>

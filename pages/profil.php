@@ -229,5 +229,5 @@ include "../includes/header-PG.php";
         </div>
     <?php endif; ?>
 </div>
-
+<?php include "../includes/mini-messagerie.php"; ?>
 <?php include "../includes/footer.php"; ?>

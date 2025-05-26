@@ -374,6 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-<?php include 'includes/bnt-messagerie.php'; ?>
-<?php include 'includes/footer.php'; ?>
+<?php
+include 'includes/mini-messagerie.php';
+include 'includes/footer.php'; ?>
 

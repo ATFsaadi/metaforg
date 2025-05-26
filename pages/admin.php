@@ -349,5 +349,5 @@ include "../includes/header-PG.php";
         })
     });
 </script>
-
+<?php include "../includes/mini-messagerie.php"; ?>
 <?php include "../includes/footer.php"; ?>

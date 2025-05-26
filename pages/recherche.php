@@ -92,6 +92,7 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
 */ ?>
 
 <?php
-ob_end_flush();
+ob_end_flush(); ?>
+<?php include "../includes/mini-messagerie.php";
 include '../includes/footer.php';
 ?>

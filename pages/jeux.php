@@ -39,4 +39,5 @@ include "../includes/header-PG.php";?>
     </a>
   </li>
 </ul>
+<?php include "../includes/mini-messagerie.php"; ?>
 <?php include '../includes/footer.php'; ?>
