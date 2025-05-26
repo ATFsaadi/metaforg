@@ -1,13 +1,28 @@
+<?php
+// Calculer le nombre de messages non lus
+$nb_non_lus = 0;
+if (isset($_SESSION['id_u'])) {
+    $user_id = $_SESSION['id_u'];
+    $req = $bdd->prepare("SELECT COUNT(*) FROM envoyer WHERE id_recept = :uid AND lu = 0");
+    $req->execute(['uid' => $user_id]);
+    $nb_non_lus = $req->fetchColumn();
+}
+?>
 
-<!-- Bouton Messagerie -->
 <button
     id="chatButton"
     onclick="toggleChat()"
-    class="btn btn-primary position-fixed d-flex align-items-center"
+    class="btn btn-primary position-fixed d-flex align-items-center position-relative"
     style="bottom: 20px; left: 20px; z-index: 1050; padding: 10px 20px; border-radius: 8px;">
-    <i class="fas fa-comment-alt me-2"></i>
+    
+    <!-- Icône colorée si messages non lus -->
+    <i class="fas fa-comment-alt me-2 <?= $nb_non_lus > 0 ? 'text-danger' : '' ?>"></i>
+    
     Messagerie
 </button>
+
+
+
 
 <!-- Panneau Messagerie -->
 <div

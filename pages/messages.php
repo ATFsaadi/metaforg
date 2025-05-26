@@ -110,6 +110,33 @@ if (isset($_POST['search_user'])) {
     $search_results = $req_search->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
+<?php
+$req_unread = $bdd->prepare("
+    SELECT e.id_exp, u.login, COUNT(*) as nb
+    FROM envoyer e
+    JOIN users u ON e.id_exp = u.id_u
+    WHERE e.id_recept = :user_id AND e.lu = 0
+    GROUP BY e.id_exp
+");
+$req_unread->execute(['user_id' => $_SESSION['id_u']]);
+$unread_msgs = $req_unread->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<?php if (!empty($unread_msgs)): ?>
+    <div class="alert alert-info mt-3">
+        <h5>📨 Messages non lus</h5>
+        <ul class="list-group">
+            <?php foreach ($unread_msgs as $msg): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="messages.php?contact=<?= $msg['id_exp'] ?>">
+                        <strong><?= htmlspecialchars($msg['login']) ?></strong> vous a envoyé <?= $msg['nb'] ?> message(s).
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
 
 <div class="container mt-5 pt-4" id="reche-messag">
     <div class="card shadow-sm">
