@@ -33,7 +33,8 @@ if (isset($_POST['submit'])) {
         $_SESSION['email'] = $email;
 
         echo "<div class='alert alert-custom mt-0' role='alert'>Inscription réussie ! Redirection en cours...</div>";
-        echo "<meta http-equiv='refresh' content='3;url=home.php'>";
+        
+        header("Location: home.php");
     }
 }
 ?>
@@ -41,7 +42,7 @@ if (isset($_POST['submit'])) {
 <div class="wrapper">
     <!-- Image à gauche -->
     <div class="image-container">
-        <img src="ImgU/logoo.png" alt="Image de présentation">
+        <img src="assets/images/ImgU/logoo.png" alt="Image de présentation">
     </div>
 
     <!-- Formulaire à droite -->
@@ -49,7 +50,7 @@ if (isset($_POST['submit'])) {
         <!-- Ajouter dans le formulaire -->
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div class="logo">
-            <img src="ImgU/logo.png" alt="GamingHub Logo">
+            <img src="assets/images/ImgU/logo.png" alt="GamingHub Logo">
         </div>
         <form method="post">
             <div class="form-group">

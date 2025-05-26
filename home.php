@@ -131,7 +131,7 @@ try {
           <!-- Créer une story -->
           <div class="story-create">
             <div class="story-avatar-wrapper">
-              <img src="assets/images/default_avatar.png" alt="Votre avatar" loading="lazy">
+              <img src="assets/images/meta.png" alt="Votre avatar" loading="lazy">
               <div class="story-plus-icon"><i class="fas fa-plus"></i></div>
             </div>
             <div class="mt-1 small">Créer une story</div>
@@ -141,7 +141,7 @@ try {
           <?php for ($i = 1; $i <= 10; $i++): ?>
           <div class="story">
             <div class="story-avatar-wrapper avatar-border">
-              <img src="avatar/avatar_<?= $i ?>" alt="Story ami <?= $i ?>" loading="lazy">
+              <img src="assets/images/story/story_<?= $i ?>" alt="Story ami <?= $i ?>" loading="lazy">
             </div>
             <div class="mt-1 small">Story <?= $i ?></div>
           </div>
@@ -156,7 +156,7 @@ try {
       <div class="create-post mb-4 mt-3">
         <div class="d-flex align-items-center mb-3">
           <div class="me-2">
-          <img src="assets/images/Profil/profil_<?= $_SESSION['id_u'] ?>" alt="Avatar" class="post-avatar" loading="lazy">
+          <img src="assets/images/profil/profil_<?= $_SESSION['id_u'] ?>" alt="Avatar" class="post-avatar" loading="lazy">
           </div>
           <input type="text" class="create-post-input form-control" placeholder="Quoi de neuf, <?= htmlspecialchars($_SESSION['login'] ?? 'utilisateur') ?> ?" onclick="window.location.href='pages/poster.php'">
         </div>
@@ -247,7 +247,7 @@ try {
             }
         ?>
         <div class="friend-suggestion d-flex align-items-center mb-2">
-            <img src="assets/images/Profil/profil_<?= $user['id_u'] ?>" 
+            <img src="assets/images/profil/profil_<?= $user['id_u'] ?>" 
                  alt="Avatar de <?= htmlspecialchars($user['login']) ?>" 
                  class="friend-avatar" loading="lazy">
             <div class="ms-2 flex-grow-1 sugg">

@@ -5,7 +5,7 @@ include "connexion.php";
 
 // Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['id_u'])) {
-    header("Location: login.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -52,7 +52,7 @@ $nb_notifications = $nb_msgs + $nb_demandes;
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <a class="navbar-brand" href="home.php">
-                    <strong><img src="ImgU/logoAcc.png" width="60px" alt="">MetaForg</strong>
+                    <strong><img src="../assets/images/ImgU/logoAcc.png" width="60px" alt="">MetaForg</strong>
                 </a>
 
                 <!-- Formulaire de recherche avec une icône de loupe -->
@@ -128,21 +128,18 @@ $nb_notifications = $nb_msgs + $nb_demandes;
 
             <?php if ($admin_visible): ?>
 
-            <a href="../pages/admin.php" class="text-decoration-none me-3" title="Administration">
+            <a href="../metaforg/pages/admin.php" class="text-decoration-none me-3" title="Administration">
 
                 <i class="fas fa-cog fa-lg text-danger"></i>
 
             </a>
+           
 
             <?php else: ?>
 
             <!-- L'icône d'administration n'est pas affichée car le niveau n'est pas > 3 -->
 
-            <a href="../admin-link.php" class="text-decoration-none me-3" title="Administration (accès direct)">
-
-                <i class="fas fa-cog fa-lg"></i>
-
-            </a>
+            
 
             <?php endif; ?>
 

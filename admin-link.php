@@ -40,7 +40,7 @@ session_start();
             <h2><i class="fas fa-user-shield"></i> Accès au panneau d'administration</h2>
             <p>Cliquez sur le bouton ci-dessous pour accéder au panneau d'administration :</p>
             
-            <a href="pages/admin.php" class="admin-link">
+            <a href="metaforg/pages/admin.php" class="admin-link">
                 <i class="fas fa-cog"></i> Accéder à l'administration
             </a>
             

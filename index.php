@@ -37,13 +37,13 @@ if(isset($_POST['submit']))
 <div class="wrapper">
     <!-- Image à gauche -->
     <div class="image-container">
-        <img src="ImgU/insc.png" alt="Image de présentation">
+        <img src="assets/images/ImgU/insc.png" alt="Image de présentation">
     </div>
 
     <!-- Formulaire à droite -->
     <div class="form-container">
         <div class="logo">
-            <img src="ImgU/logo.png" alt="GamingHub Logo">
+            <img src="assets/images/ImgU/logo.png" alt="GamingHub Logo">
         </div>
         <form action="#" method="POST">
             <div class="form-group">
@@ -59,7 +59,7 @@ if(isset($_POST['submit']))
             <button name="submit" type="submit" class="btn">Se connecter</button>
         </form>
         <div class="forgot-password">
-            <a href="#">Mot de passe oublié ?</a>
+            <a href="pages/mdp-oublier.php">Mot de passe oublié ?</a>
         </div>
         <div class="divider">
             <span></span>
