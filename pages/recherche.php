@@ -53,7 +53,11 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
                             <div class="search-result-item p-2 border rounded mb-2" style="cursor:pointer" 
                             onclick="window.location.href='profil.php?id=<?= htmlspecialchars($result['id_u']) ?>'">
                                 <div class="d-flex align-items-center">
-                                    <img src="../assets/images/default_avatar.png" class="rounded-circle me-2" width="40" height="40">
+                                    <img src="../assets/images/profil/profil_<?= $result['id_u'] ?>" 
+     alt="Avatar de <?= htmlspecialchars($result['login']) ?>" 
+     class="rounded-circle me-2" width="40" height="40" loading="lazy"
+     onerror="this.src='../assets/images/profil/default.png';">
+
                                     <div class="fw-bold"><?= htmlspecialchars($result['login']) ?></div>
                                 </div>
                             </div>

@@ -247,9 +247,11 @@ try {
             }
         ?>
         <div class="friend-suggestion d-flex align-items-center mb-2">
-            <img src="assets/images/profil/profil_<?= $user['id_u'] ?>" 
-                 alt="Avatar de <?= htmlspecialchars($user['login']) ?>" 
-                 class="friend-avatar" loading="lazy">
+           <img src="assets/images/profil/profil_<?= $user['id_u'] ?>" 
+     alt="Avatar de <?= htmlspecialchars($user['login']) ?>" 
+     class="friend-avatar" loading="lazy"
+     onerror="this.src='assets/images/profil/default.png';">
+
             <div class="ms-2 flex-grow-1 sugg">
                 <a href="pages/profil.php?id=<?= $user['id_u'] ?>" class="text-decoration-none">
                     <?= htmlspecialchars($user['login']) ?>

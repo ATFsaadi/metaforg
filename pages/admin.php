@@ -121,7 +121,7 @@ try {
     $stats['total_images'] = $stmt->fetchColumn();
     
     // Utilisateurs récemment inscrits
-    $stmt = $bdd->query("SELECT id_u, login, email, lvl FROM users ORDER BY id_u DESC LIMIT 10");
+    $stmt = $bdd->query("SELECT id_u, login, email, lvl FROM users ORDER BY id_u DESC ");
     $stats['recent_users'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Publications récentes

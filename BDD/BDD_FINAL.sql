@@ -116,16 +116,33 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 
 
-INSERT INTO users (login, prenom, nom, email, mdp, lvl, IP, birthdate, genre, langue, pays, photo_profil) VALUES
-('jdoe', 'John', 'Doe', 'john.doe@example.com', 'hashed_mdp1', 1, '192.168.1.2', '1990-05-14', 'Homme', 'en', 'USA', NULL),
-('mli', 'Mei', 'Li', 'mei.li@example.cn', 'hashed_mdp2', 0, '192.168.1.3', '1993-07-22', 'Femme', 'zh', 'Chine', NULL),
-('alebrun', 'Alain', 'Lebrun', 'alain.lebrun@example.fr', 'hashed_mdp3', 2, '192.168.1.4', '1985-02-11', 'Homme', 'fr', 'France', NULL),
-('kslimane', 'Karim', 'Slimane', 'karim.slimane@example.dz', 'hashed_mdp4', 1, '41.110.23.45', '1992-09-10', 'Homme', 'ar', 'Algérie', NULL),
-('samina_b', 'Samina', 'Boualem', 'samina.b@example.dz', 'hashed_mdp5', 0, '41.110.54.12', '1996-03-18', 'Femme', 'fr', 'Algérie', NULL),
-('hamedk', 'Hamed', 'Kallel', 'hamed.k@example.tn', 'hashed_mdp6', 1, '102.23.45.67', '1988-12-25', 'Homme', 'ar', 'Tunisie', NULL),
-('nadia_cha', 'Nadia', 'Chatti', 'nadia.chatti@example.tn', 'hashed_mdp7', 0, '102.12.34.56', '1995-07-07', 'Femme', 'fr', 'Tunisie', NULL),
-('koffik', 'Koffi', 'Konan', 'koffi.konan@example.ci', 'hashed_mdp8', 1, '102.124.23.12', '1991-11-20', 'Homme', 'fr', 'Côte d\'Ivoire', NULL),
-('ama_m', 'Ama', 'Meite', 'ama.meite@example.ci', 'hashed_mdp9', 0, '102.124.34.56', '1994-04-15', 'Femme', 'fr', 'Côte d\'Ivoire', NULL),
-('moussam', 'Moussa', 'Maiga', 'moussa.maiga@example.ml', 'hashed_mdp10', 1, '102.145.67.89', '1990-06-09', 'Homme', 'fr', 'Mali', NULL),
-('fatou_d', 'Fatou', 'Diallo', 'fatou.diallo@example.ml', 'hashed_mdp11', 0, '102.145.90.12', '1997-08-30', 'Femme', 'fr', 'Mali', NULL);
 
+
+
+
+INSERT INTO users (login, prenom, nom, email, mdp, lvl, IP, birthdate, genre, langue, pays, photo_profil) VALUES
+('admin', 'Admin', 'Root', 'admin@metaforg.com', '$2y$10$e0NR0YBk1pG9m8u6X6jz2eEwiNjCm99xzCwVUZqReLZT0XHu0zB6e', 2, '127.0.0.1', '1980-01-01', 'Homme', 'fr', 'France', NULL),
+('leo', 'Leo', 'Benslimane', 'leo@metaforg.com', '$2y$10$UuL0WhmM8EIo4KKC0z3pVe/Qk76rmYylEyoXzDK7XVk/J4ph9FPE6', 0, '41.201.10.10', '1992-03-15', 'Homme', 'fr', 'Algérie', NULL),
+('atef', 'Atef', 'Khaled', 'atef@metaforg.com', '$2y$10$43PoWKIwGqQz2TVn5uOwZ.qn3tOCB46fVfzD2eokMO4ZTnrm0PYiW', 0, '41.202.10.11', '1990-07-10', 'Homme', 'ar', 'Algérie', NULL),
+('ibra', 'Ibra', 'Traore', 'ibra@metaforg.com', '$2y$10$9N3DqQFvQ4NlMkPvYGsuaeI2XkQXOlroGZ6kd7YflcprkDO2UDvKm', 0, '102.140.20.20', '1989-09-25', 'Homme', 'fr', 'Mali', NULL),
+('daniel', 'Daniel', 'Okito', 'daniel@metaforg.com', '$2y$10$WgWk0Z6f3Tp7HsIT4UP9pu0Su9aOx5TJgKwN9J5njBpO9cGh9q4Ye', 0, '102.145.20.30', '1991-11-11', 'Homme', 'fr', 'Congo', NULL),
+('amani', 'Amani', 'Zitouni', 'amani@metaforg.com', '$2y$10$wXTxzRnmTbP7Q2kI3gP2EuPTG9paTGqDTjFtXQEl0QYK9VX3yoQ4y', 0, '102.150.22.22', '1995-05-05', 'Femme', 'ar', 'Tunisie', NULL),
+('nour', 'Nour', 'Belkacem', 'nour@metaforg.com', '$2y$10$SNuKCFVEd/19R3h.R27TMOXwI5wVyKFOkWZrAO4n6w6vpgl0/I5eO', 0, '41.101.1.1', '1994-06-06', 'Femme', 'fr', 'Algérie', NULL),
+('hassan', 'Hassan', 'Yahia', 'hassan@metaforg.com', '$2y$10$xRqAlXQr/ypPRq5b9kwDae0hq8nmXq0szBq/6ldxIkvcuuAq7t/yS', 0, '41.101.1.2', '1987-12-24', 'Homme', 'ar', 'Maroc', NULL),
+('sami', 'Sami', 'Ben Amor', 'sami@metaforg.com', '$2y$10$0hmwTxu5c2cKg7iPSNlfHOXxOm/nfM1whV1v0D3aCHu6svhc3fWiW', 0, '102.100.1.3', '1996-03-18', 'Homme', 'fr', 'Tunisie', NULL),
+('yasmine', 'Yasmine', 'Lahlou', 'yasmine@metaforg.com', '$2y$10$hEzFzj2QfEIVF/xY5HZt3O6WLyWlfS8xMziup31P2G8y7MJQU8K5e', 0, '102.100.1.4', '1993-08-08', 'Femme', 'fr', 'Maroc', NULL),
+('fatima', 'Fatima', 'Bamba', 'fatima@metaforg.com', '$2y$10$7Fe8KxKKmuZzPbmCW58VxePka77R3EbDjhG6czGH8eOdGZlgdKU1y', 0, '102.100.1.5', '1992-10-10', 'Femme', 'fr', 'Côte d\'Ivoire', NULL),
+('abdou', 'Abdou', 'Camara', 'abdou@metaforg.com', '$2y$10$C0iF60pt9Bxyld8shJKV3OGEAlYrT6PzY2wLl97mMPQSOoJWQ5qny', 0, '102.100.1.6', '1991-01-01', 'Homme', 'fr', 'Mali', NULL),
+('rania', 'Rania', 'Bouzar', 'rania@metaforg.com', '$2y$10$8wLUM/xy9vgFgV/C82N5UuPpr/tM2DbDv7TtNyRkNGyTJUHfw19ti', 0, '102.100.1.7', '1998-09-09', 'Femme', 'fr', 'Algérie', NULL),
+('ali', 'Ali', 'Ziani', 'ali@metaforg.com', '$2y$10$M4qWcSzn3rRJLRVvxPhGeu5e5/s5NLH1LdA4EVcQptOq0UlUdkdyK', 0, '102.100.1.8', '1989-04-04', 'Homme', 'ar', 'Algérie', NULL),
+('selma', 'Selma', 'Nefzi', 'selma@metaforg.com', '$2y$10$xJQ3JzvExLqLSp.VQmq5zOMzTzqGZ.3m8XxRavqN8P3Orqbcqflbu', 0, '102.100.1.9', '1997-02-02', 'Femme', 'fr', 'Tunisie', NULL),
+('omar', 'Omar', 'Boukhelifa', 'omar@metaforg.com', '$2y$10$1FVqGKrwhjW8oW45hRwi1uLgQ/9OomkqUv7INIK6yDcH3LdrDhL7m', 0, '102.100.2.1', '1986-06-06', 'Homme', 'ar', 'Algérie', NULL),
+('nadia', 'Nadia', 'Sow', 'nadia@metaforg.com', '$2y$10$zWc43oDtrcPAqA4oCGKICeWryqn4r3Fk.xmYiykgCrRkBxk5v9DoG', 0, '102.100.2.2', '1990-10-10', 'Femme', 'fr', 'Sénégal', NULL),
+('amine', 'Amine', 'Tounsi', 'amine@metaforg.com', '$2y$10$HlxiN1pmIg0wQZmtWyHRmeB44YP1VRV5H.FPjGkD3tpOyKl1ejp4i', 0, '102.100.2.3', '1993-03-03', 'Homme', 'fr', 'Tunisie', NULL),
+('layla', 'Layla', 'Mbaye', 'layla@metaforg.com', '$2y$10$T1g/1iZ50VwA4eGSE/OUpeQqO1vFOz0DJxVBuTh/y4EK0aU1DsYya', 0, '102.100.2.4', '1994-04-04', 'Femme', 'fr', 'Sénégal', NULL),
+('karim', 'Karim', 'Sankara', 'karim@metaforg.com', '$2y$10$V3x5OdtmzOPG1dMrrleqz.zk6DNWVKSwoF/GcBDJhYK03P4C7gVfq', 0, '102.100.2.5', '1992-05-05', 'Homme', 'fr', 'Burkina Faso', NULL),
+('salim', 'Salim', 'Amrani', 'salim@metaforg.com', '$2y$10$Gm.P4x5Lyik8mf85nlEVJek96WCDU9JsFj5MvQ2t7I0uEim6ccwAO', 0, '102.100.2.6', '1985-07-07', 'Homme', 'ar', 'Algérie', NULL),
+('lina', 'Lina', 'Abidi', 'lina@metaforg.com', '$2y$10$JxmC3pNxGLbYs.J6cWMCJeRHkjSj0y9/k9hGMaNpVxScm3RzPq6Pi', 0, '102.100.2.7', '1991-12-12', 'Femme', 'fr', 'Tunisie', NULL),
+('zakaria', 'Zakaria', 'Ndao', 'zakaria@metaforg.com', '$2y$10$fDKq5Np2HK6S1tTse9OsXeeDcQ5vPo.7BTAOZc/NJtuU0.JTx4HxS', 0, '102.100.2.8', '1996-01-01', 'Homme', 'fr', 'Sénégal', NULL),
+('samir', 'Samir', 'Ouattara', 'samir@metaforg.com', '$2y$10$C1iPM3LsMwg9t0UqRwYBZeHxwxWvo5zSxDfyPpA/NxlLZbGxQ74m6', 0, '102.100.2.9', '1993-11-11', 'Homme', 'fr', 'Côte d\'Ivoire', NULL),
+('noura', 'Noura', 'Kouyate', 'noura@metaforg.com', '$2y$10$Cv5kOq0vgY1Mq8YvHnGrfeqX3N65AZDZnuXuzqGxLwmuMImq4MlAe', 0, '102.100.3.0', '1990-02-02', 'Femme', 'fr', 'Mali', NULL);

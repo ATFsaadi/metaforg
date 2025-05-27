@@ -67,7 +67,11 @@ if (isset($_SESSION['id_u'])) {
             foreach ($conversations as $conv):
             ?>
                 <div class="d-flex align-items-center p-2 border-bottom" onclick="window.location.href='/metaforg/pages/messages.php?contact=<?= $conv['id_u'] ?>'" style="cursor: pointer;">
-                    <img src="<?= $conv['photo_profil'] ?? 'assets/images/default_avatar.png' ?>" width="40" class="rounded-circle me-2">
+                   <img src="assets/images/profil/profil_<?= $conv['id_u'] ?>" 
+     alt="Avatar de <?= htmlspecialchars($conv['login']) ?>" 
+     class="rounded-circle me-2" width="40" loading="lazy"
+     onerror="this.src='assets/images/profil/default.png';">
+
                     <div class="flex-grow-1">
                         <div class="fw-bold"><?= htmlspecialchars($conv['login']) ?></div>
                         <div class="small text-muted text-truncate"><?= htmlspecialchars($conv['message']) ?></div>
