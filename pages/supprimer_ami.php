@@ -2,37 +2,46 @@
 session_start();
 include "../includes/connexion.php";
 
-// Vérifications de sécurité
-if (!isset($_SESSION['id_u']) || !isset($_POST['relation_id']) || !isset($_POST['ami_id'])) {
+if (!isset($_POST['relation_id'], $_SESSION['id_u'])) {
     header("Location: ../index.php");
     exit;
 }
 
-$relation_id = intval($_POST['relation_id']);
-$ami_id = intval($_POST['ami_id']);
-$user_id = $_SESSION['id_u'];
+$relation_id = (int)$_POST['relation_id'];
+$current_user_id = $_SESSION['id_u'];
 
-// Vérifie que la relation appartient bien à l'utilisateur
-$check = $bdd->prepare("
-    SELECT id FROM amis 
-    WHERE id = ? 
-    AND ((utilisateur_id = ? AND ami_id = ?)
-    OR (utilisateur_id = ? AND ami_id = ?))
-    AND statut = 'accepte'
-");
-$check->execute([$relation_id, $user_id, $ami_id, $ami_id, $user_id]);
+// On récupère les infos de la relation
+$amiStmt = $bdd->prepare("SELECT utilisateur_id, ami_id FROM amis WHERE id = ?");
+$amiStmt->execute([$relation_id]);
+$relation = $amiStmt->fetch();
 
-if ($check->rowCount() > 0) {
-    // Supprime la relation (permet de renvoyer une demande plus tard)
-    $delete = $bdd->prepare("DELETE FROM amis WHERE id = ?");
-    $delete->execute([$relation_id]);
-    
-    $_SESSION['success'] = "Ami supprimé avec succès";
-} else {
-    $_SESSION['error'] = "Action non autorisée";
+if (!$relation) {
+    $_SESSION['friend_message'] = [
+        'type' => 'danger',
+        'text' => "Relation introuvable"
+    ];
+    header("Location: ../index.php");
+    exit;
 }
 
-// Redirection vers le profil
+// Identifier l’ami pour rediriger vers son profil
+$ami_id = ($relation['utilisateur_id'] == $current_user_id) ? $relation['ami_id'] : $relation['utilisateur_id'];
+
+try {
+    // Supprimer la relation
+    $stmt = $bdd->prepare("DELETE FROM amis WHERE id = ? AND (utilisateur_id = ? OR ami_id = ?)");
+    $stmt->execute([$relation_id, $current_user_id, $current_user_id]);
+
+    $_SESSION['friend_message'] = [
+        'type' => 'success',
+        'text' => '❌ Ami supprimé avec succès'
+    ];
+} catch (Exception $e) {
+    $_SESSION['friend_message'] = [
+        'type' => 'danger',
+        'text' => "Erreur : " . $e->getMessage()
+    ];
+}
+
 header("Location: profil.php?id=" . $ami_id);
 exit;
-?>

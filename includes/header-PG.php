@@ -142,11 +142,6 @@ $nb_notifications = $nb_msgs + $nb_demandes;
 
             <!-- L'icône d'administration n'est pas affichée car le niveau n'est pas > 3 -->
 
-            <a href="../admin-link.php" class="text-decoration-none me-3" title="Administration (accès direct)">
-
-                <i class="fas fa-cog fa-lg"></i>
-
-            </a>
 
             <?php endif; ?>
             <div class="dropdown">

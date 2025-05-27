@@ -22,21 +22,33 @@ try {
         throw new Exception("Vous ne pouvez pas vous ajouter vous-même");
     }
 
-    // Vérifier si la demande existe déjà
-    $check = $bdd->prepare("SELECT * FROM amis 
-                          WHERE (utilisateur_id = ? AND ami_id = ?) 
-                          OR (utilisateur_id = ? AND ami_id = ?)");
+    // Vérifier si une relation existe déjà
+    $check = $bdd->prepare("
+        SELECT id, statut FROM amis 
+        WHERE (utilisateur_id = ? AND ami_id = ?) 
+           OR (utilisateur_id = ? AND ami_id = ?)
+    ");
     $check->execute([$utilisateur_id, $ami_id, $ami_id, $utilisateur_id]);
 
-    if ($check->rowCount() > 0) {
-        throw new Exception("Une demande existe déjà");
+    $relation = $check->fetch();
+
+    if ($relation) {
+        if ($relation['statut'] === 'accepte') {
+            throw new Exception("Vous êtes déjà amis");
+        } elseif ($relation['statut'] === 'en_attente') {
+            throw new Exception("Une demande est déjà en attente");
+        } elseif ($relation['statut'] === 'refuse') {
+            // Supprimer l'ancienne relation refusée pour en autoriser une nouvelle
+            $delete = $bdd->prepare("DELETE FROM amis WHERE id = ?");
+            $delete->execute([$relation['id']]);
+        }
     }
 
-    // Envoyer la demande
+    // Envoyer la nouvelle demande
     $stmt = $bdd->prepare("INSERT INTO amis (utilisateur_id, ami_id, statut, date_demande) 
                           VALUES (?, ?, 'en_attente', NOW())");
     $stmt->execute([$utilisateur_id, $ami_id]);
-    
+
     $_SESSION['friend_message'] = [
         'type' => 'success',
         'text' => '✅ Demande envoyée avec succès'

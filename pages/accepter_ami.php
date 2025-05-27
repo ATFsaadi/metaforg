@@ -10,7 +10,7 @@ if (!isset($_SESSION['id_u']) || !isset($_GET['id'])) {
 $ami_id = intval($_GET['id']);
 $user_id = $_SESSION['id_u'];
 
-// Vérifie si la demande existe en attente
+// Vérifie si la demande existe
 $check = $bdd->prepare("
     SELECT id FROM amis 
     WHERE utilisateur_id = ? 
@@ -20,7 +20,6 @@ $check = $bdd->prepare("
 $check->execute([$ami_id, $user_id]);
 
 if ($check->rowCount() > 0) {
-    // Accepter la demande
     $update = $bdd->prepare("
         UPDATE amis 
         SET statut = 'accepte' 
@@ -30,10 +29,10 @@ if ($check->rowCount() > 0) {
     ");
     $update->execute([$ami_id, $user_id]);
 
-    header("Location: notifications.php?success=accepted");
+    header("Location: amis.php?success=accepted");
     exit;
 } else {
-    header("Location: notifications.php?error=notfound");
+    header("Location: amis.php?error=notfound");
     exit;
 }
 ?>
