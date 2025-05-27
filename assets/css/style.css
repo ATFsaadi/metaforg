@@ -549,3 +549,39 @@ form.d-flex button.btn-primary:hover {
 }
 
 
+/* Style personnalisé du dropdown utilisateur */
+.custom-dropdown {
+    background-color: black;
+    border: none;
+    min-width: 50px;
+    box-shadow: none;
+     margin-top: 5px !important; /* espace entre le bouton et le menu */
+     margin-right: -80px !important;
+}
+
+.custom-dropdown .dropdown-item {
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /* ou simplement : */
+    padding: 10px 15px;
+}
+
+
+.custom-dropdown .dropdown-item {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /* ou simplement : */
+    padding: 10px 15px;
+}
+
+
+.custom-dropdown .dropdown-item:hover,
+.custom-dropdown .dropdown-item:focus {
+    background-color: rgba(0, 255, 0, 0.2);
+    color: #00FF00;
+}
+
+.custom-dropdown .dropdown-divider {
+    border-top: 1px solid #00FF00;
+}

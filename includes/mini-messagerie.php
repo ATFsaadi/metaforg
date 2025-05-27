@@ -9,43 +9,153 @@ if (isset($_SESSION['id_u'])) {
 }
 ?>
 
-<button
-    id="chatButton"
-    onclick="toggleChat()"
-    class="btn btn-primary position-fixed d-flex align-items-center position-relative"
-    style="bottom: 20px; left: 20px; z-index: 1050; padding: 10px 20px; border-radius: 8px;">
-    
-    <!-- Icône colorée si messages non lus -->
-    <i class="fas fa-comment-alt me-2 <?= $nb_non_lus > 0 ? 'text-danger' : '' ?>"></i>
-    
-    Messagerie
+<!-- Style intégré -->
+<style>
+#chatButton {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1050;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0);
+    border: 1px solid #00FF00;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+#chatButton:hover {
+    background-color:rgba(0, 0, 0, 0);
+}
+
+#chatButton i {
+    font-size: 20px;
+}
+
+#chatButton .badge {
+    position: absolute;
+    top: -5px;
+    left: 100%;
+    transform: translate(-30%, -40%);
+    background-color: #dc3545;
+    color: white;
+    padding: 4px 7px;
+    font-size: 12px;
+    border-radius: 50px;
+}
+
+#chatPanel {
+    position: fixed;
+    bottom: 65px;
+    left: 65px;
+    width: 250px;
+    max-height: 420px;
+    overflow-y: auto;
+    z-index: 1040;
+    border-radius: 0px;
+    background: black;
+    display: none;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+.slideIn {
+    animation: slideIn 0.3s ease-out;
+}
+
+#chatPanel .header {
+    padding-left: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#chatPanel .conversation {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+#chatPanel .conversation:hover {
+    background-color: #00ff0055;
+}
+#chatPanel .conversation img {
+    border-radius: 50%;
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+#chatPanel .conversation .flex-grow-1 {
+    min-width: 0;
+}
+#chatPanel .conversation .fw-bold {
+    font-weight: 600;
+    font-size: 16px;
+}
+#chatPanel .conversation .text-muted {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#chatPanel .conversation .badge {
+    font-size: 0.75rem;
+    padding: 5px 7px;
+    background-color: #dc3545;
+    color: white;
+}
+#chatPanel .header button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+#chatPanel .header button:hover {
+    color: #00FF00;
+}
+</style>
+
+<!-- Bouton -->
+<button id="chatButton" onclick="toggleChat()">
+    <i class="fas fa-envelope fa-lg <?= $nb_non_lus > 0 ? 'text-danger' : '' ?>"></i>
+    <?php if ($nb_non_lus > 0): ?>
+        <span class="badge"><?= $nb_non_lus ?></span>
+    <?php endif; ?>
 </button>
 
-
-
-
 <!-- Panneau Messagerie -->
-<div
-    id="chatPanel"
-    class="position-fixed bg-white shadow"
-    style="bottom: 70px; left: 20px; width: 300px; max-height: 400px; overflow-y: auto; display: none; z-index: 1040; border-radius: 10px;">
-    
-    <!-- En-tête -->
-    <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
-        <h6 class="mb-0">Messagerie</h6>
-        <button class="btn btn-sm btn-secondary" onclick="toggleChat()">
+<div id="chatPanel">
+    <div class="header">
+        <h6 class="mb-0 text-white">Messagerie</h6>
+        <button onclick="toggleChat()">
             <i class="fas fa-times"></i>
         </button>
     </div>
 
-    <!-- Contenu de la messagerie -->
     <div class="p-2" id="chatContent">
         <?php
         if (!isset($_SESSION['id_u'])) {
             echo "<div class='p-2 text-muted'>Non connecté</div>";
         } else {
             $user_id = $_SESSION['id_u'];
-
             $req = $bdd->prepare("
                 SELECT 
                     u.id_u, u.login, u.photo_profil,
@@ -65,38 +175,35 @@ if (isset($_SESSION['id_u'])) {
             $conversations = $req->fetchAll(PDO::FETCH_ASSOC);
 
             foreach ($conversations as $conv):
-            ?>
-                <div class="d-flex align-items-center p-2 border-bottom" onclick="window.location.href='/metaforg/pages/messages.php?contact=<?= $conv['id_u'] ?>'" style="cursor: pointer;">
-                   <img src="assets/images/profil/profil_<?= $conv['id_u'] ?>" 
-     alt="Avatar de <?= htmlspecialchars($conv['login']) ?>" 
-     class="rounded-circle me-2" width="40" loading="lazy"
-     onerror="this.src='assets/images/profil/default.png';">
-
+        ?>
+                <div class="conversation" onclick="window.location.href='/metaforg/pages/messages.php?contact=<?= $conv['id_u'] ?>'">
+                    <img src="/metaforg/assets/images/profil/profil_<?= $conv['id_u'] ?>" 
+                         alt="Avatar de <?= htmlspecialchars($conv['login']) ?>" 
+                         class="rounded-circle me-2" width="40" loading="lazy"
+                         onerror="this.src='/metaforg/assets/images/profil/default.png';">
                     <div class="flex-grow-1">
                         <div class="fw-bold"><?= htmlspecialchars($conv['login']) ?></div>
-                        <div class="small text-muted text-truncate"><?= htmlspecialchars($conv['message']) ?></div>
+                        <div class="text-muted"><?= htmlspecialchars($conv['message']) ?></div>
                     </div>
                     <?php if ($conv['non_lus'] > 0): ?>
-                        <span class="badge bg-danger rounded-pill"><?= $conv['non_lus'] ?></span>
+                        <span class="badge rounded-pill"><?= $conv['non_lus'] ?></span>
                     <?php endif; ?>
                 </div>
-            <?php
+        <?php
             endforeach;
         }
         ?>
     </div>
 </div>
 
-<!-- JavaScript -->
+<!-- Script -->
 <script>
 function toggleChat() {
     const panel = document.getElementById('chatPanel');
     const isVisible = panel.style.display !== 'none';
+    panel.style.display = isVisible ? 'none' : 'block';
 
-    if (isVisible) {
-        panel.style.display = 'none';
-    } else {
-        panel.style.display = 'block';
+    if (!isVisible) {
         panel.classList.add('slideIn');
         setTimeout(() => panel.classList.remove('slideIn'), 300);
         scrollToBottom();
@@ -110,7 +217,6 @@ function scrollToBottom() {
     }
 }
 
-// Fermer si clic en dehors
 document.addEventListener('click', function (event) {
     const chatPanel = document.getElementById('chatPanel');
     const chatButton = document.getElementById('chatButton');
@@ -125,24 +231,11 @@ document.addEventListener('click', function (event) {
     }
 });
 
-// Auto-scroll au chargement
 document.addEventListener('DOMContentLoaded', function () {
     scrollToBottom();
 });
 
-// Rechargement automatique des messages toutes les 30 secondes
 setInterval(() => {
     location.reload();
 }, 30000);
 </script>
-
-<!-- Animation optionnelle -->
-<style>
-@keyframes slideIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.slideIn {
-    animation: slideIn 0.3s ease-out;
-}
-</style>

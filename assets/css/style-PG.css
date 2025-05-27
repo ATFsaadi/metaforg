@@ -690,3 +690,27 @@ footer {
   border-color: var(--color-primary); /* Change la couleur de bordure dans les messages */
   box-shadow: none;
 }
+
+/* Style personnalisé du dropdown utilisateur */
+.custom-dropdown {
+    background-color: black;
+    border: 1px solid #00FF00;
+    min-width: 180px;
+    box-shadow: 0 2px 6px rgba(0, 255, 0, 0.2);
+}
+
+.custom-dropdown .dropdown-item {
+    color: white;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-dropdown .dropdown-item:hover,
+.custom-dropdown .dropdown-item:focus {
+    background-color: rgba(0, 255, 0, 0.2);
+    color: #00FF00;
+}
+
+.custom-dropdown .dropdown-divider {
+    border-top: 1px solid #00FF00;
+}

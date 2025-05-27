@@ -143,27 +143,29 @@ include "../includes/header-PG.php";
                 $status = $relation['statut'] ?? null;
                 ?>
 
-                <?php if ($status === 'accepte'): ?>
-                    <form method="POST" action="supprimer_ami.php" class="d-inline-block">
-                        <input type="hidden" name="relation_id" value="<?= $relation['id'] ?>">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Supprimer cet ami ?')">
-                            <i class="fas fa-user-times"></i> Supprimer
-                        </button>
-                    </form>
-                <?php elseif ($status === 'en_attente'): ?>
-                    <?php if ($relation['utilisateur_id'] == $current_user_id): ?>
-                        <button class="btn btn-secondary" disabled><i class="fas fa-clock"></i> Demande envoyée</button>
-                    <?php else: ?>
-                        <a href="accepter.php?id=<?= $profile_id ?>" class="btn btn-success"><i class="fas fa-check"></i> Accepter</a>
-                        <a href="refuser.php?id=<?= $profile_id ?>" class="btn btn-danger ml-2"><i class="fas fa-times"></i> Refuser</a>
-                    <?php endif; ?>
-                <?php else: ?>
-                    <form method="POST" class="d-inline-block">
-                        <input type="hidden" name="ajouter_ami" value="1">
-                        <input type="hidden" name="ami_id" value="<?= $profile_id ?>">
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Ajouter ami</button>
-                    </form>
-                <?php endif; ?>
+              <?php if ($status === 'accepte'): ?>
+    <form method="POST" action="supprimer_ami.php" class="d-inline-block">
+        <input type="hidden" name="relation_id" value="<?= $relation['id'] ?>">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Supprimer cet ami ?')">
+            <i class="fas fa-user-times"></i> Supprimer
+        </button>
+    </form>
+    <a href="messages.php?contact=<?= $profile_id ?>" class="btn btn-info ml-2">
+        <i class="fas fa-envelope"></i> Contacter
+    </a>
+<?php elseif ($status === 'en_attente'): ?>
+    <!-- (Pas besoin de bouton "Contacter" ici) -->
+<?php else: ?>
+    <form method="POST" class="d-inline-block">
+        <input type="hidden" name="ajouter_ami" value="1">
+        <input type="hidden" name="ami_id" value="<?= $profile_id ?>">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Ajouter ami</button>
+    </form>
+    <a href="messages.php?contact=<?= $profile_id ?>" class="btn btn-info ml-2">
+        <i class="fas fa-envelope"></i> Contacter
+    </a>
+<?php endif; ?>
+
             </div>
         <?php endif; ?>
     </div>
