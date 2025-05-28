@@ -58,19 +58,7 @@ if ($posts === false) {
     </div>
 
     <!-- Actualités Gaming (optionnel) -->
-    <div id="rss-news">
-        <h3 class="news-section-title">🎮 Dernières actualités des sites gaming</h3>
-        
-        <div class="news-source">
-            <h4>ActuGaming</h4>
-            <div id="actugaming-list" class="news-list"></div>
-        </div>
-        
-        <div class="news-source">
-            <h4>JVFrance</h4>
-            <div id="jvfrance-list" class="news-list"></div>
-        </div>
-    </div>
+   
 </div>
 
 <script>
@@ -81,9 +69,12 @@ if ($posts === false) {
             .then(data => {
                 let html = '<ul>';
                 (data.items || []).slice(0, 5).forEach(item => {
+                    // Récupérer les 2-3 premiers mots du titre
+                    const shortTitle = item.title.split(/\s+/).slice(0, 3).join(' ');
+                    
                     html += `<li class="news-item">
                         <a href="${item.link}" target="_blank" class="news-link">
-                            ${item.title}
+                            ${shortTitle}...
                         </a>
                     </li>`;
                 });

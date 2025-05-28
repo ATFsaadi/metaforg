@@ -116,6 +116,19 @@ try {
             <i class="fas fa-calendar-alt me-2"></i> Événements
           </a>
         </div>
+         <div id="rss-news">
+        <h3 class="news-section-title">🎮 Dernières actualités des sites gaming</h3>
+        
+        <div class="news-source">
+            <h4>ActuGaming</h4>
+            <div id="actugaming-list" class="news-list"></div>
+        </div>
+        
+        <div class="news-source">
+            <h4>JVFrance</h4>
+            <div id="jvfrance-list" class="news-list"></div>
+        </div>
+    </div>
       </div>
     </div>
 
