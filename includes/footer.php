@@ -1,7 +1,6 @@
-    <!-- Contenu principal (déjà présent dans votre code) -->
-    </div> <!-- Fin de .container -->
-
-    <!-- Footer -->
+<?php
+ob_end_flush();
+?>
     <footer class="mt-5">
         <div class="container">
             <div class="social-icons d-flex justify-content-center mb-3">
@@ -21,16 +20,15 @@
                     <i class="fab fa-discord"></i>
                 </a>
             </div>
+            
             <p class="text-center text-muted small">© 2025 MetaForg - Tous droits réservés</p>
         </div>
     </footer>
 
-    <!-- Bootstrap & JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Script pour gérer le clic sur la zone de création de post
+        // === Effet hover sur les actions de post ===
         document.addEventListener('DOMContentLoaded', function() {
-            // Ajouter des effets hover si nécessaire
             const postActions = document.querySelectorAll('.post-action');
             postActions.forEach(action => {
                 action.addEventListener('mouseenter', () => {
@@ -42,6 +40,8 @@
             });
         });
     </script>
+
 </body>
 </html>
-<?php ob_end_flush(); ?>
+
+

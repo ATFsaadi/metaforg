@@ -51,13 +51,13 @@ try {
 
     $_SESSION['friend_message'] = [
         'type' => 'success',
-        'text' => '✅ Demande envoyée avec succès'
+        'text' => 'Demande envoyée avec succès'
     ];
 
 } catch (Exception $e) {
     $_SESSION['friend_message'] = [
         'type' => 'danger',
-        'text' => '❌ ' . $e->getMessage()
+        'text' => '' . $e->getMessage()
     ];
 }
 

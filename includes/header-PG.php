@@ -1,25 +1,19 @@
 <?php
 include "connexion.php";
 
-
-
-// Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['id_u'])) {
     header("Location: index.php");
     exit;
 }
 
-// Compter messages non lus
 $req_nb_msgs = $bdd->prepare("SELECT COUNT(*) FROM envoyer WHERE id_recept = :uid AND lu = 0");
 $req_nb_msgs->execute(['uid' => $_SESSION['id_u']]);
 $nb_msgs = $req_nb_msgs->fetchColumn();
 
-// Compter demandes d’amis en attente
 $req_nb_demandes = $bdd->prepare("SELECT COUNT(*) FROM amis WHERE ami_id = :uid AND statut = 'en_attente'");
 $req_nb_demandes->execute(['uid' => $_SESSION['id_u']]);
 $nb_demandes = $req_nb_demandes->fetchColumn();
 
-// Total
 $nb_notifications = $nb_msgs + $nb_demandes;
 ?>
 <!DOCTYPE html>
@@ -28,33 +22,27 @@ $nb_notifications = $nb_msgs + $nb_demandes;
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Accueil - MetaForg</title>
-
-        <!-- Bootstrap CSS -->
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
             rel="stylesheet">
-
-        <!-- Font Awesome pour les icônes -->
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-        <!-- Styles personnalisés -->
         <link rel="stylesheet" href="../assets/css/style-PG.css">
         <link rel="stylesheet" href="../assets/css/style.css">
     </head>
     <body>
-        <!-- Barre de navigation -->
+
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <a class="navbar-brand" href="../home.php">
                     <strong><img src="../ImgU/logoAcc.png" width="60px" alt="">MetaForg</strong>
                 </a>
 
-                <!-- Formulaire de recherche avec une icône de loupe -->
+                <!-- Barre de recherche -->
                 <div class="d-flex align-items-center ms-auto me-2">
                     <form class="d-flex me-2" action="../pages/recherche.php" method="GET">
                         <div class="input-group">
@@ -79,94 +67,84 @@ $nb_notifications = $nb_msgs + $nb_demandes;
                     </form>
                 </div>
 
-            </form>
-        </div>
+                <!-- Icônes utilisateur -->
+                <div class="d-flex align-items-center">
+                    <a
+                        href="../pages/profil.php?id=<?= $_SESSION['id_u'] ?>"
+                        class="text-decoration-none me-3">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <a href="../pages/amis.php" class="text-decoration-none me-3">
+                        <i class="fas fa-user-friends"></i>
+                    </a>
+                    <a
+                        href="../pages/messages.php"
+                        class="text-decoration-none me-3 position-relative">
+                        <i class="fas fa-envelope fa-lg"></i>
+                        <?php if ($nb_msgs > 0): ?>
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <?= $nb_msgs ?>
+                        </span>
+                        <?php endif; ?>
+                    </a>
+                    <a
+                        href="../pages/notifications.php"
+                        class="text-decoration-none me-3 position-relative">
+                        <i class="fas fa-bell fa-lg"></i>
+                        <?php if ($nb_notifications > 0): ?>
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <?= $nb_notifications ?>
+                        </span>
+                        <?php endif; ?>
+                    </a>
 
-        <div class="d-flex align-items-center">
-            <a
-                href="../pages/profil.php?id=<?= $_SESSION['id_u'] ?>"
-                class="text-decoration-none me-3">
-                <i class="fas fa-user"></i>
-            </a>
-            <a href="../pages/amis.php" class="text-decoration-none me-3">
-                <i class="fas fa-user-friends"></i>
-            </a>
-          <a href="../pages/messages.php" class="text-decoration-none me-3 position-relative">
-    <i class="fas fa-envelope fa-lg"></i>
-    <?php if ($nb_msgs > 0): ?>
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            <?= $nb_msgs ?>
-        </span>
-    <?php endif; ?>
-</a>
-
-            <a href="../pages/notifications.php" class="text-decoration-none me-3 position-relative">
-    <i class="fas fa-bell fa-lg"></i>
-    <?php if ($nb_notifications > 0): ?>
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            <?= $nb_notifications ?>
-        </span>
-    <?php endif; ?>
-</a>
-<?php 
-
-            // Debug pour identifier pourquoi l'élément n'apparait pas
-
+                    <!-- Bouton administration (visible uniquement niveau > 3) -->
+                    <?php 
             $admin_visible = false;
-
             if (isset($_SESSION['lvl'])) {
-
                 $admin_level = intval($_SESSION['lvl']);
-
                 if ($admin_level > 3) {
-
                     $admin_visible = true;
-
                 }
-
             }
-
             ?>
+                    <?php if ($admin_visible): ?>
+                    <a
+                        href="../pages/admin.php"
+                        class="text-decoration-none me-3"
+                        title="Administration">
+                        <i class="fas fa-cog fa-lg text-danger"></i>
+                    </a>
+                    <?php endif; ?>
 
-            
-
-            <?php if ($admin_visible): ?>
-
-            <a href="../pages/admin.php" class="text-decoration-none me-3" title="Administration">
-
-                <i class="fas fa-cog fa-lg text-danger"></i>
-
-            </a>
-
-            <?php else: ?>
-
-            <!-- L'icône d'administration n'est pas affichée car le niveau n'est pas > 3 -->
-
-
-            <?php endif; ?>
-          <div class="dropdown">
-    <a
-        class="dropdown-toggle text-decoration-none text-white"
-        href="#"
-        role="button"
-        id="userMenuDropdown"
-        data-bs-toggle="dropdown"
-        aria-expanded="false">
-        <strong class="me-1"><?= strtoupper(htmlspecialchars($_SESSION['login'])) ?></strong>
-    </a>
-    <ul class="dropdown-menu custom-dropdown dropdown-menu-end" aria-labelledby="userMenuDropdown">
-        <li>
-            <a class="dropdown-item" href="pages/profil.php?id=<?= $_SESSION['id_u'] ?>">Mon profil</a>
-        </li>
-        <li>
-            <a class="dropdown-item" href="pages/compte.php">Paramètres</a>
-        </li>
-        <li><hr class="dropdown-divider"></li>
-        <li>
-            <a class="dropdown-item" href="logout.php">Déconnexion</a>
-        </li>
-    </ul>
-</div>
-        </div>
-    </div>
-</nav>
+                    <!-- Menu utilisateur -->
+                    <div class="dropdown">
+                        <a
+                            class="dropdown-toggle text-decoration-none text-white"
+                            href="#"
+                            role="button"
+                            id="userMenuDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <strong class="me-1"><?= strtoupper(htmlspecialchars($_SESSION['login'])) ?></strong>
+                        </a>
+                        <ul
+                            class="dropdown-menu custom-dropdown dropdown-menu-end"
+                            aria-labelledby="userMenuDropdown">
+                            <li>
+                                <a class="dropdown-item" href="pages/profil.php?id=<?= $_SESSION['id_u'] ?>">Mon profil</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="pages/compte.php">Paramètres</a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="logout.php">Déconnexion</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>

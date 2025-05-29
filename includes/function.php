@@ -14,7 +14,4 @@ function ForgotPassword() {
     $mdp .= $chaine[rand(92,121)];
     return $mdp;
 }
-
-
-
 ?>

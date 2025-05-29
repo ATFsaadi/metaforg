@@ -1,4 +1,5 @@
-<!-- Footer avec icônes des réseaux sociaux -->
+
+</body>
 <footer>
             <div class="social-icons">
                 <a href="https://www.facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>

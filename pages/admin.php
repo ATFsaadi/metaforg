@@ -142,15 +142,15 @@ include "../includes/header-PG.php";
 <!-- Page d'administration -->
 <div class="container mt-5 pt-4">
     <h1 class="mb-4">Panneau d'administration</h1>
-    
+
     <?php if (!empty($success_message)): ?>
-        <div class="alert alert-success"><?= $success_message ?></div>
+    <div class="alert alert-success"><?= $success_message ?></div>
     <?php endif; ?>
-    
+
     <?php if (!empty($error_message)): ?>
-        <div class="alert alert-danger"><?= $error_message ?></div>
+    <div class="alert alert-danger"><?= $error_message ?></div>
     <?php endif; ?>
-    
+
     <!-- Tableau de bord -->
     <div class="row mb-4">
         <div class="col-md-4">
@@ -178,23 +178,43 @@ include "../includes/header-PG.php";
             </div>
         </div>
     </div>
-    
+
     <!-- Onglets pour les différentes sections -->
     <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" id="users-tab" data-bs-toggle="tab" href="#users" role="tab">Utilisateurs</a>
+            <a
+                class="nav-link active"
+                id="users-tab"
+                data-bs-toggle="tab"
+                href="#users"
+                role="tab">Utilisateurs</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="publications-tab" data-bs-toggle="tab" href="#publications" role="tab">Publications</a>
+            <a
+                class="nav-link"
+                id="publications-tab"
+                data-bs-toggle="tab"
+                href="#publications"
+                role="tab">Publications</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="images-tab" data-bs-toggle="tab" href="#images" role="tab">Images</a>
+            <a
+                class="nav-link"
+                id="images-tab"
+                data-bs-toggle="tab"
+                href="#images"
+                role="tab">Images</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="settings-tab" data-bs-toggle="tab" href="#settings" role="tab">Paramètres</a>
+            <a
+                class="nav-link"
+                id="settings-tab"
+                data-bs-toggle="tab"
+                href="#settings"
+                role="tab">Paramètres</a>
         </li>
     </ul>
-    
+
     <!-- Contenu des onglets -->
     <div class="tab-content" id="adminTabsContent">
         <!-- Onglet Utilisateurs -->
@@ -221,7 +241,10 @@ include "../includes/header-PG.php";
                                 <form method="post" class="d-inline">
                                     <input type="hidden" name="action" value="update_user_level">
                                     <input type="hidden" name="user_id" value="<?= $user['id_u'] ?>">
-                                    <select name="new_level" class="form-select form-select-sm" onchange="this.form.submit()">
+                                    <select
+                                        name="new_level"
+                                        class="form-select form-select-sm"
+                                        onchange="this.form.submit()">
                                         <option value="0" <?= $user['lvl'] == 0 ? 'selected' : '' ?>>Utilisateur (0)</option>
                                         <option value="50" <?= $user['lvl'] == 50 ? 'selected' : '' ?>>Modérateur (50)</option>
                                         <option value="100" <?= $user['lvl'] == 100 ? 'selected' : '' ?>>Admin (100)</option>
@@ -229,12 +252,19 @@ include "../includes/header-PG.php";
                                 </form>
                             </td>
                             <td>
-                                <a href="profil.php?id=<?= $user['id_u'] ?>" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>
-                                
-                                <form method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?')">
+                                <a href="profil.php?id=<?= $user['id_u'] ?>" class="btn btn-sm btn-info">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+
+                                <form
+                                    method="post"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?')">
                                     <input type="hidden" name="action" value="delete_user">
                                     <input type="hidden" name="user_id" value="<?= $user['id_u'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -243,7 +273,7 @@ include "../includes/header-PG.php";
                 </table>
             </div>
         </div>
-        
+
         <!-- Onglet Publications -->
         <div class="tab-pane fade" id="publications" role="tabpanel">
             <h3>Gestion des publications</h3>
@@ -266,10 +296,15 @@ include "../includes/header-PG.php";
                             <td><?= date('d/m/Y H:i', strtotime($pub['date'])) ?></td>
                             <td><?= htmlspecialchars($pub['login']) ?></td>
                             <td>
-                                <form method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette publication?')">
+                                <form
+                                    method="post"
+                                    class="d-inline"
+                                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette publication?')">
                                     <input type="hidden" name="action" value="delete_publication">
                                     <input type="hidden" name="pub_id" value="<?= $pub['id_p'] ?>">
-                                    <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -278,7 +313,7 @@ include "../includes/header-PG.php";
                 </table>
             </div>
         </div>
-        
+
         <!-- Onglet Images -->
         <div class="tab-pane fade" id="images" role="tabpanel">
             <h3>Gestion des images</h3>
@@ -286,15 +321,26 @@ include "../includes/header-PG.php";
                 <?php foreach ($stats['recent_images'] as $img): ?>
                 <div class="col-md-3 mb-4">
                     <div class="card">
-                        <img src="../<?= htmlspecialchars($img['chemin']) ?>" class="card-img-top" alt="Image" style="height: 150px; object-fit: cover;">
+                        <img
+                            src="../<?= htmlspecialchars($img['chemin']) ?>"
+                            class="card-img-top"
+                            alt="Image"
+                            style="height: 150px; object-fit: cover;">
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars(mb_substr($img['nom'], 0, 20)) ?></h5>
-                            <p class="card-text">Posté par: <?= htmlspecialchars($img['login']) ?></p>
-                            <p class="card-text"><small class="text-muted"><?= date('d/m/Y', strtotime($img['date_img'])) ?></small></p>
-                            <form method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette image?')">
+                            <p class="card-text">Posté par:
+                                <?= htmlspecialchars($img['login']) ?></p>
+                            <p class="card-text">
+                                <small class="text-muted"><?= date('d/m/Y', strtotime($img['date_img'])) ?></small>
+                            </p>
+                            <form
+                                method="post"
+                                onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette image?')">
                                 <input type="hidden" name="action" value="delete_image">
                                 <input type="hidden" name="img_id" value="<?= $img['id_img'] ?>">
-                                <button type="submit" class="btn btn-sm btn-danger w-100"><i class="fas fa-trash"></i> Supprimer</button>
+                                <button type="submit" class="btn btn-sm btn-danger w-100">
+                                    <i class="fas fa-trash"></i>
+                                    Supprimer</button>
                             </form>
                         </div>
                     </div>
@@ -302,7 +348,7 @@ include "../includes/header-PG.php";
                 <?php endforeach; ?>
             </div>
         </div>
-        
+
         <!-- Onglet Paramètres -->
         <div class="tab-pane fade" id="settings" role="tabpanel">
             <h3>Paramètres du site</h3>
@@ -312,19 +358,23 @@ include "../includes/header-PG.php";
                 </div>
                 <div class="card-body">
                     <p>Ces actions sont irréversibles et doivent être utilisées avec précaution.</p>
-                    
+
                     <div class="mb-3">
                         <h6>Nettoyage des images orphelines</h6>
                         <p>Supprime les images qui ne sont pas liées à une publication.</p>
-                        <a href="maintenance.php?action=clean_orphan_images" class="btn btn-warning" onclick="return confirm('Êtes-vous sûr de vouloir nettoyer les images orphelines?')">Nettoyer les images orphelines</a>
+                        <a
+                            href="maintenance.php?action=clean_orphan_images"
+                            class="btn btn-warning"
+                            onclick="return confirm('Êtes-vous sûr de vouloir nettoyer les images orphelines?')">Nettoyer les images orphelines</a>
                     </div>
-                    
+
                     <div class="mb-3">
                         <h6>Synchroniser les photos de profil</h6>
-                        <p>Assure que toutes les photos de profil sont correctement indexées dans la base de données.</p>
+                        <p>Assure que toutes les photos de profil sont correctement indexées dans la
+                            base de données.</p>
                         <a href="../sync-profile-images.php" class="btn btn-info">Synchroniser les photos de profil</a>
                     </div>
-                    
+
                     <div class="mb-3">
                         <h6>Vérification des permissions</h6>
                         <p>Vérifie et corrige les permissions des dossiers d'uploads.</p>
@@ -338,10 +388,12 @@ include "../includes/header-PG.php";
 
 <script>
     // JavaScript pour activer les onglets Bootstrap
-    document.addEventListener('DOMContentLoaded', function() {
-        var triggerTabList = [].slice.call(document.querySelectorAll('#adminTabs a'))
-        triggerTabList.forEach(function(triggerEl) {
-            triggerEl.addEventListener('click', function(event) {
+    document.addEventListener('DOMContentLoaded', function () {
+        var triggerTabList = []
+            .slice
+            .call(document.querySelectorAll('#adminTabs a'))
+        triggerTabList.forEach(function (triggerEl) {
+            triggerEl.addEventListener('click', function (event) {
                 event.preventDefault()
                 var tabTrigger = new bootstrap.Tab(triggerEl)
                 tabTrigger.show()
