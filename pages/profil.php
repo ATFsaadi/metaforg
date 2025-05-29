@@ -142,6 +142,18 @@ include "../includes/header-PG.php";
                 $relation = $stmt->fetch();
                 $status = $relation['statut'] ?? null;
                 ?>
+                <?php if ($status): ?>
+  
+    <div class="alert <?= $status === 'accepte' ? 'alert-success' : 'alert-success' ?> mt-2" role="alert" style="max-width: 300px;">
+        <?php if ($status === 'accepte'): ?>
+            <i class="fas fa-user-check"></i> Vous êtes déjà amis
+        <?php elseif ($status === 'en_attente'): ?>
+            <i class="fas fa-hourglass-half"></i> Demande d'ami en attente
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
+
+
 
               <?php if ($status === 'accepte'): ?>
     <form method="POST" action="supprimer_ami.php" class="d-inline-block">

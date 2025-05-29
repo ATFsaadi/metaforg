@@ -146,3 +146,11 @@ INSERT INTO users (login, prenom, nom, email, mdp, lvl, IP, birthdate, genre, la
 ('zakaria', 'Zakaria', 'Ndao', 'zakaria@metaforg.com', '$2y$10$fDKq5Np2HK6S1tTse9OsXeeDcQ5vPo.7BTAOZc/NJtuU0.JTx4HxS', 0, '102.100.2.8', '1996-01-01', 'Homme', 'fr', 'Sénégal', NULL),
 ('samir', 'Samir', 'Ouattara', 'samir@metaforg.com', '$2y$10$C1iPM3LsMwg9t0UqRwYBZeHxwxWvo5zSxDfyPpA/NxlLZbGxQ74m6', 0, '102.100.2.9', '1993-11-11', 'Homme', 'fr', 'Côte d\'Ivoire', NULL),
 ('noura', 'Noura', 'Kouyate', 'noura@metaforg.com', '$2y$10$Cv5kOq0vgY1Mq8YvHnGrfeqX3N65AZDZnuXuzqGxLwmuMImq4MlAe', 0, '102.100.3.0', '1990-02-02', 'Femme', 'fr', 'Mali', NULL);
+
+
+
+
+
+
+
+ INSERT INTO stories (user_id, image_path, expire_at) VALUES (1, 'story_7.jpg', NOW() + INTERVAL 1 DAY);

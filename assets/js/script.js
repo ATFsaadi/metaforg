@@ -1,4 +1,4 @@
-// Sélectionnez le bouton du menu utilisateur
+/* Sélectionnez le bouton du menu utilisateur
 const menuIcon = document.querySelector('.menu-icon');
 
 // Créez un menu déroulant

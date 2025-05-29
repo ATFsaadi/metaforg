@@ -167,16 +167,18 @@ $unread_msgs = $req_unread->fetchAll(PDO::FETCH_ASSOC);
                             $cid = $conversation['contact_id'];
                             if (!$cid || !isset($users_logins[$cid])) continue;
                         ?>
-                            <div class="contact-item <?= ($contact_id == $cid) ? 'bg-light' : '' ?> p-2 rounded mb-2" style="cursor:pointer" onclick="window.location.href='messages.php?contact=<?= $cid ?>'">
-                                <div class="d-flex align-items-center">
-                                    <img src="../assets/images/Profil/profil_<?= $cid ?>"  
-                                         class="profile-avatar msg"
-                                         alt="Avatar de <?= htmlspecialchars($cid) ?>" 
-                                         width="180" height="180"
-                                         style="object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; border: 3px solid orange;">
-                                    <div class="fw-bold"><?= htmlspecialchars($users_logins[$cid]) ?></div>
-                                </div>
-                            </div>
+                           <div class="contact-item <?= ($contact_id == $cid) ? 'bg-light' : '' ?> p-2 rounded mb-2" style="cursor:pointer" onclick="window.location.href='messages.php?contact=<?= $cid ?>'">
+    <div class="d-flex align-items-center">
+        <div class="fw-bold flex-grow-1"><?= htmlspecialchars($users_logins[$cid]) ?></div>
+        <div class="flex-shrink-0">
+            <img src="../assets/images/Profil/profil_<?= $cid ?>"  
+                 class="profile-avatar msg rounded-circle"
+                 alt="Avatar de <?= htmlspecialchars($cid) ?>" 
+                 width="40" height="40"
+                 style="object-fit: cover; border: 2px solid orange;">
+        </div>
+    </div>
+</div>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <div class="text-center text-muted mt-3">
