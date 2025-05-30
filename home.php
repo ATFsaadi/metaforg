@@ -3,7 +3,6 @@ ob_start();
 session_start();
 include "includes/header.php";
 
-// Vérification connexion
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
     header("Location: index.php");
     exit;
@@ -11,10 +10,6 @@ if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
 
 $userId = $_SESSION['id_u'] ?? null;
 $login = $_SESSION['login'] ?? 'utilisateur';
-
-// Connexion à la BDD (assure-toi que $bdd est bien initialisé dans includes/header.php ou ailleurs)
-// Par exemple:
-// $bdd = new PDO(...);
 
 // --- Ajout d'ami ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'add_friend' && isset($_POST['ami_id'])) {
@@ -61,10 +56,15 @@ try {
 // --- Chargement des suggestions d'amis ---
 try {
     $req_users = $bdd->prepare("
-        SELECT id_u, login 
-        FROM users 
-        WHERE id_u != :id 
-        ORDER BY RAND() 
+        SELECT u.id_u, u.login 
+        FROM users u
+        WHERE u.id_u != :id
+          AND u.id_u NOT IN (
+              SELECT ami_id FROM amis WHERE utilisateur_id = :id
+              UNION
+              SELECT utilisateur_id FROM amis WHERE ami_id = :id
+          )
+        ORDER BY RAND()
         LIMIT 8
     ");
     $req_users->bindValue(':id', $userId, PDO::PARAM_INT);
@@ -74,7 +74,7 @@ try {
     $suggestions = [];
 }
 
-// --- Chargement des stories ---
+
 // --- Chargement des stories ---
 try {
     $req_stories = $bdd->prepare("
@@ -134,13 +134,11 @@ try {
     <div class="col-lg-6">
 <!-- Conteneur principal des stories -->
 <div class="stories-wrapper d-flex align-items-center mb-4 position-relative">
-  
-  <!-- Flèche gauche -->
+
   <button class="scroll-btn left" style="display: none;">
     <i class="fas fa-chevron-left"></i>
   </button>
-  
-   <!-- Conteneur des stories -->
+
   <div class="stories-container story-container d-flex flex-nowrap overflow-auto flex-grow-1 gap-3">
     
     <!-- Créer une story -->
@@ -174,14 +172,11 @@ try {
       </div>
     <?php endforeach; ?>
   </div>
-  
-  <!-- Flèche droite -->
+
   <button class="scroll-btn right">
     <i class="fas fa-chevron-right"></i>
   </button>
 </div>
-
-
 
       <!-- Créer une publication -->
       <div class="create-post mb-4 mt-3">

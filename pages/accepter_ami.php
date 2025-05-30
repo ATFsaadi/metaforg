@@ -1,8 +1,6 @@
 <?php
 session_start();
 include "../includes/connexion.php";
-
-// Vérification de l'authentification et de l'ID ami
 if (!isset($_SESSION['id_u']) || !isset($_GET['id'])) {
     header("Location: ../index.php");
     exit;

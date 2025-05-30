@@ -1,8 +1,7 @@
 <?php
 session_start();
-include "../includes/connexion.php"; // Connexion DB
+include "../includes/connexion.php";
 
-// Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
     header("Location: ../index.php");
     exit;
@@ -11,7 +10,7 @@ if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
 $user_id = $_SESSION['id_u'];
 $errors = [];
 
-// Traitement du formulaire AVANT toute sortie HTML
+// Traitement du formulaire avant toute sortie HTML
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contenu = trim($_POST['contenu'] ?? '');
 
@@ -66,7 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Aucune redirection après ici => on peut afficher le header
 include "../includes/header-PG.php";
 
 // Récupération des publications

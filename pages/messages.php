@@ -4,7 +4,6 @@ session_start();
 include "../includes/connexion.php";
 include "../includes/header-PG.php";
 
-// Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
     header("Location: ../index.php");
     exit;
@@ -45,7 +44,7 @@ $contact_info = null;
 
 // Si un contact est sélectionné
 if ($contact_id) {
-    // ✅ Mise à jour des messages comme lus
+    // Mise à jour des messages comme lus
     $bdd->prepare("UPDATE envoyer SET lu = 1 WHERE id_exp = :contact_id AND id_recept = :user_id AND lu = 0")
         ->execute([
             'contact_id' => $contact_id,

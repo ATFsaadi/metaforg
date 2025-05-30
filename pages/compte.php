@@ -1,20 +1,15 @@
 <?php
 session_start(); 
 
-// Démarre la session
 include "../includes/connexion.php";
 include "../includes/header-PG.php"; 
 
-// Vérifie si l'utilisateur est connecté
 if (!isset($_SESSION['login'])) {
-    header("Location: login.php"); // Redirige vers la page de connexion
+    header("Location: login.php");
     exit;
 }
 ?>
 
-
-
-        <!-- Menu utilisateur -->
         <div class="user-menu">
             <img src="avatar.jpg" alt="Avatar" class="avatar">
             <span class="username">Nom Prénom</span>

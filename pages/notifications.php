@@ -13,7 +13,6 @@ $req_demandes = $bdd->prepare("
 $req_demandes->execute(['user_id' => $_SESSION['id_u']]);
 $demandes_amis = $req_demandes->fetchAll(PDO::FETCH_ASSOC);
 
-// Vérifier que l'utilisateur est connecté
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
     header("Location: ../index.php");
     exit;
@@ -21,7 +20,7 @@ if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
 
 $user_id = $_SESSION['id_u'];
 
-// 🔔 Récupérer les messages non lus
+// Récupérer les messages non lus
 $req_unread = $bdd->prepare("
     SELECT e.id_exp, u.login, COUNT(*) as nb
     FROM envoyer e
@@ -32,7 +31,7 @@ $req_unread = $bdd->prepare("
 $req_unread->execute(['user_id' => $user_id]);
 $unread_msgs = $req_unread->fetchAll(PDO::FETCH_ASSOC);
 
-// 👥 Récupérer les demandes d'amis en attente
+// Récupérer les demandes d'amis en attente
 $req_demandes = $bdd->prepare("
     SELECT u.id_u, u.login
     FROM amis a
@@ -46,9 +45,9 @@ $demandes_amis = $req_demandes->fetchAll(PDO::FETCH_ASSOC);
 <div class="container mt-5 pt-4">
     <div class="card shadow-sm">
         <div class="card-body">
-            <h3 class="mb-4">📬 Vos notifications</h3>
+            <h3 class="mb-4"> Vos notifications</h3>
 
-            <!-- 🔔 Notifications de messages -->
+            <!-- Notifications de messages -->
             <h5>Messages non lus</h5>
             <?php if (!empty($unread_msgs)): ?>
                 <ul class="list-group mb-4">
@@ -65,7 +64,7 @@ $demandes_amis = $req_demandes->fetchAll(PDO::FETCH_ASSOC);
                 <p class="text-muted">Aucun nouveau message.</p>
             <?php endif; ?>
 
-            <!-- 👥 Notifications de demandes d'amis -->
+            <!-- Notifications de demandes d'amis -->
             <h5>Demandes d’amis</h5>
             <?php if (!empty($demandes_amis)): ?>
                 <ul class="list-group">

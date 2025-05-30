@@ -1,8 +1,6 @@
 <?php
 session_start();
 include "../includes/connexion.php";
-
-// Vérifier si l'utilisateur est connecté et est admin (niveau supérieur à 3)
 if (!isset($_SESSION['id_u']) || !isset($_SESSION['lvl']) || $_SESSION['lvl'] <= 3) {
     header("Location: ../index.php?error=unauthorized");
     exit();

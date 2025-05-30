@@ -1,6 +1,6 @@
 <?php 
 ob_start();
-session_start(); // 🔹 Ajoute ça pour utiliser $_SESSION
+session_start();
 
 include 'includes/header-HC.php';
 include 'includes/connexion.php';
@@ -8,7 +8,7 @@ include 'includes/connexion.php';
 if (isset($_POST['submit'])) {
     $login = $_POST['login'];
     $email = $_POST['email'];
-    $mdp = sha1($_POST['mdp']); // 
+    $mdp = sha1($_POST['mdp']);
 
     // Vérifie si l'e-mail existe déjà
     $requete = $bdd->prepare("SELECT * FROM users WHERE email = :email");
@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
     if ($reponse) {
         echo "<div class='alert alert-custom mt-0' role='alert'>Cette adresse e-mail est déjà utilisée.</div>";
     } else {
-        // 🔹 Insertion avec prepare (meilleure sécurité)
+        // Insertion avec prepare (meilleure sécurité)
         $stmt = $bdd->prepare("INSERT INTO users (login, email, mdp) VALUES (:login, :email, :mdp)");
         $stmt->execute([
             'login' => $login,
@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
             'mdp' => $mdp
         ]);
 
-        // 🔹 Récupère l'utilisateur nouvellement créé (avec lastInsertId)
+        // Récupère l'utilisateur nouvellement créé (avec lastInsertId)
         $userId = $bdd->lastInsertId();
         $_SESSION['user_id'] = $userId;
         $_SESSION['login'] = $login;
@@ -40,14 +40,12 @@ if (isset($_POST['submit'])) {
 ?>
 
 <div class="wrapper">
-    <!-- Image à gauche -->
     <div class="image-container">
         <img src="assets/images/ImgU/logoo.png" alt="Image de présentation">
     </div>
 
     <!-- Formulaire à droite -->
     <div class="form-container">
-        <!-- Ajouter dans le formulaire -->
         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
         <div class="logo">
             <img src="assets/images/ImgU/logo.png" alt="GamingHub Logo">

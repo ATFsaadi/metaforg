@@ -34,7 +34,7 @@ try {
 
     $_SESSION['friend_message'] = [
         'type' => 'success',
-        'text' => '❌ Ami supprimé avec succès'
+        'text' => ' Ami supprimé avec succès'
     ];
 } catch (Exception $e) {
     $_SESSION['friend_message'] = [

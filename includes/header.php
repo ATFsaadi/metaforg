@@ -1,7 +1,6 @@
 <?php
 include "connexion.php";
 
-// Vérification de l'authentification
 if (!isset($_SESSION['id_u'])) {
     header("Location: index.php");
     exit;

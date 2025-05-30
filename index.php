@@ -35,12 +35,9 @@ if(isset($_POST['submit']))
 ?>
 
 <div class="wrapper">
-    <!-- Image à gauche -->
     <div class="image-container">
         <img src="assets/images/ImgU/insc.png" alt="Image de présentation">
     </div>
-
-    <!-- Formulaire à droite -->
     <div class="form-container">
         <div class="logo">
             <img src="assets/images/ImgU/logo.png" alt="GamingHub Logo">

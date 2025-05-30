@@ -1,7 +1,7 @@
 <?php
 // Pagination
 $page = $_GET['page'] ?? 1;
-$limit = 10;
+$limit = 2;
 $offset = ($page - 1) * $limit;
 
 // Requête pour récupérer les publications

@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-// Vérification de la connexion
 if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
     header('Location: index.php');
     exit;
@@ -10,7 +8,6 @@ if (!isset($_SESSION['connecte']) || $_SESSION['connecte'] !== true) {
 $userId = $_SESSION['id_u'];
 $error = '';
 
-// Connexion BDD
 include '../includes/connexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['story_image'])) {
@@ -23,18 +20,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['story_image'])) {
         $uploadDir = '../assets/images/story/';
         $uploadPath = $uploadDir . $newName;
 
-        // Création du dossier si nécessaire
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
 
         if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
-            // Insertion en BDD avec date d’expiration à 24h
+        
             $stmt = $bdd->prepare("INSERT INTO stories (user_id, image_path, created_at, expire_at) 
                                    VALUES (?, ?, NOW(), DATE_ADD(NOW(), INTERVAL 24 HOUR))");
             $stmt->execute([$userId, $newName]);
 
-            // Redirection
             header('Location: ../home.php');
             exit;
         } else {
@@ -45,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['story_image'])) {
     }
 }
 
-// HTML
 include '../includes/header-PG.php';
 ?>
 

@@ -3,12 +3,10 @@ ob_start();
 session_start();
 include "../includes/connexion.php";
 
-// Protection CSRF
 if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Vérification de l'ID du profil
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     die("ID invalide");
 }
@@ -166,7 +164,7 @@ include "../includes/header-PG.php";
         <i class="fas fa-envelope"></i> Contacter
     </a>
 <?php elseif ($status === 'en_attente'): ?>
-    <!-- (Pas besoin de bouton "Contacter" ici) -->
+    
 <?php else: ?>
     <form method="POST" class="d-inline-block">
         <input type="hidden" name="ajouter_ami" value="1">
