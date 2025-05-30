@@ -1,7 +1,22 @@
-/* === STYLES GLOBAUX === */
+:root {
+    --bg-primary: #121212;
+    --bg-secondary: #1E1E1E;
+    --text-color: #B0B0B0;
+    --text-white: #FFFFFF;
+    --color-primary: #00BFFF;
+    --color-primary-hover: #008CFF;
+    --color-success: #00FF00;
+    --color-error: #FF4040;
+    --color-warning: #FFD700;
+    --color-orange: #FF7F00;
+    --color-purple: #6A0DAD;
+    --border-color: #B0B0B0;
+    --shadow-color: rgb(0, 0, 0);
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #121212;
+    background-color: var(--bg-primary);
     margin: 0;
     padding: 0;
     display: flex;
@@ -10,7 +25,6 @@ body {
     flex-direction: column;
 }
 
-/* === WRAPPER PRINCIPAL === */
 .wrapper {
     max-width: 800px;
     margin: 40px auto;
@@ -18,18 +32,17 @@ body {
     display: flex;
     flex-direction: row;
     background-color: #1a19198a;
-    box-shadow: 0 4px 20px rgb(0, 0, 0);
+    box-shadow: 0 4px 20px var(--shadow-color);
     border-radius: 10px;
     overflow: hidden;
 }
 
-/* === IMAGE CONTAINER === */
 .image-container {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #1E1E1E;
+    background-color: var(--bg-secondary);
     border-radius: 10px 0 0 10px;
 }
 
@@ -40,10 +53,9 @@ body {
     border-radius: 10px 0 0 10px;
 }
 
-/* === FORMULAIRE CONTAINER === */
 .form-container {
     flex: 1;
-    background: #121212;
+    background: var(--bg-primary);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -56,7 +68,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* === FORMULAIRE === */
 .form-group {
     margin-bottom: 10px;
     width: 100%;
@@ -67,9 +78,9 @@ body {
 .form-group input[type="date"] {
     width: 100%;
     padding: 10px;
-    background-color: #1E1E1E;
-    color: #FFFFFF;
-    border: 1px solid #B0B0B0;
+    background-color: var(--bg-secondary);
+    color: var(--text-white);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     font-size: 14px;
     box-sizing: border-box;
@@ -78,7 +89,7 @@ body {
 .form-group input:focus,
 .form-group select:focus,
 .form-group input[type="date"]:focus {
-    border-color: #00BFFF;
+    border-color: var(--color-primary);
     outline: none;
 }
 
@@ -86,14 +97,13 @@ body {
     display: block;
     margin-bottom: 5px;
     font-size: 13px;
-    color: #B0B0B0;
+    color: var(--text-color);
 }
 
-/* === BOUTON === */
 .btn {
     width: 100%;
     padding: 10px;
-    background-color: #00BFFF;
+    background-color: var(--color-primary);
     color: white;
     border: none;
     font-size: 14px;
@@ -103,23 +113,22 @@ body {
 }
 
 .btn:hover {
-    background-color: #008CFF;
+    background-color: var(--color-primary-hover);
 }
 
-/* === LIENS TEXTE === */
 .forgot-password,
 .login-link,
 .signup-link {
     text-align: center;
     margin-top: 15px;
     font-size: 12px;
-    color: #B0B0B0;
+    color: var(--text-color);
 }
 
 .forgot-password a,
 .signup-link a,
 .login-link a {
-    color: #00FF00;
+    color: var(--color-success);
     text-decoration: none;
 }
 
@@ -129,7 +138,6 @@ body {
     text-decoration: underline;
 }
 
-/* === DIVIDER === */
 .divider {
     display: flex;
     align-items: center;
@@ -139,16 +147,15 @@ body {
 .divider span {
     flex: 1;
     height: 1px;
-    background-color: #B0B0B0;
+    background-color: var(--border-color);
 }
 
 .divider p {
     margin: 0 10px;
     font-size: 12px;
-    color: #B0B0B0;
+    color: var(--text-color);
 }
 
-/* === ALERTES === */
 .alert {
     padding: 10px;
     margin: 20px 0;
@@ -157,36 +164,34 @@ body {
 }
 
 .alert.success {
-    background-color: #00FF00;
-    color: #121212;
+    background-color: var(--color-success);
+    color: var(--bg-primary);
 }
 
 .alert.error {
-    background-color: #FF4040;
-    color: #FFFFFF;
+    background-color: var(--color-error);
+    color: var(--text-white);
 }
 
 .alert.warning {
-    background-color: #FFD700;
-    color: #121212;
+    background-color: var(--color-warning);
+    color: var(--bg-primary);
 }
 
 .alert-custom {
     background-color: black;
-    color: #00FF00;
-    border: 1px solid #00FF00;
+    color: var(--color-success);
+    border: 1px solid var(--color-success);
     border-radius: 10px;
 }
 
-/* === FOOTER === */
 footer {
-    background-color: #121212;
+    background-color: var(--bg-primary);
     padding: 20px 0;
     text-align: center;
     width: 100%;
 }
 
-/* === ICÔNES SOCIALES === */
 .social-icons {
     display: flex;
     justify-content: center;
@@ -194,39 +199,37 @@ footer {
 }
 
 .social-icon {
-    color: #FFFFFF;
+    color: var(--text-white);
     font-size: 24px;
     transition: color 0.3s ease;
 }
 
 .social-icon:hover {
-    color: #00BFFF;
+    color: var(--color-primary);
 }
 
-/* === ICÔNES LIENS === */
 .icon-link {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #1E1E1E;
-    color: #B0B0B0;
+    background-color: var(--bg-secondary);
+    color: var(--text-color);
     text-decoration: none;
     border-radius: 10px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .icon-link:hover {
-    background-color: #00BFFF;
-    color: #FFFFFF;
+    background-color: var(--color-primary);
+    color: var(--text-white);
 }
 
 .icon-link i {
     font-size: 20px;
 }
 
-/* === MENU UTILISATEUR === */
 .user-menu {
     display: flex;
     align-items: center;
@@ -237,13 +240,13 @@ footer {
     width: 36px;
     height: 36px;
     object-fit: cover;
-    border: 2px solid #FF7F00;
+    border: 2px solid var(--color-orange);
     border-radius: 10px;
 }
 
 .username {
     font-size: 14px;
-    color: #B0B0B0;
+    color: var(--text-color);
 }
 
 .menu-icon {
@@ -251,23 +254,22 @@ footer {
     border: none;
     font-size: 20px;
     cursor: pointer;
-    color: #FF4040;
+    color: var(--color-error);
     border-radius: 10px;
 }
 
 .menu-icon:hover {
-    color: #FFD700;
+    color: var(--color-warning);
 }
 
-/* === DIVERS === */
 .badge {
-    background-color: #6A0DAD;
-    color: #FFFFFF;
+    background-color: var(--color-purple);
+    color: var(--text-white);
     padding: 5px 10px;
     font-size: 14px;
     border-radius: 10px;
 }
 
 .icon-special {
-    color: #008CFF;
+    color: var(--color-primary-hover);
 }

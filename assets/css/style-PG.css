@@ -1,4 +1,3 @@
-/* === Variables globales (complètes) === */
 :root {
   --bg-primary: #121212;
   --bg-secondary: #1E1E1E;
@@ -9,9 +8,20 @@
   --badge-color: #6A0DAD;
   --avatar-border: #FF7F00;
   --border-light: rgba(255, 255, 255, 0.1);
+  --error-color: #e74c3c;
+  --white: #FFFFFF;
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+  --shadow-darker: rgba(0, 0, 0, 0.4);
+  --shadow-primary: rgba(0, 191, 255, 0.2);
+  --shadow-primary-hover: rgba(0, 191, 255, 0.3);
+  --shadow-success: rgba(0, 255, 0, 0.2);
+  --gradient-orange: rgba(255, 127, 0, 0.1);
+  --gradient-primary: rgba(0, 191, 255, 0.05);
+  --hover-primary: rgba(0, 191, 255, 0.1);
+  --alert-success-bg: rgba(0, 255, 0, 0.1);
+  --dropdown-hover: rgba(0, 255, 0, 0.2);
 }
 
-/* === Base === */
 * {
   box-sizing: border-box;
 }
@@ -31,7 +41,6 @@ body {
   line-height: 1.6;
 }
 
-/* === Layout === */
 .container {
   max-width: 1000px;
   margin: 0 auto;
@@ -58,7 +67,6 @@ body {
   background: linear-gradient(to right, var(--color-primary), transparent);
 }
 
-/* === Navbar === */
 .navbar {
   background: var(--bg-secondary) !important;
   border-bottom: 1px solid var(--border-light);
@@ -70,7 +78,6 @@ body {
   font-weight: 700;
 }
 
-/* === Formulaire de recherche === */
 .search-form {
   display: flex;
   max-width: 500px;
@@ -94,7 +101,7 @@ body {
   padding: 0 1.2rem;
   border: none;
   background: var(--color-primary);
-  color: white;
+  color: var(--white);
   cursor: pointer;
   font-size: 1.2rem;
   transition: background 0.3s;
@@ -104,13 +111,12 @@ body {
   background: var(--color-primary-hover);
 }
 
-/* === Publications === */
 .publication-card {
   background: var(--bg-secondary);
   border-radius: 12px;
   padding: 1.8rem;
   margin-bottom: 2rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px var(--shadow-dark);
   border-left: 5px solid var(--avatar-border);
   transition: all 0.3s ease;
   position: relative;
@@ -124,10 +130,7 @@ body {
   left: -60px;
   width: 60px;
   height: 100%;
-  background: linear-gradient(to right, 
-    rgba(255, 127, 0, 0.1) 0%, 
-    transparent 100%
-  );
+  background: linear-gradient(to right, var(--gradient-orange) 0%, transparent 100%);
   transform: skewX(-20deg);
 }
 
@@ -138,7 +141,7 @@ body {
 
 .publication-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px var(--shadow-darker);
 }
 
 .publication-card:hover::before {
@@ -165,7 +168,7 @@ body {
   max-width: 100%;
   height: auto;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 15px var(--shadow-darker);
   transition: transform 0.3s ease;
 }
 
@@ -182,7 +185,6 @@ body {
   border-radius: 10px;
 }
 
-/* === Pagination === */
 .pagination {
   display: flex;
   justify-content: center;
@@ -195,17 +197,17 @@ body {
   padding: 0.6rem 1.2rem;
   border-radius: 6px;
   background-color: var(--color-primary);
-  color: white;
+  color: var(--white);
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 191, 255, 0.2);
+  box-shadow: 0 2px 6px var(--shadow-primary);
 }
 
 .page-link:hover {
   background-color: var(--color-primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 191, 255, 0.3);
+  box-shadow: 0 4px 10px var(--shadow-primary-hover);
 }
 
 .page-link.active {
@@ -214,7 +216,6 @@ body {
   transform: scale(1.05);
 }
 
-/* === Actualités Gaming === */
 #rss-news {
   margin-top: 3rem;
 }
@@ -224,7 +225,7 @@ body {
   border-radius: 12px;
   padding: 1.8rem;
   margin-bottom: 1.8rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px var(--shadow-dark);
   border-left: 5px solid var(--color-primary);
   transition: all 0.3s ease;
   position: relative;
@@ -238,16 +239,13 @@ body {
   left: -60px;
   width: 60px;
   height: 100%;
-  background: linear-gradient(to right, 
-    rgba(0, 191, 255, 0.05) 0%, 
-    transparent 100%
-  );
+  background: linear-gradient(to right, var(--gradient-primary) 0%, transparent 100%);
   transform: skewX(-20deg);
 }
 
 .news-source:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px var(--shadow-darker);
 }
 
 .news-source:hover::before {
@@ -286,7 +284,7 @@ body {
 }
 
 .news-item:hover {
-  background-color: rgba(0, 191, 255, 0.05);
+  background-color: var(--hover-primary);
   border-left-color: var(--color-primary-hover);
   transform: translateX(5px) scale(1.01);
 }
@@ -304,7 +302,7 @@ body {
 
 .news-link:hover {
   color: var(--color-primary-hover);
-  text-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+  text-shadow: 0 0 5px var(--shadow-primary);
 }
 
 .news-link::after {
@@ -320,18 +318,16 @@ body {
   transform: translateX(3px);
 }
 
-/* === Messages d'erreur === */
 .error-message {
-  color: #e74c3c;
+  color: var(--error-color);
   padding: 1.2rem;
   background: rgba(231, 76, 60, 0.1);
   border-radius: 10px;
-  border-left: 3px solid #e74c3c;
+  border-left: 3px solid var(--error-color);
   font-weight: 500;
   text-align: center;
 }
 
-/* === Stories === */
 .story-container {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -355,7 +351,6 @@ body {
   border: 3px solid var(--avatar-border);
 }
 
-/* === Créer une publication === */
 .create-post {
   background: var(--bg-secondary);
   padding: 1rem;
@@ -369,7 +364,7 @@ body {
   border-radius: 50px;
   padding: 0.75rem 1rem;
   width: 100%;
-  color: white;
+  color: var(--white);
 }
 
 .btn-outline-secondary {
@@ -379,10 +374,9 @@ body {
 
 .btn-outline-secondary:hover {
   background: var(--color-primary);
-  color: white;
+  color: var(--white);
 }
 
-/* === Sidebar === */
 .sidebar {
   background: var(--bg-secondary);
   border-radius: 10px;
@@ -396,16 +390,15 @@ body {
 }
 
 .list-group-item:hover {
-  background: rgba(0, 191, 255, 0.1);
+  background: var(--hover-primary);
 }
 
-/* === Boutons === */
 .btn {
   background: var(--color-primary);
   border: none;
   border-radius: 5px;
   padding: 0.5rem 1rem;
-  color: white;
+  color: var(--white);
   cursor: pointer;
   transition: background 0.3s ease;
 }
@@ -414,7 +407,6 @@ body {
   background: var(--color-primary-hover);
 }
 
-/* === Icônes === */
 .fas, .far {
   color: var(--color-success);
   transition: color 0.3s ease;
@@ -424,16 +416,14 @@ body {
   color: var(--color-primary-hover);
 }
 
-/* === Badges === */
 .badge {
   background: var(--badge-color);
-  color: white;
+  color: var(--white);
   padding: 0.25rem 0.5rem;
   border-radius: 20px;
   font-size: 0.8rem;
 }
 
-/* === Responsive Design === */
 @media (max-width: 992px) {
   .col-lg-3 {
     display: none !important;
@@ -470,15 +460,13 @@ body {
   }
 }
 
-/* === Animations === */
 @keyframes neon-glow {
-  0%, 100% { text-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF; }
-  50% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
+  0%, 100% { text-shadow: 0 0 5px var(--color-primary), 0 0 10px var(--color-primary); }
+  50% { text-shadow: 0 0 10px var(--color-success), 0 0 20px var(--color-success); }
 }
 
-/* === Footer === */
 footer {
-  background-color: #121212;
+  background-color: var(--bg-primary);
   padding: 20px 0;
   text-align: center;
   width: 100%;
@@ -486,7 +474,6 @@ footer {
   bottom: 0;
 }
 
-/* === Icônes sociales === */
 .social-icons {
   display: flex;
   justify-content: center;
@@ -494,13 +481,13 @@ footer {
 }
 
 .social-icon {
-  color: #FFFFFF;
+  color: var(--white);
   font-size: 24px;
   transition: color 0.3s ease;
 }
 
 .social-icon:hover {
-  color: #00BFFF;
+  color: var(--color-primary);
 }
 
 .games-grid {
@@ -535,18 +522,13 @@ footer {
   transition: color 0.3s ease;
 }
 
-
-
-
-
-/* === Profil utilisateur === */
 .profile-container {
   max-width: 700px;
   margin: 3rem auto;
   padding: 2rem;
   background-color: var(--bg-secondary);
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px var(--shadow-dark);
 }
 
 .profile-header {
@@ -631,7 +613,7 @@ footer {
 .form-control:focus {
   outline: none;
   border-color: var(--color-primary-hover);
-  box-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+  box-shadow: 0 0 5px var(--shadow-primary);
 }
 
 .btn-success {
@@ -650,22 +632,17 @@ footer {
 }
 
 .alert-success {
-  background-color: rgba(0, 255, 0, 0.1);
+  background-color: var(--alert-success-bg);
   color: var(--color-success);
   border-left: 4px solid var(--color-success);
 }
 
 .alert-danger {
   background-color:none;
-  color: #e74c3c;
-  border-left: 4px solid #e74c3c;
+  color: var(--error-color);
+  border-left: 4px solid var(--error-color);
 }
 
-
-
-
-
-/* Style de base pour tous les avatars de profil */
 .profile-avatar {
   width: 50px;
   height: 50px;
@@ -675,42 +652,39 @@ footer {
   object-fit: cover;
   display: block;
   margin: 0 auto;
-  border: 3px solid var(--avatar-border); /* Utilise la variable --avatar-border (#FF7F00) */
+  border: 3px solid var(--avatar-border);
   transition: all 0.3s ease;
 }
 
-/* Effet au survol (zoom léger et ombre colorée) */
 .profile-avatar:hover {
   transform: scale(1.05);
   box-shadow:none;
 }
 
-/* Style spécifique si utilisé dans une zone de messages */
 .profile-avatar.msg {
-  border-color: var(--color-primary); /* Change la couleur de bordure dans les messages */
+  border-color: var(--color-primary);
   box-shadow: none;
 }
 
-/* Style personnalisé du dropdown utilisateur */
 .custom-dropdown {
-    background-color: black;
-    border: 1px solid #00FF00;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--color-success);
     min-width: 180px;
-    box-shadow: 0 2px 6px rgba(0, 255, 0, 0.2);
+    box-shadow: 0 2px 6px var(--shadow-success);
 }
 
 .custom-dropdown .dropdown-item {
-    color: white;
+    color: var(--white);
     padding: 10px 15px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .custom-dropdown .dropdown-item:hover,
 .custom-dropdown .dropdown-item:focus {
-    background-color: rgba(0, 255, 0, 0.2);
-    color: #00FF00;
+    background-color: var(--dropdown-hover);
+    color: var(--color-success);
 }
 
 .custom-dropdown .dropdown-divider {
-    border-top: 1px solid #00FF00;
+    border-top: 1px solid var(--color-success);
 }

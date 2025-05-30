@@ -121,30 +121,16 @@ $nb_notifications = $nb_msgs + $nb_demandes;
 
                     <!-- Menu utilisateur -->
                     <div class="dropdown">
-                        <a
-                            class="dropdown-toggle text-decoration-none text-white"
-                            href="#"
-                            role="button"
-                            id="userMenuDropdown"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <strong class="me-1"><?= strtoupper(htmlspecialchars($_SESSION['login'])) ?></strong>
-                        </a>
-                        <ul
-                            class="dropdown-menu custom-dropdown dropdown-menu-end"
-                            aria-labelledby="userMenuDropdown">
-                            <li>
-                                <a class="dropdown-item" href="pages/profil.php?id=<?= $_SESSION['id_u'] ?>">Mon profil</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="pages/compte.php">Paramètres</a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="logout.php">Déconnexion</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <a class="dropdown-toggle text-decoration-none text-white" href="#" role="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <strong class="me-1"><?= strtoupper(htmlspecialchars($_SESSION['login'])) ?></strong>
+                </a>
+                <ul class="dropdown-menu custom-dropdown dropdown-menu-end" aria-labelledby="userMenuDropdown">
+                    <li><a class="dropdown-item" href="pages/profil.php?id=<?= $_SESSION['id_u'] ?>">Mon profil</a></li>
+                    <li><a class="dropdown-item" href="pages/compte.php">Paramètres</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="../logout.php">Déconnexion</a></li>
+                </ul>
             </div>
-        </nav>
+        </div>
+    </div>
+</nav>

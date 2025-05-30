@@ -64,7 +64,7 @@ $amis_received = $query_received->fetchAll();
             <form method="post" action="supprimer-ami.php" style="display:inline;">
               <input type="hidden" name="relation_id" value="<?= $ami['relation_id'] ?>">
               <input type="hidden" name="ami_id" value="<?= $ami['id_u'] ?>">
-              <button type="submit" style="color:red; border:none; background:none; cursor:pointer;" onclick="return confirm('Supprimer cet ami ?');">✖️</button>
+              <button type="submit" style="color:red; border:none; background:none; cursor:pointer;" onclick="return confirm('Supprimer cet ami ?');"></button>
             </form>
           </li>
         <?php endforeach; ?>

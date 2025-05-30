@@ -53,13 +53,19 @@ include '../includes/header-PG.php';
     <h1>Ajouter une story</h1>
 
     <?php if ($error): ?>
-        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+    <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
     <form method="POST" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="story_image" class="form-label">Image de la story</label>
-            <input type="file" name="story_image" id="story_image" accept="image/*" required class="form-control">
+            <input
+                type="file"
+                name="story_image"
+                id="story_image"
+                accept="image/*"
+                required="required"
+                class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Publier la story</button>
         <a href="home.php" class="btn btn-secondary ms-2">Annuler</a>

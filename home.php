@@ -133,13 +133,15 @@ try {
     <!-- Fil d'actualité -->
     <div class="col-lg-6">
 <!-- Conteneur principal des stories -->
-<div class="stories-wrapper d-flex align-items-center mb-4">
+<div class="stories-wrapper d-flex align-items-center mb-4 position-relative">
   
-  <!-- Bouton gauche -->
-
-
-  <!-- Conteneur des stories -->
-  <div class="stories-container d-flex flex-nowrap overflow-auto flex-grow-1 gap-3">
+  <!-- Flèche gauche -->
+  <button class="scroll-btn left" style="display: none;">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+  
+   <!-- Conteneur des stories -->
+  <div class="stories-container story-container d-flex flex-nowrap overflow-auto flex-grow-1 gap-3">
     
     <!-- Créer une story -->
     <div class="story-item create-story" onclick="window.location.href='pages/ajouter_story.php'">
@@ -171,14 +173,13 @@ try {
         <div class="story-username"><?= htmlspecialchars($story['login']) ?></div>
       </div>
     <?php endforeach; ?>
-    
   </div>
-
-  <!-- Bouton droit -->
- 
+  
+  <!-- Flèche droite -->
+  <button class="scroll-btn right">
+    <i class="fas fa-chevron-right"></i>
+  </button>
 </div>
-
-
 
 
 
@@ -238,11 +239,11 @@ try {
           </div>
         <?php endforeach; ?>
       <?php else: ?>
-        <div class="alert alert-info">Aucune publication à afficher. Soyez le premier à poster !</div>
+       
       <?php endif; ?>
 
       <div class="fil-section mt-4">
-        <h2 class="text-light">Fil d'actualités</h2>
+    
         <?php include 'pages/fil.php'; ?>
       </div>
     </div>
@@ -325,6 +326,99 @@ try {
 
   </div>
 </div>
+<!-- Scroll JS -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.querySelector('.story-container');
+  const btnLeft = document.querySelector('.scroll-btn.left');
+  const btnRight = document.querySelector('.scroll-btn.right');
+  
+  // Variables pour le défilement automatique
+  let scrollInterval;
+  let autoScrollTimeout;
+  const scrollSpeed = 3; // Vitesse de défilement au survol
+  const scrollStep = 200; // Distance de défilement au clic
+  const autoScrollDelay = 3000; // Délai entre chaque défilement automatique (3s)
+
+  // Fonction pour mettre à jour la visibilité des flèches
+  function updateScrollButtons() {
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+    const showLeft = container.scrollLeft > 0;
+    const showRight = container.scrollLeft < maxScrollLeft - 5; // Marge d'erreur
+    
+    btnLeft.style.display = showLeft ? 'flex' : 'none';
+    btnRight.style.display = showRight ? 'flex' : 'none';
+    
+    // Si on est tout à droite, réinitialiser après un délai
+    if (!showRight) {
+      setTimeout(() => {
+        container.scrollTo({ left: 0, behavior: 'smooth' });
+      }, 2000);
+    }
+  }
+
+  // Défilement continu au survol
+  function startAutoScroll(direction) {
+    stopAutoScroll();
+    scrollInterval = setInterval(() => {
+      container.scrollLeft += direction === 'right' ? scrollSpeed : -scrollSpeed;
+      updateScrollButtons();
+    }, 20);
+  }
+
+  function stopAutoScroll() {
+    clearInterval(scrollInterval);
+  }
+
+  // Défilement automatique périodique
+  function setupAutoScroll() {
+    clearTimeout(autoScrollTimeout);
+    autoScrollTimeout = setTimeout(() => {
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      
+      if (container.scrollLeft >= maxScrollLeft - 10) {
+        container.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        container.scrollBy({ left: scrollStep, behavior: 'smooth' });
+      }
+      
+      setupAutoScroll();
+    }, autoScrollDelay);
+  }
+
+  // Événements pour les boutons
+  btnLeft.addEventListener('click', (e) => {
+    e.preventDefault();
+    container.scrollBy({ left: -scrollStep, behavior: 'smooth' });
+  });
+  
+  btnRight.addEventListener('click', (e) => {
+    e.preventDefault();
+    container.scrollBy({ left: scrollStep, behavior: 'smooth' });
+  });
+
+  // Survol des boutons
+  btnLeft.addEventListener('mouseenter', () => startAutoScroll('left'));
+  btnLeft.addEventListener('mouseleave', stopAutoScroll);
+  btnRight.addEventListener('mouseenter', () => startAutoScroll('right'));
+  btnRight.addEventListener('mouseleave', stopAutoScroll);
+
+  // Écouteurs globaux
+  container.addEventListener('scroll', updateScrollButtons);
+  window.addEventListener('resize', updateScrollButtons);
+  
+  // Initialisation
+  updateScrollButtons();
+  setupAutoScroll();
+  
+  // Pause auto-scroll quand l'utilisateur interagit
+  container.addEventListener('mousedown', () => clearTimeout(autoScrollTimeout));
+  container.addEventListener('touchstart', () => clearTimeout(autoScrollTimeout));
+  container.addEventListener('wheel', () => clearTimeout(autoScrollTimeout));
+});
+</script>
 
 <?php include "includes/mini-messagerie.php"; ?>
 <?php include "includes/footer.php"; ?>
+
+

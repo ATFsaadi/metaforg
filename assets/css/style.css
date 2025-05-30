@@ -1,28 +1,32 @@
-/* === Variables globales === */
 :root {
-  /* Arrière-plans */
   --bg-primary: #121212;
   --bg-secondary: #1E1E1E;
-  
-  /* Texte */
   --text-color: #B0B0B0;
-  
-  /* Couleurs principales */
   --color-primary: #00BFFF;
   --color-primary-hover: #008CFF;
   --color-success: #00FF00;
-  
-  /* Éléments spécifiques */
   --badge-color: #6A0DAD;
   --avatar-border: #ff4500;
-  
-  /* Bordures & formes */
   --border-radius: 2px;
   --border-radius-full: 1%;
   --input-border: rgba(0, 255, 0, 0.08);
+  --white: #FFFFFF;
+  --light-border: rgba(255, 255, 255, 0.1);
+  --hover-primary: rgba(0, 191, 255, 0.1);
+  --hover-success: rgba(0, 255, 0, 0.2);
+  --card-bg: #242526;
+  --contacts-bg: #18191A;
+  --contacts-border: #3A3B3C;
+  --message-bg: #3A3B3C;
+  --placeholder-color: #B0B3B8;
+  --message-blue: #2D88FF;
+  --message-blue-hover: #1877F2;
+  --dropdown-hover: rgba(0, 255, 0, 0.2);
+  --story-bg: #007bff;
+  --viewed-story: #ccc;
+  --scroll-btn-bg: rgba(30, 30, 30, 0.7);
 }
 
-/* === Réinitialisation et base === */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -39,10 +43,9 @@ body {
   overflow-x: hidden;
 }
 
-/* === Navbar === */
 .navbar {
   background: var(--bg-secondary);
-  border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 0.5px solid var(--light-border);
   padding: 8px 100px;
 }
 
@@ -54,7 +57,7 @@ body {
 .form-control {
   background: var(--bg-primary);
   border: 1px solid var(--input-border);
-  color: white;
+  color: var(--white);
   border-radius: var(--border-radius-full);
   padding-left: 1rem;
 }
@@ -70,42 +73,9 @@ body {
 
 .btn-outline-primary:hover {
   background: var(--color-primary-hover);
-  color: white;
+  color: var(--white);
 }
 
-/* === Stories === */
-.story-container {
-  display: flex;
-  overflow-x: auto;
-  gap: 15px;
-  padding: 1rem 0;
-  scrollbar-width: none;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-}
-
-.story-container::-webkit-scrollbar {
-  display: none;
-}
-
-.story {
-  min-width: 100px;
-  max-width: 100px;
-  text-align: center;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-}
-
-.story:hover {
-  transform: scale(1.05);
-}
-
-.avatar-border {
-  border: 3px solid var(--avatar-border);
-}
-
-/* === Créer une publication === */
 .create-post {
   background: var(--bg-secondary);
   padding: 1rem;
@@ -115,24 +85,23 @@ body {
 
 .create-post-input {
   background: var(--bg-primary);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--light-border);
   border-radius: var(--border-radius);
   padding: 0.75rem 1rem;
   width: 100%;
-  color: white;
+  color: var(--white);
 }
 
 .btn-outline-secondary {
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--light-border);
   color: var(--text-color);
 }
 
 .btn-outline-secondary:hover {
   background: var(--color-primary);
-  color: white;
+  color: var(--white);
 }
 
-/* === Publications === */
 .post-card {
   background: var(--bg-secondary);
   border-radius: var(--border-radius);
@@ -148,10 +117,9 @@ body {
 }
 
 .post-actions .post-action:hover {
-  background: rgba(0, 191, 255, 0.1);
+  background: var(--hover-primary);
 }
 
-/* === Sidebar === */
 .sidebar {
   background: black;
   border-radius: var(--border-radius);
@@ -166,10 +134,9 @@ body {
 
 .list-group-item:hover {
   background: transparent;
-  color: #00ff0055;
+  color: var(--hover-success);
 }
 
-/* === Boutons et éléments interactifs === */
 .btn {
   background: var(--bg-primary);
   border: none;
@@ -189,7 +156,7 @@ body {
   left: -100%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(120deg, #00ff0055, #00ff0015);
+  background: linear-gradient(120deg, var(--hover-success), rgba(0, 255, 0, 0.15));
   transform: skewX(-20deg);
   transition: left 0.6s ease-in-out;
   pointer-events: none;
@@ -204,20 +171,18 @@ body {
   background: black;
 }
 
-/* === Icônes spéciaux === */
 .fas, .far {
   color: var(--color-success);
   transition: color 0.3s ease;
 }
 
 .fas:hover, .far:hover {
-  color: #00ff0055;
+  color: rgba(0, 255, 0, 0.5);
 }
 
-/* === Badges et indicateurs === */
 .badge {
   background: var(--badge-color);
-  color: white;
+  color: var(--white);
   padding: 0.25rem 0.5rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -231,10 +196,9 @@ body {
   position: absolute;
   bottom: 3px;
   right: 3px;
-  border: 0.5px solid white;
+  border: 0.5px solid var(--white);
 }
 
-/* === Footer et réseaux sociaux === */
 footer {
   background-color: var(--bg-secondary);
   padding: 20px 0;
@@ -251,7 +215,7 @@ footer {
 }
 
 .social-icon {
-  color: #FFFFFF;
+  color: var(--white);
   font-size: 24px;
   transition: color 0.3s ease;
 }
@@ -260,7 +224,6 @@ footer {
   color: var(--color-primary);
 }
 
-/* === Animation bounce pour le bouton recherche === */
 @keyframes bounce {
   0%, 100% {
     transform: translateY(0);
@@ -277,31 +240,228 @@ footer {
 }
 
 .search-icon {
-  fill:var(--color-success);
+  fill: var(--color-success);
   transition: fill 1s ease;
 }
 
 .search-icon:hover {
-  fill: #00ff007e;
+  fill: rgba(0, 255, 0, 0.5);
   animation: bounce 1s ease;
 }
 
-/* === Story créateur === */
-.story-create {
-  min-width: 100px;
+#reche-messag {
+  max-width: 800px;
+  margin-top: 50px;
+}
+
+.card {
+  background-color: var(--card-bg);
+  color: #E4E6EB;
+  border: none;
+}
+
+.contacts-list {
+  background-color: var(--contacts-bg);
+  border-right: 1px solid var(--contacts-border);
+}
+
+.contact-item {
+  transition: background-color 0.2s;
+}
+
+.contact-item:hover {
+  background-color: var(--contacts-border);
+}
+
+.contact-item.bg-light {
+  background-color: var(--contacts-border) !important;
+}
+
+.input-group .form-control {
+  background-color: var(--contacts-border);
+  border: none;
+  color: #E4E6EB;
+}
+
+.input-group .form-control::placeholder {
+  color: var(--placeholder-color);
+}
+
+.input-group .btn-outline-primary {
+  border: none;
+  background-color: var(--message-blue);
+  color: var(--white);
+}
+
+.input-group .btn-outline-primary:hover {
+  background-color: var(--message-blue-hover);
+}
+
+.messages-area {
+  background-color: var(--card-bg);
+}
+
+.messages-header {
+  background-color: var(--contacts-bg);
+  border-bottom: 1px solid var(--contacts-border);
+  color: #E4E6EB;
+}
+
+.messages-list {
+  background-color: var(--card-bg);
+}
+
+.message-item .d-inline-block {
+  max-width: 75%;
+  word-wrap: break-word;
+}
+
+.text-end .d-inline-block {
+  background-color: var(--message-blue) !important;
+  color: var(--white);
+  border-bottom-right-radius: 0 !important;
+}
+
+.text-start .d-inline-block {
+  background-color: var(--contacts-border) !important;
+  color: #E4E6EB;
+  border-bottom-left-radius: 0 !important;
+}
+
+.message-item .small {
+  color: var(--placeholder-color) !important;
+}
+
+form.d-flex.border-top {
+  background-color: var(--contacts-bg);
+  border-top: 1px solid var(--contacts-border) !important;
+}
+
+form.d-flex input.form-control {
+  background-color: var(--contacts-border);
+  color: var(--white);
+  border: none;
+}
+
+form.d-flex input.form-control::placeholder {
+  color: var(--placeholder-color);
+}
+
+form.d-flex button.btn-primary {
+  background-color: var(--message-blue);
+  border: none;
+}
+
+form.d-flex button.btn-primary:hover {
+  background-color: var(--message-blue-hover);
+}
+
+.text-muted {
+  color: var(--placeholder-color) !important;
+}
+
+.friend-suggestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--contacts-border);
+  margin-bottom: 10px;
+}
+
+.friend-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--avatar-border);
+}
+
+.sugg a {
+  font-size: 1rem;
+  color: var(--text-color);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.sugg a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.add-friend-btn {
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.p-2.text-muted {
+  font-size: 0.9rem;
+  color: var(--placeholder-color);
+}
+
+.custom-dropdown {
+    background-color: black;
+    border: none;
+    min-width: 50px;
+    box-shadow: none;
+    margin-top: 5px !important;
+    margin-right: -80px !important;
+}
+
+.custom-dropdown .dropdown-item {
+    color: var(--white);
+    padding: 10px 15px;
+}
+
+.custom-dropdown .dropdown-item:hover,
+.custom-dropdown .dropdown-item:focus {
+    background-color: var(--dropdown-hover);
+    color: var(--color-success);
+}
+
+.custom-dropdown .dropdown-divider {
+    border-top: 1px solid var(--color-success);
+}
+
+.story-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+.story-container::-webkit-scrollbar {
+  display: none;
+}
+
+.story-item {
+  width: 120px;
+  flex-shrink: 0;
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.story-item:hover {
+  transform: scale(1.05);
+}
+
+.create-story {
   color: var(--text-color);
   transition: transform 0.3s ease;
 }
 
-.story-create:hover {
+.create-story:hover {
   transform: scale(1.05);
 }
 
 .story-avatar-wrapper {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+  width: 120px;
+  height: 200px;
+  border-radius: 16px;
   overflow: hidden;
   background-color: var(--color-primary);
   display: flex;
@@ -319,269 +479,68 @@ footer {
 .story-plus-icon {
   width: 24px;
   height: 24px;
-  background: #007bff;
-  color: white;
+  background: var(--story-bg);
+  color: var(--white);
   border-radius: 50%;
-  border: 2px solid white;
+  border: 2px solid var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 8px;
+  right: 8px;
 }
 
-/* Boutons de défilement */
+.story-username {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewed-story {
+  border: 2px solid var(--viewed-story);
+}
+
 .scroll-btn {
-  background:transparent;
-  border: none;
-  border-radius: 0%;
-  padding: 10px;
-  color:var(--color-success);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  background-color: var(--scroll-btn-bg);
+  border: 1px solid var(--color-primary);
+  border-radius: 50%;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s ease;
   z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
 }
 
 .scroll-btn:hover {
-  background-color:transparent;
+  background-color: var(--color-primary);
+  color: var(--white);
 }
 
 .scroll-btn.left {
-  left: 0;
+  left: 0 !important;
 }
 
 .scroll-btn.right {
-  right: 0;
-  transform: rotate(180deg);
+  right: 0 !important;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#reche-messag {
-  max-width: 800px;
-  margin-top: 50px;
+.scroll-btn i {
+  font-size: 0.8rem;
 }
 
-/* Global background for card */
-.card {
-  background-color: #242526;
-  color: #E4E6EB;
-  border: none;
-}
-
-/* Contacts list */
-.contacts-list {
-  background-color: #18191A;
-  border-right: 1px solid #3A3B3C;
-}
-
-.contact-item {
-  transition: background-color 0.2s;
-}
-
-.contact-item:hover {
-  background-color: #3A3B3C;
-}
-
-.contact-item.bg-light {
-  background-color: #3A3B3C !important;
-}
-
-/* Search bar */
-.input-group .form-control {
-  background-color: #3A3B3C;
-  border: none;
-  color: #E4E6EB;
-}
-
-.input-group .form-control::placeholder {
-  color: #B0B3B8;
-}
-
-.input-group .btn-outline-primary {
-  border: none;
-  background-color: #2D88FF;
-  color: #fff;
-}
-
-.input-group .btn-outline-primary:hover {
-  background-color: #1877F2;
-}
-
-/* Messages */
-.messages-area {
-  background-color: #242526;
-}
-
-.messages-header {
-  background-color: #18191A;
-  border-bottom: 1px solid #3A3B3C;
-  color: #E4E6EB;
-}
-
-.messages-list {
-  background-color: #242526;
-}
-
-.message-item .d-inline-block {
-  max-width: 75%;
-  word-wrap: break-word;
-}
-
-/* Sent messages */
-.text-end .d-inline-block {
-  background-color: #2D88FF !important;
-  color: white;
-  border-bottom-right-radius: 0 !important;
-}
-
-/* Received messages */
-.text-start .d-inline-block {
-  background-color: #3A3B3C !important;
-  color: #E4E6EB;
-  border-bottom-left-radius: 0 !important;
-}
-
-/* Time */
-.message-item .small {
-  color: #B0B3B8 !important;
-}
-
-/* Input form */
-form.d-flex.border-top {
-  background-color: #18191A;
-  border-top: 1px solid #3A3B3C !important;
-}
-
-form.d-flex input.form-control {
-  background-color: #3A3B3C;
-  color: white;
-  border: none;
-}
-
-form.d-flex input.form-control::placeholder {
-  color: #B0B3B8;
-}
-
-form.d-flex button.btn-primary {
-  background-color: #2D88FF;
-  border: none;
-}
-
-form.d-flex button.btn-primary:hover {
-  background-color: #1877F2;
-}
-
-/* Empty state */
-.text-muted {
-  color: #B0B3B8 !important;
-}
-
-
-
-/* Suggestion d'ami */
-.friend-suggestion {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #3A3B3C; /* Bordure fine en bas */
-  margin-bottom: 10px;
-}
-
-.friend-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%; /* Avatar rond */
-  object-fit: cover;
-  border: 2px solid var(--avatar-border); /* Bordure de l'avatar */
-}
-
-.sugg a {
-  font-size: 1rem;
-  color: var(--text-color);
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.sugg a:hover {
-  color: var(--color-primary); /* Couleur au survol */
-  text-decoration: underline;
-}
-
-/* Bouton d'ajout d'ami */
-.add-friend-btn {
-  padding: 6px 12px;
-  border-radius: 5px;
-}
-
-/* Texte "Aucune suggestion" */
-.p-2.text-muted {
-  font-size: 0.9rem;
-  color: #B0B3B8; /* Texte gris clair */
-}
-
-
-/* Style personnalisé du dropdown utilisateur */
-.custom-dropdown {
-    background-color: black;
-    border: none;
-    min-width: 50px;
-    box-shadow: none;
-     margin-top: 5px !important; /* espace entre le bouton et le menu */
-     margin-right: -80px !important;
-}
-
-.custom-dropdown .dropdown-item {
-    color: white;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    /* ou simplement : */
-    padding: 10px 15px;
-}
-
-
-.custom-dropdown .dropdown-item {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    /* ou simplement : */
-    padding: 10px 15px;
-}
-
-
-.custom-dropdown .dropdown-item:hover,
-.custom-dropdown .dropdown-item:focus {
-    background-color: rgba(0, 255, 0, 0.2);
-    color: #00FF00;
-}
-
-.custom-dropdown .dropdown-divider {
-    border-top: 1px solid #00FF00;
+.story-avatar-wrapper.viewed-story {
+  border: 2px solid var(--avatar-border);
+  box-sizing: border-box;
 }
