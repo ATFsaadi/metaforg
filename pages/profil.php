@@ -141,40 +141,37 @@ include "../includes/header-PG.php";
                 $status = $relation['statut'] ?? null;
                 ?>
                 <?php if ($status): ?>
-  
-    <div class="alert <?= $status === 'accepte' ? 'alert-success' : 'alert-success' ?> mt-2" role="alert" style="max-width: 300px;">
-        <?php if ($status === 'accepte'): ?>
-            <i class="fas fa-user-check"></i> Vous êtes déjà amis
-        <?php elseif ($status === 'en_attente'): ?>
-            <i class="fas fa-hourglass-half"></i> Demande d'ami en attente
-        <?php endif; ?>
-    </div>
-<?php endif; ?>
+                    <div class="alert <?= $status === 'accepte' ? 'alert-success' : 'alert-success' ?> mt-2" role="alert" style="max-width: 300px;">
+                        <?php if ($status === 'accepte'): ?>
+                            <i class="fas fa-user-check"></i> Vous êtes déjà amis
+                        <?php elseif ($status === 'en_attente'): ?>
+                            <i class="fas fa-hourglass-half"></i> Demande d'ami en attente
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
 
-
-
-              <?php if ($status === 'accepte'): ?>
-    <form method="POST" action="supprimer_ami.php" class="d-inline-block">
-        <input type="hidden" name="relation_id" value="<?= $relation['id'] ?>">
-        <button type="submit" class="btn btn-danger" onclick="return confirm('Supprimer cet ami ?')">
-            <i class="fas fa-user-times"></i> Supprimer
-        </button>
-    </form>
-    <a href="messages.php?contact=<?= $profile_id ?>" class="btn btn-info ml-2">
-        <i class="fas fa-envelope"></i> Contacter
-    </a>
-<?php elseif ($status === 'en_attente'): ?>
-    
-<?php else: ?>
-    <form method="POST" class="d-inline-block">
-        <input type="hidden" name="ajouter_ami" value="1">
-        <input type="hidden" name="ami_id" value="<?= $profile_id ?>">
-        <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Ajouter ami</button>
-    </form>
-    <a href="messages.php?contact=<?= $profile_id ?>" class="btn btn-info ml-2">
-        <i class="fas fa-envelope"></i> Contacter
-    </a>
-<?php endif; ?>
+                <?php if ($status === 'accepte'): ?>
+                    <form method="POST" action="supprimer_ami.php" class="d-inline-block">
+                        <input type="hidden" name="relation_id" value="<?= $relation['id'] ?>">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Supprimer cet ami ?')">
+                            <i class="fas fa-user-times"></i> Supprimer
+                        </button>
+                    </form>
+                    <a href="messages.php?contact=<?= $profile_id ?>" class="btn btn-info ml-2">
+                        <i class="fas fa-envelope"></i> Contacter
+                    </a>
+                <?php elseif ($status === 'en_attente'): ?>
+                    <!-- Aucune action proposée si demande en attente -->
+                <?php else: ?>
+                    <form method="POST" class="d-inline-block">
+                        <input type="hidden" name="ajouter_ami" value="1">
+                        <input type="hidden" name="ami_id" value="<?= $profile_id ?>">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Ajouter ami</button>
+                    </form>
+                    <a href="messages.php?contact=<?= $profile_id ?>" class="btn btn-info ml-2">
+                        <i class="fas fa-envelope"></i> Contacter
+                    </a>
+                <?php endif; ?>
 
             </div>
         <?php endif; ?>
@@ -195,7 +192,7 @@ include "../includes/header-PG.php";
 
     <?php if ($current_user_id === $profile_id): ?>
         <div class="update-form mt-5">
-            <h3><i class="fas fa-edit"></i> Modifier profil</h3>
+            <h2 class="section-title text-center"><i class="fas fa-edit" style="color: #00BFFF;"></i> Modifier profil</h2>
             <form method="POST">
                 <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
@@ -219,13 +216,16 @@ include "../includes/header-PG.php";
                 </div>
 
                 <div class="password-section mt-4 border-top pt-3">
-                    <h3><i class="fas fa-lock"></i> Changer mot de passe</h3>
+                    <h2 class="section-title text-center"><i class="fas fa-lock" style="color: #00BFFF;"></i> Changer mot de passe</h2>
                     <div class="form-group"><label>Ancien mot de passe</label><input type="password" name="ancien_mdp" class="form-control"></div>
                     <div class="form-group"><label>Nouveau mot de passe</label><input type="password" name="nouveau_mdp" class="form-control"><small class="text-muted">Minimum 8 caractères</small></div>
                     <div class="form-group"><label>Confirmation</label><input type="password" name="confirmation_mdp" class="form-control"></div>
                 </div>
 
-                <button type="submit" class="btn btn-primary mt-3"><i class="fas fa-save"></i> Enregistrer</button>
+                <!-- Bouton centré -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
+                </div>
             </form>
         </div>
     <?php endif; ?>

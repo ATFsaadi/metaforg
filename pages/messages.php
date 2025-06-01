@@ -75,59 +75,35 @@ if ($contact_id) {
     }
 }
 
-// Envoi de message
-if (isset($_POST['send_message']) && $contact_id) {
-    $message = trim($_POST['message']);
-    if (!empty($message)) {
-        $req_insert = $bdd->prepare("
-            INSERT INTO envoyer (id_exp, id_recept, message, date_env)
-            VALUES (:exp_id, :recept_id, :message, NOW())
-        ");
-        $req_insert->execute([
-            'exp_id' => $user_id,
-            'recept_id' => $contact_id,
-            'message' => $message
-        ]);
-        header("Location: messages.php?contact=" . $contact_id);
-        exit;
-    }
-}
-
-// Recherche d'utilisateurs
-if (isset($_POST['search_user'])) {
-    $search_term = '%' . $_POST['search_term'] . '%';
-    $req_search = $bdd->prepare("
-        SELECT id_u, login
-        FROM users
-        WHERE login LIKE :search_term AND id_u != :user_id
-        LIMIT 10
-    ");
-    $req_search->execute([
-        'search_term' => $search_term,
-        'user_id' => $user_id
-    ]);
-    $search_results = $req_search->fetchAll(PDO::FETCH_ASSOC);
-}
+// Envoi de message via AJAX - plus besoin de traitement PHP ici
 ?>
-<?php
+
+<h2 class="section-title text-center">
+    Messages non lus
+</h2>
+
+<?php 
+// Récupération des messages non lus
 $req_unread = $bdd->prepare("
     SELECT e.id_exp, u.login, COUNT(*) as nb
     FROM envoyer e
     JOIN users u ON e.id_exp = u.id_u
     WHERE e.id_recept = :user_id AND e.lu = 0
-    GROUP BY e.id_exp
+    GROUP BY e.id_exp, u.login
+    ORDER BY MAX(e.date_env) DESC
 ");
 $req_unread->execute(['user_id' => $_SESSION['id_u']]);
-$unread_msgs = $req_unread->fetchAll(PDO::FETCH_ASSOC);
-?>
+$unread_msgs = [];
+foreach ($req_unread->fetchAll(PDO::FETCH_ASSOC) as $msg) {
+    $unread_msgs[$msg['id_exp']] = $msg;
+}
 
-<?php if (!empty($unread_msgs)): ?>
-    <div class="alert alert-info mt-3">
-        <h5>📨 Messages non lus</h5>
-        <ul class="list-group">
+if (!empty($unread_msgs)): ?>
+    <div id="notifications-page">
+        <ul class="notifications-list">
             <?php foreach ($unread_msgs as $msg): ?>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="messages.php?contact=<?= $msg['id_exp'] ?>">
+                <li class="notification">
+                    <a href="messages.php?contact=<?= $msg['id_exp'] ?>" class="notification-link">
                         <strong><?= htmlspecialchars($msg['login']) ?></strong> vous a envoyé <?= $msg['nb'] ?> message(s).
                     </a>
                 </li>
@@ -136,65 +112,68 @@ $unread_msgs = $req_unread->fetchAll(PDO::FETCH_ASSOC);
     </div>
 <?php endif; ?>
 
-
 <div class="container mt-5 pt-4" id="reche-messag">
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <div class="messages-container d-flex">
                 <!-- Liste des contacts -->
                 <div class="contacts-list p-3 border-end" style="width: 300px;">
-                    <form method="POST" class="mb-3">
+                    <!-- Formulaire de recherche AJAX -->
+                    <form id="searchForm" class="mb-3">
                         <div class="input-group">
-                            <input type="text" name="search_term" class="form-control" placeholder="Rechercher un utilisateur..." required>
-                            <button type="submit" name="search_user" class="btn btn-outline-primary">
+                            <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un utilisateur..." required>
+                            <button type="submit" class="btn btn-outline-primary bg-transparent">
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
-                        <?php if (!empty($search_results)): ?>
-                            <div class="search-results mt-2">
-                                <?php foreach ($search_results as $result): ?>
-                                    <div class="search-result-item" style="cursor:pointer" onclick="window.location.href='messages.php?contact=<?= $result['id_u'] ?>'">
-                                        <?= htmlspecialchars($result['login']) ?>
+                    </form>
+                    <div id="searchResultsContainer"></div>
+
+                    <!-- Conteneur scrollable pour la liste des contacts -->
+                    <div class="contacts-list-scroll">
+                        <?php if (!empty($conversations)): ?>
+                            <?php foreach ($conversations as $conversation): 
+                                $cid = $conversation['contact_id'];
+                                if (!$cid || !isset($users_logins[$cid])) continue;
+                                
+                                $unread_count = isset($unread_msgs[$cid]) ? $unread_msgs[$cid]['nb'] : 0;
+                            ?>
+                                <div class="contact-item <?= ($contact_id == $cid) ? 'bg-light' : '' ?> p-2 rounded mb-2 contact-selector" data-contact-id="<?= $cid ?>" style="cursor:pointer">
+
+                                    <div class="d-flex align-items-center">
+                                        <div class="fw-bold flex-grow-1"><?= htmlspecialchars($users_logins[$cid]) ?></div>
+                                        <?php if ($unread_count > 0): ?>
+                                            <span class="badge bg-danger rounded-pill ms-2"><?= $unread_count ?></span>
+                                        <?php endif; ?>
+                                        <div class="flex-shrink-0">
+                                            <img src="../assets/images/Profil/profil_<?= $cid ?>"  
+                                                 onerror="this.onerror=null; this.src='../assets/images/Profil/default.png';"
+                                                 class="profile-avatar msg rounded-circle"
+                                                 alt="Avatar de <?= htmlspecialchars($cid) ?>" 
+                                                 width="40" height="40"
+                                                 style="object-fit: cover;">
+                                        </div>
                                     </div>
-                                <?php endforeach; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="text-center text-muted mt-3">
+                                <p>Aucune conversation</p>
+                                <p>Recherchez un utilisateur pour commencer</p>
                             </div>
                         <?php endif; ?>
-                    </form>
-
-                    <?php if (!empty($conversations)): ?>
-                        <?php foreach ($conversations as $conversation): 
-                            $cid = $conversation['contact_id'];
-                            if (!$cid || !isset($users_logins[$cid])) continue;
-                        ?>
-                           <div class="contact-item <?= ($contact_id == $cid) ? 'bg-light' : '' ?> p-2 rounded mb-2" style="cursor:pointer" onclick="window.location.href='messages.php?contact=<?= $cid ?>'">
-    <div class="d-flex align-items-center">
-        <div class="fw-bold flex-grow-1"><?= htmlspecialchars($users_logins[$cid]) ?></div>
-        <div class="flex-shrink-0">
-            <img src="../assets/images/Profil/profil_<?= $cid ?>"  
-                 class="profile-avatar msg rounded-circle"
-                 alt="Avatar de <?= htmlspecialchars($cid) ?>" 
-                 width="40" height="40"
-                 style="object-fit: cover; border: 2px solid orange;">
-        </div>
-    </div>
-</div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="text-center text-muted mt-3">
-                            <p>Aucune conversation</p>
-                            <p>Recherchez un utilisateur pour commencer</p>
-                        </div>
-                    <?php endif; ?>
+                    </div>
                 </div>
 
                 <!-- Zone de messages -->
-                <div class="messages-area flex-grow-1 d-flex flex-column">
+                <div class="messages-area flex-grow-1 d-flex flex-column" id="messageContent">
+
                     <?php if ($contact_info): ?>
                         <div class="messages-header p-3 border-bottom d-flex align-items-center">
                             <div class="fw-bold"><?= htmlspecialchars($contact_info['login']) ?></div>
                         </div>
 
-                        <div class="messages-list flex-grow-1 overflow-auto p-3" id="messagesList" style="height: 400px;">
+                        <div class="messages-list flex-grow-1 p-3" id="messagesList">
                             <?php if (!empty($messages)): ?>
                                 <?php foreach ($messages as $message): ?>
                                     <div class="message-item mb-2 <?= ($message['id_exp'] == $user_id) ? 'text-end' : 'text-start' ?>">
@@ -212,9 +191,10 @@ $unread_msgs = $req_unread->fetchAll(PDO::FETCH_ASSOC);
                             <?php endif; ?>
                         </div>
 
-                        <form method="POST" class="d-flex border-top p-3">
-                            <input type="text" name="message" class="form-control me-2" placeholder="Tapez votre message..." required maxlength="1000">
-                            <button type="submit" name="send_message" class="btn btn-primary">
+                        <!-- Formulaire d'envoi AJAX -->
+                        <form id="messageForm" class="d-flex border-top p-3">
+                            <input type="text" id="messageInput" name="message" class="form-control me-2" placeholder="Tapez votre message..." required maxlength="1000">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </form>
@@ -232,6 +212,143 @@ $unread_msgs = $req_unread->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </div>
+
+<script>
+// Gestion de la recherche AJAX
+// Remplacer le script existant par ceci :
+document.getElementById('searchForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const term = document.getElementById('searchInput').value.trim();
+    
+    if (term) {
+        fetch(`recherche.php?q=${encodeURIComponent(term)}&ajax=1`)
+            .then(response => {
+                if (!response.ok) throw new Error('Erreur réseau');
+                return response.json();
+            })
+            .then(results => {
+                const container = document.getElementById('searchResultsContainer');
+                container.innerHTML = '';
+                
+                if (results.length > 0) {
+                    const resultsList = document.createElement('div');
+                    resultsList.className = 'messages-list flex-grow-1 p-3';
+                    resultsList.innerHTML = '<h5>Résultats:</h5>';
+                    
+                    results.forEach(user => {
+                        const item = document.createElement('div');
+                        item.className = 'search-result-item p-2 ';
+                        item.style.cursor = 'pointer';
+                       item.innerHTML = `
+                                    <div class="d-flex align-items-center">
+                                        <img src="../assets/images/Profil/profil_${user.id_u}"
+                                            onerror="this.src='../assets/images/Profil/default.png'"
+                                            class="rounded-circle me-2"
+                                            width="40" height="40">
+                                        <span class="fw-bold">${user.login}</span>
+                                    </div>
+                                `;
+
+                        item.addEventListener('click', () => {
+                            window.location.href = `messages.php?contact=${user.id_u}`;
+                        });
+                        resultsList.appendChild(item);
+                    });
+                    
+                    container.appendChild(resultsList);
+                } else {
+                    container.innerHTML = '<div class="text-muted p-2">Aucun résultat trouvé</div>';
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                document.getElementById('searchResultsContainer').innerHTML = 
+                    '<div class="text-danger p-2">Erreur lors de la recherche</div>';
+            });
+    }
+});
+
+// Gestion de l'envoi de message AJAX
+document.getElementById('messageForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const message = document.getElementById('messageInput').value.trim();
+    const contactId = <?= $contact_id ?: 'null' ?>;
+    
+    if (message && contactId) {
+        fetch('send_message.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `message=${encodeURIComponent(message)}&contact=${contactId}`
+        })
+        .then(response => response.text())
+        .then(() => {
+            // Ajouter le nouveau message à la liste
+            const messagesList = document.getElementById('messagesList');
+            const newMessage = document.createElement('div');
+            newMessage.className = 'message-item mb-2 text-end';
+            newMessage.innerHTML = `
+                <div class="d-inline-block p-2 rounded bg-primary text-white">
+                    ${message}
+                    <div class="small text-muted mt-1">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                </div>
+            `;
+            messagesList.appendChild(newMessage);
+            document.getElementById('messageInput').value = '';
+            messagesList.scrollTop = messagesList.scrollHeight;
+        });
+    }
+});
+
+document.querySelectorAll('.contact-selector').forEach(item => {
+    item.addEventListener('click', function() {
+        const contactId = this.getAttribute('data-contact-id');
+        if (!contactId) return;
+
+        fetch(`messages_partial.php?contact=${contactId}`)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('messageContent').innerHTML = html;
+
+                // Re-bind le submit AJAX du formulaire
+                const form = document.getElementById('messageForm');
+                form?.addEventListener('submit', handleMessageSubmit);
+            })
+            .catch(err => console.error('Erreur chargement messages:', err));
+    });
+});
+
+function handleMessageSubmit(e) {
+    e.preventDefault();
+    const message = document.getElementById('messageInput').value.trim();
+    const contactId = document.getElementById('messageInput').dataset.contactId;
+
+    if (message && contactId) {
+        fetch('send_message.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `message=${encodeURIComponent(message)}&contact=${contactId}`
+        })
+        .then(response => response.text())
+        .then(() => {
+            const messagesList = document.getElementById('messagesList');
+            const newMessage = document.createElement('div');
+            newMessage.className = 'message-item mb-2 text-end';
+            newMessage.innerHTML = `
+                <div class="d-inline-block p-2 rounded bg-primary text-white">
+                    ${message}
+                    <div class="small text-muted mt-1">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                </div>
+            `;
+            messagesList.appendChild(newMessage);
+            document.getElementById('messageInput').value = '';
+            messagesList.scrollTop = messagesList.scrollHeight;
+        });
+    }
+}
+</script>
+
 
 <?php ob_end_flush(); ?>
 <?php include '../includes/footer.php'; ?>

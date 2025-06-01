@@ -39,7 +39,7 @@ $nb_notifications = $nb_msgs + $nb_demandes;
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <a class="navbar-brand" href="../home.php">
-                    <strong><img src="../ImgU/logoAcc.png" width="60px" alt="">MetaForg</strong>
+                    <strong>MetaForg</strong>
                 </a>
 
                 <!-- Barre de recherche -->

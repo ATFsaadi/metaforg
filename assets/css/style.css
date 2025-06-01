@@ -44,13 +44,13 @@ body {
 }
 
 .navbar {
-  background: var(--bg-secondary);
-  border-bottom: 0.5px solid var(--light-border);
+  background: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border-light);
   padding: 8px 100px;
 }
 
 .navbar-brand {
-  color: var(--color-primary);
+  color: var(--color-primary) !important;
   font-weight: 700;
 }
 
@@ -58,7 +58,7 @@ body {
   background: var(--bg-primary);
   border: 1px solid var(--input-border);
   color: var(--white);
-  border-radius: var(--border-radius-full);
+  border-radius: 10px;
   padding-left: 1rem;
 }
 
@@ -86,7 +86,7 @@ body {
 .create-post-input {
   background: var(--bg-primary);
   border: 1px solid var(--light-border);
-  border-radius: var(--border-radius);
+  border-radius: 10px;
   padding: 0.75rem 1rem;
   width: 100%;
   color: var(--white);
@@ -181,7 +181,7 @@ body {
 }
 
 .badge {
-  background: var(--badge-color);
+  background: transparent;
   color: var(--white);
   padding: 0.25rem 0.5rem;
   border-radius: 20px;
@@ -280,7 +280,7 @@ footer {
 .input-group .form-control {
   background-color: var(--contacts-border);
   border: none;
-  color: #E4E6EB;
+  color: #e4e4eb;
 }
 
 .input-group .form-control::placeholder {

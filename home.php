@@ -186,17 +186,14 @@ try {
           </div>
           <input type="text" class="create-post-input form-control" placeholder="Quoi de neuf, <?= htmlspecialchars($login) ?> ?" onclick="window.location.href='pages/poster.php'">
         </div>
-        <div class="d-flex justify-content-between">
-          <button class="btn btn-outline-secondary" onclick="window.location.href='pages/poster.php'">
-            <i class="fas fa-image me-1"></i> Photo
-          </button>
-          <button class="btn btn-outline-secondary" onclick="window.location.href='pages/poster.php'">
-            <i class="fas fa-video me-1"></i> Vidéo
-          </button>
-          <button class="btn btn-outline-secondary" onclick="window.location.href='pages/poster.php'">
-            <i class="fas fa-smile me-1"></i> Humeur
-          </button>
-        </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="d-flex justify-content-center">
+  <button class="btn btn-outline-secondary" onclick="window.location.href='pages/poster.php'">
+    <i class="fas fa-upload me-1"></i> Publie
+  </button>
+</div>
+
       </div>
 
       <!-- Publications -->

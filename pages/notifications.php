@@ -42,49 +42,78 @@ $req_demandes->execute(['user_id' => $user_id]);
 $demandes_amis = $req_demandes->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<div class="container mt-5 pt-4">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h3 class="mb-4"> Vos notifications</h3>
-
-            <!-- Notifications de messages -->
-            <h5>Messages non lus</h5>
-            <?php if (!empty($unread_msgs)): ?>
-                <ul class="list-group mb-4">
-                    <?php foreach ($unread_msgs as $msg): ?>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <a href="messages.php?contact=<?= $msg['id_exp'] ?>">
-                                Nouveau message de <strong><?= htmlspecialchars($msg['login']) ?></strong>
+<h2 class="section-title text-center">Vos notifications</h2>
+<div id="notifications-page">
+    <!-- Conteneur Bootstrap -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Bloc Messages non lus -->
+            <div class="col-md-6 mb-4">
+                <?php if (!empty($unread_msgs)): ?>
+                <div class="card">
+                    <h2 class="card-title">
+                        <i class="fas fa-envelope"></i>
+                        Messages non lus
+                    </h2>
+                    <ul class="notifications-list">
+                        <?php foreach ($unread_msgs as $msg): ?>
+                        <li class="notification d-flex align-items-center">
+                            <span class="count-badge"><?= $msg['nb'] ?></span>
+                            <a href="messages.php?contact=<?= $msg['id_exp'] ?>" class="notification-link">
+                                Nouveau message de
+                                <strong><?= htmlspecialchars($msg['login']) ?></strong>
                             </a>
-                            <span class="badge bg-primary rounded-pill"><?= $msg['nb'] ?></span>
                         </li>
-                    <?php endforeach; ?>
-                </ul>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
             <?php else: ?>
-                <p class="text-muted">Aucun nouveau message.</p>
-            <?php endif; ?>
+                <div class="card">
+                    <h2 class="card-title">
+                        <i class="fas fa-envelope"></i>
+                        Messages non lus
+                    </h2>
+                    <p class="empty-message">Aucun nouveau message.</p>
+                </div>
+                <?php endif; ?>
+            </div>
 
-            <!-- Notifications de demandes d'amis -->
-            <h5>Demandes d’amis</h5>
-            <?php if (!empty($demandes_amis)): ?>
-                <ul class="list-group">
-                    <?php foreach ($demandes_amis as $dem): ?>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><strong><?= htmlspecialchars($dem['login']) ?></strong> vous a envoyé une demande</span>
+            <!-- Bloc Demandes d'amis -->
+            <div class="col-md-6 mb-4">
+                <?php if (!empty($demandes_amis)): ?>
+                <div class="card">
+                    <h2 class="card-title">
+                        <i class="fas fa-user-friends"></i>
+                        Demandes d'amis
+                    </h2>
+                    <ul class="notifications-list">
+                        <?php foreach ($demandes_amis as $dem): ?>
+                        <li class="notification">
+                            <span class="notification-link">
+                                <strong><?= htmlspecialchars($dem['login']) ?></strong>
+                                vous a envoyé une demande
+                            </span>
                             <div>
-                                <a href="accepter_ami.php?id=<?= $dem['id_u'] ?>" class="btn btn-sm btn-success">Accepter</a>
-                                <a href="refuser.php?id=<?= $dem['id_u'] ?>" class="btn btn-sm btn-danger">Refuser</a>
+                                <a href="accepter_ami.php?id=<?= $dem['id_u'] ?>" class="action-btn accept-btn">Accepter</a>
+                                <a href="refuser.php?id=<?= $dem['id_u'] ?>" class="action-btn reject-btn">Refuser</a>
                             </div>
                         </li>
-                    <?php endforeach; ?>
-                </ul>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
             <?php else: ?>
-                <p class="text-muted">Aucune nouvelle demande d’ami.</p>
-            <?php endif; ?>
+                <div class="card">
+                    <h2 class="card-title">
+                        <i class="fas fa-user-friends"></i>
+                        Demandes d'amis
+                    </h2>
+                    <p class="empty-message">Aucune nouvelle demande d'ami.</p>
+                </div>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
 
 <?php include "../includes/footer.php"; ?>
 <?php ob_end_flush(); ?>
-

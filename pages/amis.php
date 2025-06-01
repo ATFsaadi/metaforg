@@ -50,74 +50,93 @@ $amis_received = $query_received->fetchAll();
 
 <div class="container">
     <div class="row justify-content-center gap-4">
+
         <!-- Bloc Amis -->
         <div class="publication-card col-md-4">
-            <div class="post-header">Liste des amis</div>
-            <ul class="post-content">
-                <?php foreach ($amis as $ami): ?>
-                <li>
-                    <a href="profil.php?id=<?= urlencode($ami['id_u']) ?>">
-                        <?= htmlspecialchars($ami['login']) ?>
-                    </a>
-                    <!-- Formulaire suppression ami -->
-                    <form method="post" action="supprimer-ami.php" style="display:inline;">
-                        <input type="hidden" name="relation_id" value="<?= $ami['relation_id'] ?>">
-                        <input type="hidden" name="ami_id" value="<?= $ami['id_u'] ?>">
-                        <button
-                            type="submit"
-                            style="color:red; border:none; background:none; cursor:pointer;"
-                            onclick="return confirm('Supprimer cet ami ?');"></button>
-                    </form>
-                </li>
-                <?php endforeach; ?>
+            <div class="post-header d-flex justify-content-between align-items-center">
+                Liste des amis
+                <span class="badge"><?= count($amis) ?></span>
+            </div>
+            <ul class="post-content list-unstyled">
+                <?php if (!empty($amis)): ?>
+                    <?php foreach ($amis as $ami): ?>
+                        <li class="notification d-flex justify-content-between align-items-center">
+                            <a href="profil.php?id=<?= urlencode($ami['id_u']) ?>" class="notification-link flex-grow-1">
+                                <?= htmlspecialchars($ami['login']) ?>
+                            </a>
+                            <form method="post" action="supprimer-ami.php" class="mb-0">
+                                <input type="hidden" name="relation_id" value="<?= $ami['relation_id'] ?>">
+                                <input type="hidden" name="ami_id" value="<?= $ami['id_u'] ?>">
+                             <button
+    type="submit"
+    class="btn btn-sm btn-outline-danger"
+    style="background: none; border: none; padding: 0; margin: 0; box-shadow: none;"
+    onclick="return confirm('Supprimer cet ami ?');"
+    title="Supprimer">
+    <i class="fas fa-trash" 
+       style="color: rgb(255, 60, 0); background: none !important;"></i>
+</button>
+                            </form>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li class="text-center text-muted">Aucun ami trouvé.</li>
+                <?php endif; ?>
             </ul>
         </div>
 
         <!-- Bloc Demandes envoyées -->
         <div class="publication-card col-md-4">
-            <div class="post-header">Demandes envoyées</div>
-            <ul class="post-content">
-                <?php if (empty($amis_pending)): ?>
-                <li>Aucune demande en attente.</li>
-            <?php else: ?>
-                <?php foreach ($amis_pending as $pending): ?>
-                <li>
-                    <a href="profil.php?id=<?= urlencode($pending['id_u']) ?>">
-                        <?= htmlspecialchars($pending['login']) ?>
-                    </a>
-                </li>
-                <?php endforeach; ?>
+            <div class="post-header d-flex justify-content-between align-items-center">
+                Demandes envoyées
+                <span class="badge"><?= count($amis_pending) ?></span>
+            </div>
+            <ul class="post-content list-unstyled">
+                <?php if (!empty($amis_pending)): ?>
+                    <?php foreach ($amis_pending as $pending): ?>
+                        <li class="notification">
+                            <a href="profil.php?id=<?= urlencode($pending['id_u']) ?>" class="notification-link">
+                                <?= htmlspecialchars($pending['login']) ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li class="text-center text-muted">Aucune demande en attente.</li>
                 <?php endif; ?>
             </ul>
         </div>
 
         <!-- Bloc Demandes reçues -->
         <div class="publication-card col-md-4">
-            <div class="post-header">Demandes reçues</div>
-            <ul class="post-content">
-                <?php if (empty($amis_received)): ?>
-                <li>Aucune demande reçue.</li>
-            <?php else: ?>
-                <?php foreach ($amis_received as $received): ?>
-                <li>
-                    <a href="profil.php?id=<?= urlencode($received['id_u']) ?>">
-                        <?= htmlspecialchars($received['login']) ?>
-                    </a>
-                    <!-- Boutons accepter / refuser -->
-                    <a
-                        href="accepter_ami.php?id=<?= $received['id_u'] ?>"
-                        style="color:green; margin-left:10px;">Accepter</a>
-                    <a
-                        href="refuser.php?id=<?= $received['id_u'] ?>"
-                        style="color:red; margin-left:5px;">Refuser</a>
-                </li>
-                <?php endforeach; ?>
+            <div class="post-header d-flex justify-content-between align-items-center">
+                Demandes reçues
+                <span class="badge"><?= count($amis_received) ?></span>
+            </div>
+            <ul class="post-content list-unstyled">
+                <?php if (!empty($amis_received)): ?>
+                    <?php foreach ($amis_received as $received): ?>
+                        <li class="notification d-flex justify-content-between align-items-center">
+                            <a href="profil.php?id=<?= urlencode($received['id_u']) ?>" class="notification-link flex-grow-1">
+                                <?= htmlspecialchars($received['login']) ?>
+                            </a>
+                            <div class="d-flex gap-2">
+                                <a href="accepter_ami.php?id=<?= $received['id_u'] ?>" class="btn btn-success btn-sm">
+                                    <i class="fas fa-check"></i> Accepter
+                                </a>
+                                <a href="refuser.php?id=<?= $received['id_u'] ?>" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-times"></i> Refuser
+                                </a>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li class="text-center text-muted">Aucune demande reçue.</li>
                 <?php endif; ?>
             </ul>
         </div>
+
     </div>
 </div>
-
 <?php
 include "../includes/mini-messagerie.php";
 include '../includes/footer.php';

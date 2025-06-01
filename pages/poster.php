@@ -78,29 +78,42 @@ $publications = $req->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="container mt-5 pt-4">
-    <h2 class="mb-4">Publications</h2>
+    <h2 class="section-title text-center">Publications</h2>
 
     <!-- Formulaire de publication -->
     <div class="card mb-4">
-        <div class="card-body">
-            <?php if (!empty($errors)): ?>
-                <div class="alert alert-danger">
-                    <?= implode('<br>', $errors) ?>
-                </div>
-            <?php endif; ?>
+    <div class="card-body">
+        <?php if (!empty($errors)): ?>
+            <div class="alert alert-danger">
+                <?= implode('<br>', $errors) ?>
+            </div>
+        <?php endif; ?>
 
-            <form method="POST" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <textarea name="contenu" class="form-control" rows="3" placeholder="Exprimez-vous..." required></textarea>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <textarea name="contenu" class="form-control" rows="3" placeholder="Exprimez-vous..." required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Ajouter une image</label><br>
+                <input type="file" name="image" id="image" accept="image/*" class="d-none">
+                
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <label for="image" class="btn btn-outline-primary m-0">
+                        <i class="fas fa-upload"></i> Choisir une image
+                    </label>
+
+                    <button type="submit" class="btn btn-primary m-0">
+                        Publier
+                    </button>
+
+                    <span id="file-name" class="text-muted"></span>
                 </div>
-                <div class="mb-3">
-                    <label for="image" class="form-label">Ajouter une image</label>
-                    <input type="file" class="form-control" name="image" id="image" accept="image/*">
-                </div>
-                <button type="submit" class="btn btn-primary">Publier</button>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
+</div>
+
 
     <!-- Liste des publications -->
     <?php if ($publications): ?>

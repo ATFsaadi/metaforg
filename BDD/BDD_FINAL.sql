@@ -122,11 +122,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO users (login, prenom, nom, email, mdp, lvl, IP, birthdate, genre, langue, pays, photo_profil) VALUES
 ('admin', 'Admin', 'Root', 'admin@metaforg.com', '$2y$10$e0NR0YBk1pG9m8u6X6jz2eEwiNjCm99xzCwVUZqReLZT0XHu0zB6e', 2, '127.0.0.1', '1980-01-01', 'Homme', 'fr', 'France', NULL),
-('leo', 'Leo', 'Benslimane', 'leo@metaforg.com', '$2y$10$UuL0WhmM8EIo4KKC0z3pVe/Qk76rmYylEyoXzDK7XVk/J4ph9FPE6', 0, '41.201.10.10', '1992-03-15', 'Homme', 'fr', 'Algérie', NULL),
-('atef', 'Atef', 'Khaled', 'atef@metaforg.com', '$2y$10$43PoWKIwGqQz2TVn5uOwZ.qn3tOCB46fVfzD2eokMO4ZTnrm0PYiW', 0, '41.202.10.11', '1990-07-10', 'Homme', 'ar', 'Algérie', NULL),
-('ibra', 'Ibra', 'Traore', 'ibra@metaforg.com', '$2y$10$9N3DqQFvQ4NlMkPvYGsuaeI2XkQXOlroGZ6kd7YflcprkDO2UDvKm', 0, '102.140.20.20', '1989-09-25', 'Homme', 'fr', 'Mali', NULL),
-('daniel', 'Daniel', 'Okito', 'daniel@metaforg.com', '$2y$10$WgWk0Z6f3Tp7HsIT4UP9pu0Su9aOx5TJgKwN9J5njBpO9cGh9q4Ye', 0, '102.145.20.30', '1991-11-11', 'Homme', 'fr', 'Congo', NULL),
-('amani', 'Amani', 'Zitouni', 'amani@metaforg.com', '$2y$10$wXTxzRnmTbP7Q2kI3gP2EuPTG9paTGqDTjFtXQEl0QYK9VX3yoQ4y', 0, '102.150.22.22', '1995-05-05', 'Femme', 'ar', 'Tunisie', NULL);
+('leo', 'Leo', 'lys', 'leo@metaforg.com', '$2y$10$UuL0WhmM8EIo4KKC0z3pVe/Qk76rmYylEyoXzDK7XVk/J4ph9FPE6', 0, '41.201.10.10', '1992-03-15', 'Homme', 'fr', 'Algérie', NULL),
+('atef', 'Atef', 'saadi', 'atef@metaforg.com', '$2y$10$43PoWKIwGqQz2TVn5uOwZ.qn3tOCB46fVfzD2eokMO4ZTnrm0PYiW', 0, '41.202.10.11', '1990-07-10', 'Homme', 'ar', 'Algérie', NULL),
+('ibra', 'Ibra', 'haidara', 'ibra@metaforg.com', '$2y$10$9N3DqQFvQ4NlMkPvYGsuaeI2XkQXOlroGZ6kd7YflcprkDO2UDvKm', 0, '102.140.20.20', '1989-09-25', 'Homme', 'fr', 'Mali', NULL),
+('daniel', 'Daniel', 'daniel', 'daniel@metaforg.com', '$2y$10$WgWk0Z6f3Tp7HsIT4UP9pu0Su9aOx5TJgKwN9J5njBpO9cGh9q4Ye', 0, '102.145.20.30', '1991-11-11', 'Homme', 'fr', 'Congo', NULL),
+('nina', 'Nina', 'yno', 'nina@metaforg.com', '$2y$10$5h6Ruwz5OJUF.sZcuUz4LuQeyReTpIg3B6v8aKhp/CThKkx.ZzP5O', 0, '83.23.54.44', '1992-04-10', 'Femme', 'pl', 'Pologne', NULL),
+('amani', 'Amani', 'amani', 'amani@metaforg.com', '$2y$10$wXTxzRnmTbP7Q2kI3gP2EuPTG9paTGqDTjFtXQEl0QYK9VX3yoQ4y', 0, '102.150.22.22', '1995-05-05', 'Femme', 'ar', 'Tunisie', NULL);
 
 
 
@@ -135,7 +136,7 @@ INSERT INTO users (login, prenom, nom, email, mdp, lvl, IP, birthdate, genre, la
 ('maria', 'Maria', 'Gonzalez', 'maria@metaforg.com', '$2y$10$5h6Ruwz5OJUF.sZcuUz4LuQeyReTpIg3B6v8aKhp/CThKkx.ZzP5O', 0, '190.23.44.12', '1993-06-12', 'Femme', 'es', 'Espagne', NULL),
 ('li', 'Li', 'Wei', 'liwei@metaforg.com', '$2y$10$5h6Ruwz5OJUF.sZcuUz4LuQeyReTpIg3B6v8aKhp/CThKkx.ZzP5O', 0, '103.29.89.10', '1988-12-01', 'Homme', 'zh', 'Chine', NULL),
 ('hiro', 'Hiro', 'Tanaka', 'hiro@metaforg.com', '$2y$10$5h6Ruwz5OJUF.sZcuUz4LuQeyReTpIg3B6v8aKhp/CThKkx.ZzP5O', 0, '122.101.3.5', '1990-08-20', 'Homme', 'ja', 'Japon', NULL),
-('nina', 'Nina', 'Kowalski', 'nina@metaforg.com', '$2y$10$5h6Ruwz5OJUF.sZcuUz4LuQeyReTpIg3B6v8aKhp/CThKkx.ZzP5O', 0, '83.23.54.44', '1992-04-10', 'Femme', 'pl', 'Pologne', NULL),
+
 ('john', 'John', 'Doe', 'john@metaforg.com', '$2y$10$5h6Ruwz5OJUF.sZcuUz4LuQeyReTpIg3B6v8aKhp/CThKkx.ZzP5O', 0, '66.102.1.1', '1985-03-03', 'Homme', 'en', 'États-Unis', NULL),
 ('amina', 'Amina', 'Yusuf', 'amina@metaforg.com', '$2y$10$5h6Ruwz5OJUF.sZcuUz4LuQeyReTpIg3B6v8aKhp/CThKkx.ZzP5O', 0, '105.112.122.1', '1994-09-09', 'Femme', 'en', 'Nigeria', NULL),
 ('lucas', 'Lucas', 'Silva', 'lucas@metaforg.com', '$2y$10$5h6Ruwz5OJUF.sZcuUz4LuQeyReTpIg3B6v8aKhp/CThKkx.ZzP5O', 0, '200.147.35.10', '1991-05-21', 'Homme', 'pt', 'Brésil', NULL),

@@ -34,11 +34,11 @@ $nb_notifications = $nb_msgs + $nb_demandes;
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="home.php">
-            <strong><img src="../assets/images/ImgU/logoAcc.png" width="60px" alt="">MetaForg</strong>
-        </a>
+ <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="home.php">
+                    <strong>MetaForg</strong>
+                </a>
 
         <!-- Formulaire de recherche -->
         <div class="d-flex align-items-center ms-auto me-2">
